@@ -1553,40 +1553,6 @@ h1 {
   background: var(--warm-soft);
 }
 
-.bead-line {
-  position: absolute;
-  right: 1.5rem;
-  bottom: 2.25rem;
-  left: 1.5rem;
-  display: flex;
-  align-items: center;
-}
-
-.bead-line::before {
-  position: absolute;
-  right: 0;
-  left: 0;
-  height: 1px;
-  background: var(--warm);
-  content: "";
-}
-
-.bead-line span {
-  position: relative;
-  width: clamp(1.5rem, 4vw, 2.8rem);
-  height: clamp(1.5rem, 4vw, 2.8rem);
-  border: 1px solid var(--warm);
-  border-radius: 48% 52% 43% 57%;
-  background: var(--warm-soft);
-}
-
-.bead-line span:nth-child(2n) {
-  width: clamp(1rem, 3vw, 2rem);
-  height: clamp(1rem, 3vw, 2rem);
-  border-radius: 50%;
-  background: var(--surface-strong);
-}
-
 .field-note-beli {
   display: grid;
   grid-column: 1 / -1;
@@ -2350,10 +2316,6 @@ h1 {
 
   .beli-profile-crop img {
     width: min(100%, 370px);
-  }
-
-  .bead-line {
-    display: none;
   }
 
   .field-note-movement {
