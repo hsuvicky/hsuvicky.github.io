@@ -64,13 +64,18 @@ temporary or fabricated photo. To replace it with Vicky's selected portrait:
    `.portrait-art` wrapper.
 5. Keep the image under roughly 300 KB and verify the crop at desktop and mobile widths.
 
-## Add verified links later
+## Links and future project pages
 
-The hero action group in `index.html` is the place to add a verified LinkedIn profile,
-résumé file, email/contact destination, or public product link. Before adding one:
+The hero includes Vicky's verified LinkedIn and GitHub profiles. The same action group is
+the place to add a future résumé file or contact destination. Before adding one:
 
 1. Confirm the exact URL or address with Vicky.
 2. Add only a real, public destination—no placeholder buttons.
 3. For résumé files, place the current document in `assets/` and use a descriptive filename.
-4. For project links, add the link inside the relevant case study and state only publicly
-   supportable product details.
+4. Make a project title or “View project” action clickable only when it has a verified
+   repository, live product, or detail-page destination.
+
+The homepage should remain a curated portfolio rather than an archive. When there are more
+than roughly four substantial projects, add a static `projects/index.html` collection and
+link featured homepage case studies to individual project pages. Keep the current homepage
+scroll for the strongest work instead of moving every project onto it.

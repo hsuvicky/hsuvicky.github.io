@@ -8,6 +8,7 @@ const sections = sectionLinks
   .map((link) => document.querySelector(link.getAttribute("href")))
   .filter(Boolean);
 const colorScheme = window.matchMedia("(prefers-color-scheme: dark)");
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 function getSavedTheme() {
   try {
@@ -22,7 +23,7 @@ function applyTheme(theme, persist = false) {
   root.dataset.theme = isDark ? "dark" : "light";
   themeToggle?.setAttribute("aria-pressed", String(isDark));
   themeToggle?.setAttribute("aria-label", `Switch to ${isDark ? "light" : "dark"} theme`);
-  themeColor?.setAttribute("content", isDark ? "#1b201c" : "#f3f1ec");
+  themeColor?.setAttribute("content", isDark ? "#0f1720" : "#f2f0ef");
 
   if (persist) {
     try {
@@ -117,3 +118,70 @@ if (sections.some((section) => section.id === initialSection)) {
 } else {
   updateActiveSection();
 }
+
+function setupScrollReveals() {
+  if (reducedMotion.matches || !("IntersectionObserver" in window)) return;
+
+  const revealGroups = [
+    [".section-heading", 0],
+    [".progression-rail li", 55],
+    [".achievement-proof-grid article", 65],
+    [".case-study", 0],
+    [".enterprise-folio > *", 55],
+    [".field-note", 55],
+  ];
+  const revealTargets = [];
+
+  revealGroups.forEach(([selector, stagger]) => {
+    document.querySelectorAll(selector).forEach((element, index) => {
+      element.classList.add("reveal-item");
+      element.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * stagger}ms`);
+      revealTargets.push(element);
+    });
+  });
+
+  if (!revealTargets.length) return;
+
+  let lastScrollPosition = window.scrollY;
+  let scrollDirection = "down";
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      const nextScrollPosition = window.scrollY;
+      if (Math.abs(nextScrollPosition - lastScrollPosition) > 3) {
+        scrollDirection = nextScrollPosition > lastScrollPosition ? "down" : "up";
+        lastScrollPosition = nextScrollPosition;
+      }
+    },
+    { passive: true },
+  );
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.dataset.revealFrom = scrollDirection === "down" ? "top" : "bottom";
+          requestAnimationFrame(() => entry.target.classList.add("is-revealed"));
+          return;
+        }
+
+        if (
+          entry.boundingClientRect.bottom <= 0 ||
+          entry.boundingClientRect.top >= window.innerHeight
+        ) {
+          entry.target.classList.remove("is-revealed");
+        }
+      });
+    },
+    {
+      rootMargin: "0px 0px -9% 0px",
+      threshold: 0.08,
+    },
+  );
+
+  document.documentElement.classList.add("reveal-ready");
+  revealTargets.forEach((element) => observer.observe(element));
+}
+
+setupScrollReveals();
