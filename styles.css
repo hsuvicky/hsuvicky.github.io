@@ -760,6 +760,7 @@ h1 {
 
 .progression-logo-nyu {
   height: 2.75rem;
+  transform: translateY(2px);
 }
 
 :root[data-theme="dark"] .progression-logo {
