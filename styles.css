@@ -701,7 +701,7 @@ h1 {
 
 .progression-rail {
   display: grid;
-  grid-template-columns: 0.75fr 0.9fr 1fr 1.05fr 1.4fr;
+  grid-template-columns: 0.9fr 0.85fr 0.95fr 1fr 1.05fr 1.25fr;
   margin: 0;
   padding: 0;
   border-top: 1px solid var(--border);
@@ -712,7 +712,7 @@ h1 {
 .progression-rail li {
   position: relative;
   min-width: 0;
-  min-height: 11rem;
+  min-height: 15rem;
   padding: 1.25rem 1.15rem 1.4rem;
 }
 
@@ -739,7 +739,7 @@ h1 {
 }
 
 .progression-period {
-  min-height: 2.6rem;
+  min-height: 2.25rem;
   margin-bottom: 0.7rem;
   color: var(--accent);
   font-family: var(--mono);
@@ -754,7 +754,7 @@ h1 {
   margin-bottom: 0.5rem;
   color: var(--accent-deep);
   font-family: var(--display);
-  font-size: clamp(1.15rem, 1.7vw, 1.55rem);
+  font-size: clamp(1.05rem, 1.45vw, 1.4rem);
   font-weight: 400;
   line-height: 1.08;
 }
@@ -780,10 +780,45 @@ h1 {
   background: var(--accent-soft);
 }
 
+.progression-rail .progression-education {
+  background: var(--warm-soft);
+}
+
 .progression-rail .progression-current::before {
   width: 9px;
   height: 9px;
   background: var(--accent);
+}
+
+.progression-rail .progression-education::before {
+  width: 9px;
+  height: 9px;
+  background: var(--warm);
+}
+
+.progression-logo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 2.15rem;
+  margin-bottom: 1rem;
+  padding: 0.32rem 0.45rem;
+  border: 1px solid rgba(42, 42, 42, 0.14);
+  background: #fff;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.progression-logo-ey {
+  padding: 0.22rem;
+}
+
+.progression-logo-parthenon {
+  height: 2.25rem;
+}
+
+.progression-logo-nyu {
+  height: 2.25rem;
 }
 
 .achievement-proof-grid {
@@ -826,7 +861,7 @@ h1 {
 
 .career-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 2rem;
   align-items: baseline;
   margin-top: 1.75rem;
@@ -1784,7 +1819,7 @@ h1 {
   }
 
   .progression-rail .progression-current {
-    grid-column: 1 / -1;
+    grid-column: auto;
   }
 
   .case-study-enterprise,
@@ -2101,8 +2136,8 @@ h1 {
   }
 
   .progression-rail .progression-current {
-    grid-column: 1 / -1;
-    min-height: 9rem;
+    grid-column: auto;
+    min-height: 10.5rem;
   }
 
   .achievement-proof-grid {
