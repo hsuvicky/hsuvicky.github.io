@@ -125,7 +125,6 @@ function setupScrollReveals() {
   const revealGroups = [
     [".section-heading", 0],
     [".progression-rail li", 55],
-    [".achievement-proof-grid article", 65],
     [".case-study", 0],
     [".enterprise-folio > *", 55],
     [".field-note", 55],
