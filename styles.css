@@ -1659,34 +1659,35 @@ h1 {
 }
 
 .site-footer {
-  padding: 2.5rem 0;
-  background: var(--text);
-  color: var(--bg);
+  padding: 1rem 0;
+  border-top: 1px solid var(--border-soft);
+  background: var(--bg);
 }
 
 .site-footer .section-shell {
   display: flex;
-  justify-content: space-between;
-  gap: 2rem;
+  justify-content: center;
   align-items: center;
 }
 
-.site-footer p {
-  margin: 0;
-  font-size: 0.8rem;
+.footer-linkedin {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  transition: opacity 160ms ease, transform 160ms ease;
 }
 
-.site-footer div div {
-  display: flex;
-  gap: 1.4rem;
+.footer-linkedin:hover {
+  opacity: 0.82;
+  transform: translateY(-2px);
 }
 
-.site-footer a {
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  font-size: 0.8rem;
-  font-weight: 700;
+.footer-linkedin img {
+  display: block;
+  width: 28px;
+  height: 28px;
 }
 
 .reveal-ready .reveal-item {
@@ -2237,11 +2238,6 @@ h1 {
     font-size: 1.5rem;
   }
 
-  .site-footer .section-shell {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
 }
 
 @media (max-width: 390px) {
