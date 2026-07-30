@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" id="theme-color" content="#f2f0ef">
+    <meta name="robots" content="noindex">
+    <title>Resume Preview · Vicky Hsu</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css?v=20260730-21">
+    <script>
+      (() => {
+        try {
+          const savedTheme = localStorage.getItem("theme");
+          const theme = savedTheme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+          document.documentElement.dataset.theme = theme;
+        } catch {
+          document.documentElement.dataset.theme = "light";
+        }
+      })();
+    </script>
+  </head>
+  <body class="resume-preview-page">
+    <header class="resume-preview-header">
+      <div class="resume-preview-header-inner">
+        <a href="index.html">← Return to portfolio</a>
+        <span>Vicky Hsu · Resume</span>
+      </div>
+    </header>
+
+    <main class="resume-preview-main">
+      <header class="resume-preview-toolbar">
+        <div>
+          <p class="annotation">Dedicated document preview</p>
+          <h1>Resume</h1>
+          <p>
+            This placeholder establishes the preview experience. The final document will
+            replace it when its URL is available.
+          </p>
+        </div>
+        <div class="resume-preview-actions">
+          <a href="index.html">Portfolio</a>
+          <button type="button" onclick="window.print()">Print / Save PDF</button>
+        </div>
+      </header>
+
+      <article class="resume-sheet" aria-label="Placeholder resume preview">
+        <header class="resume-sheet-header">
+          <div>
+            <h2>Vicky Hsu</h2>
+            <p>Senior Director · AI Product Manager</p>
+          </div>
+          <div class="resume-sheet-contact">
+            New York, NY<br>
+            linkedin.com/in/vickyhsu1
+          </div>
+        </header>
+
+        <section>
+          <h3>Profile</h3>
+          <p>
+            AI product leader building and commercializing zero-to-one platforms in
+            complex, regulated industries—from product strategy and technical systems
+            through pilots, scale, and market adoption.
+          </p>
+        </section>
+
+        <section>
+          <h3>Experience</h3>
+          <div>
+            <div class="resume-sheet-entry">
+              <strong>EY-Parthenon · Senior Director</strong>
+              <span>Growth Platforms · AI Product Management · 2025–present</span>
+              <p>
+                Leads a neurosymbolic AI platform across roadmap, product design,
+                commercialization, and scaled enterprise delivery.
+              </p>
+            </div>
+            <div class="resume-sheet-entry">
+              <strong>EY · Product &amp; Technology Leadership</strong>
+              <span>Technology Solutions Delivery</span>
+              <p>
+                Shaped enterprise products spanning AI, knowledge graphs, regulated
+                financial workflows, and digital experience platforms.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Selected scope</h3>
+          <p>
+            $1.5M funded zero-to-one AI platform · 120+ enterprise domains · 4,000 data
+            elements · 25+ feature MVP delivered with a seven-person engineering team.
+          </p>
+        </section>
+
+        <section>
+          <h3>Education</h3>
+          <div class="resume-sheet-entry">
+            <strong>NYU Stern School of Business</strong>
+            <span>Part-time MBA · 2025–present</span>
+            <p>New York, NY</p>
+          </div>
+        </section>
+      </article>
+
+      <p class="resume-placeholder-note">Placeholder preview · final resume URL pending</p>
+    </main>
+  </body>
+</html>
