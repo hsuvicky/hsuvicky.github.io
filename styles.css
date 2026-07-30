@@ -1519,7 +1519,7 @@ h1 {
 .rabbit-marks span::before,
 .rabbit-marks span::after {
   position: absolute;
-  top: -1.3rem;
+  top: -1.42rem;
   width: 0.65rem;
   height: 1.65rem;
   border: 1px solid var(--accent);
