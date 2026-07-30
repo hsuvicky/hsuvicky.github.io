@@ -228,17 +228,24 @@ button {
 }
 
 .theme-toggle {
+  position: relative;
   display: inline-grid;
   justify-self: end;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
   padding: 0;
   border: 1px solid var(--border);
   border-radius: 50%;
   background: transparent;
   cursor: pointer;
   transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.theme-toggle::before {
+  position: absolute;
+  inset: -5px;
+  content: "";
 }
 
 .theme-toggle:hover {
@@ -248,8 +255,8 @@ button {
 
 .theme-icon {
   grid-area: 1 / 1;
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -2001,8 +2008,8 @@ h1 {
   }
 
   .theme-toggle {
-    width: 40px;
-    height: 40px;
+    width: 34px;
+    height: 34px;
   }
 
   .about {
