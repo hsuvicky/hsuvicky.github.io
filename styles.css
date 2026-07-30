@@ -282,13 +282,13 @@ button {
 }
 
 .about {
-  padding: clamp(3.5rem, 6vw, 6.5rem) 0 clamp(4.5rem, 7vw, 7rem);
+  padding: clamp(2.5rem, 4vw, 4.25rem) 0 clamp(3rem, 5vw, 4.5rem);
 }
 
 .hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.62fr);
-  gap: clamp(3rem, 7vw, 7rem);
+  gap: clamp(2.5rem, 5vw, 5rem);
   align-items: center;
 }
 
@@ -332,7 +332,7 @@ h2,
 h1 {
   max-width: 760px;
   margin: 0;
-  font-size: clamp(2.9rem, 5vw, 5rem);
+  font-size: clamp(2.6rem, 4vw, 4.25rem);
   line-height: 0.98;
 }
 
@@ -340,7 +340,7 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1.55rem;
+  margin-top: 1.15rem;
 }
 
 .hero-proof-line span {
@@ -360,7 +360,7 @@ h1 {
 
 .hero-lede {
   max-width: 700px;
-  margin: 1.65rem 0 0;
+  margin: 1.25rem 0 0;
   color: var(--text);
   font-size: clamp(1.06rem, 1.6vw, 1.25rem);
   line-height: 1.55;
@@ -557,7 +557,7 @@ h1 {
 }
 
 .hero-ledger {
-  margin-top: clamp(3rem, 6vw, 5.5rem);
+  margin-top: clamp(2.25rem, 4vw, 4rem);
   padding-top: 1rem;
   border-top: 2px solid var(--accent);
 }
@@ -603,36 +603,36 @@ h1 {
 .achievements,
 .projects,
 .hobbies {
-  padding: clamp(5.5rem, 10vw, 9.5rem) 0;
+  padding: clamp(4rem, 7vw, 6.25rem) 0;
 }
 
 .section-heading {
   display: grid;
   grid-template-columns: minmax(10rem, 0.55fr) minmax(0, 1.6fr);
-  gap: clamp(2rem, 8vw, 8rem);
-  margin-bottom: clamp(4.5rem, 8vw, 7rem);
+  gap: clamp(2rem, 5vw, 5rem);
+  margin-bottom: clamp(3rem, 5vw, 4.5rem);
 }
 
 .section-heading h2 {
   max-width: 830px;
   margin: -0.15em 0 0;
-  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-size: clamp(2.35rem, 4vw, 4rem);
   line-height: 1.02;
 }
 
 .section-heading > div > p {
   max-width: var(--reading-width);
-  margin: 1.35rem 0 0;
+  margin: 1rem 0 0;
   color: var(--text-soft);
   font-size: 1.05rem;
 }
 
 .achievements .section-heading {
-  margin-bottom: clamp(3rem, 6vw, 5rem);
+  margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
 }
 
 .achievements .section-heading h2 {
-  font-size: clamp(2.5rem, 4.3vw, 4rem);
+  font-size: clamp(2.35rem, 3.6vw, 3.4rem);
 }
 
 .progression-rail {
@@ -648,8 +648,8 @@ h1 {
 .progression-rail li {
   position: relative;
   min-width: 0;
-  min-height: 15rem;
-  padding: 1.25rem 1.15rem 1.4rem;
+  min-height: 13rem;
+  padding: 1rem 0.9rem 1.1rem;
 }
 
 .progression-rail li + li {
@@ -737,7 +737,7 @@ h1 {
   width: auto;
   max-width: 100%;
   height: 2.15rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   padding: 0.32rem 0.45rem;
   border: 1px solid rgba(42, 42, 42, 0.14);
   background: #fff;
@@ -768,7 +768,7 @@ h1 {
 
 .achievement-proof-grid article {
   min-width: 0;
-  padding: clamp(1.25rem, 2.4vw, 2rem);
+  padding: clamp(1.1rem, 1.8vw, 1.5rem);
   background: var(--surface-strong);
 }
 
@@ -843,14 +843,14 @@ h1 {
 
 .case-study {
   display: grid;
-  margin-top: clamp(4rem, 10vw, 9rem);
+  margin-top: clamp(3rem, 6vw, 5.5rem);
   border-top: 1px solid var(--border);
 }
 
 .case-study-enterprise {
   grid-template-columns: minmax(0, 0.95fr) minmax(25rem, 1.05fr);
-  gap: clamp(3rem, 7vw, 7.5rem);
-  padding-top: clamp(2.5rem, 5vw, 4rem);
+  gap: clamp(2.5rem, 5vw, 5rem);
+  padding-top: clamp(2rem, 3.5vw, 3rem);
 }
 
 .case-meta {
@@ -874,15 +874,15 @@ h1 {
 
 .case-study h3 {
   margin: 0;
-  font-size: clamp(2.35rem, 4.5vw, 4.5rem);
+  font-size: clamp(2.1rem, 3.7vw, 3.5rem);
   line-height: 1.02;
 }
 
 .case-purpose {
   max-width: 660px;
-  margin: 1.2rem 0 0;
+  margin: 0.85rem 0 0;
   color: var(--text-soft);
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .case-disclosure {
@@ -1067,14 +1067,14 @@ h1 {
 
 .case-study-mooscles {
   grid-template-columns: minmax(22rem, 0.85fr) minmax(0, 1.15fr);
-  gap: clamp(3rem, 8vw, 9rem);
+  gap: clamp(2.5rem, 5vw, 5rem);
   align-items: center;
-  padding-top: clamp(3rem, 6vw, 5rem);
+  padding-top: clamp(2rem, 4vw, 3rem);
 }
 
 .mooscles-visual {
   position: relative;
-  min-height: 520px;
+  min-height: 440px;
   overflow: hidden;
   border: 1px solid var(--border);
   background:
@@ -1183,9 +1183,9 @@ h1 {
 
 .case-study-blackjack {
   grid-template-columns: minmax(12rem, 0.35fr) minmax(0, 1fr);
-  gap: clamp(2.5rem, 8vw, 8rem);
+  gap: clamp(2.5rem, 5vw, 5rem);
   align-items: center;
-  padding: clamp(3rem, 6vw, 5rem) 0;
+  padding: clamp(2rem, 4vw, 3rem) 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -1246,13 +1246,13 @@ h1 {
 .enterprise-folio {
   display: grid;
   grid-template-columns: 1.2fr repeat(3, 1fr);
-  margin-top: clamp(5rem, 10vw, 9rem);
+  margin-top: clamp(3.5rem, 6vw, 5.5rem);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
 
 .enterprise-folio > * {
-  padding: clamp(1.5rem, 3vw, 2.4rem);
+  padding: clamp(1.35rem, 2.2vw, 1.8rem);
 }
 
 .enterprise-folio > * + * {
@@ -1282,7 +1282,7 @@ h1 {
 
 .enterprise-folio article {
   position: relative;
-  padding-top: 5rem;
+  padding-top: 4rem;
 }
 
 .folio-number {
@@ -1310,8 +1310,8 @@ h1 {
 
 .hobbies {
   overflow: hidden;
-  padding-top: clamp(4.5rem, 7vw, 7rem);
-  padding-bottom: clamp(4.5rem, 7vw, 7rem);
+  padding-top: clamp(3.5rem, 5vw, 5.5rem);
+  padding-bottom: clamp(3.5rem, 5vw, 5.5rem);
 }
 
 .hobbies::after {
@@ -1934,7 +1934,8 @@ h1 {
   }
 
   .about {
-    padding-top: 2.8rem;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
   }
 
   .hero-grid,
@@ -1963,13 +1964,13 @@ h1 {
 
   .portrait-frame {
     order: 4;
-    width: min(100%, 460px);
-    margin: 1rem auto 0;
+    width: min(100%, 280px);
+    margin: 0.65rem auto 0;
     justify-self: center;
   }
 
   .portrait-art {
-    aspect-ratio: 5 / 4.1;
+    aspect-ratio: 5 / 3.75;
   }
 
   .portrait-monogram {
@@ -2001,35 +2002,46 @@ h1 {
   }
 
   h1 {
-    font-size: clamp(2.5rem, 11.4vw, 4.15rem);
+    font-size: clamp(2.25rem, 10vw, 3.25rem);
   }
 
   .hero-ledger {
-    margin-top: 3.5rem;
+    margin-top: 2.25rem;
   }
 
   .hero-ledger dl {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .hero-ledger dl > div {
-    padding: 1rem 0.75rem;
+    display: block;
+    padding: 0.75rem 0.55rem;
   }
 
   .hero-ledger dl > div:nth-child(3) {
-    border-left: 0;
+    border-left: 1px solid var(--border);
   }
 
   .hero-ledger dl > div:nth-child(n + 3) {
-    border-top: 1px solid var(--border);
+    border-top: 0;
+  }
+
+  .hero-ledger dt {
+    font-size: 1.45rem;
+  }
+
+  .hero-ledger dd {
+    margin-top: 0.35rem;
+    font-size: 0.68rem;
+    line-height: 1.35;
   }
 
   .section-heading {
-    margin-bottom: 4rem;
+    margin-bottom: 2.5rem;
   }
 
   .section-heading h2 {
-    font-size: clamp(2.55rem, 12vw, 4rem);
+    font-size: clamp(2.25rem, 10vw, 3.2rem);
   }
 
   .progression-rail {
@@ -2058,7 +2070,11 @@ h1 {
   }
 
   .achievement-proof-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .achievement-proof-grid article:last-child {
+    grid-column: 1 / -1;
   }
 
   .career-footer {
@@ -2068,14 +2084,14 @@ h1 {
   }
 
   .case-study {
-    margin-top: 5rem;
+    margin-top: 3rem;
   }
 
   .case-study-enterprise,
   .case-study-mooscles,
   .case-study-blackjack {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2rem;
   }
 
   .case-details > div {
@@ -2089,17 +2105,37 @@ h1 {
     padding: 0.6rem;
   }
 
+  .system-map svg {
+    width: auto;
+    max-width: 100%;
+    max-height: 260px;
+    margin: 0 auto;
+  }
+
   .system-map figcaption {
     grid-template-columns: 1fr;
     gap: 0.25rem;
   }
 
   .mooscles-visual {
-    min-height: 390px;
+    min-height: 240px;
   }
 
   .blackjack-mark {
-    width: 150px;
+    width: 120px;
+  }
+
+  .case-study-blackjack {
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  .case-study-blackjack h3 {
+    font-size: 2rem;
+  }
+
+  .app-store-badge {
+    width: 130px;
   }
 
   .enterprise-folio {
@@ -2116,11 +2152,11 @@ h1 {
   }
 
   .enterprise-folio article {
-    padding-top: 4.5rem;
+    padding-top: 3.5rem;
   }
 
   .field-notes {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .field-note,
@@ -2132,7 +2168,7 @@ h1 {
   }
 
   .field-note-league {
-    grid-column: auto;
+    grid-column: 1 / -1;
     grid-template-columns: 1fr 1fr;
     gap: 1.2rem;
     min-height: 0;
@@ -2174,7 +2210,7 @@ h1 {
   }
 
   .field-note-beli {
-    grid-column: auto;
+    grid-column: 1 / -1;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     gap: 1.1rem;
     min-height: 0;
@@ -2195,6 +2231,10 @@ h1 {
 
   .field-note-movement {
     grid-column: auto;
+  }
+
+  .field-note:not(.field-note-league):not(.field-note-beli) h3 {
+    font-size: 1.5rem;
   }
 
   .site-footer .section-shell {
