@@ -283,13 +283,13 @@ button {
 }
 
 .about {
-  padding: clamp(2.5rem, 4vw, 4.25rem) 0 clamp(3rem, 5vw, 4.5rem);
+  padding: clamp(2rem, 3vw, 3rem) 0 clamp(2.5rem, 3.5vw, 3.5rem);
 }
 
 .hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.62fr);
-  gap: clamp(2.5rem, 5vw, 5rem);
+  gap: clamp(2rem, 4vw, 4rem);
   align-items: center;
 }
 
@@ -333,7 +333,7 @@ h2,
 h1 {
   max-width: 760px;
   margin: 0;
-  font-size: clamp(2.6rem, 4vw, 4.25rem);
+  font-size: clamp(2.4rem, 3.5vw, 3.7rem);
   line-height: 0.98;
 }
 
@@ -426,7 +426,7 @@ h1 {
 
 .portrait-frame {
   position: relative;
-  width: min(100%, 420px);
+  width: min(100%, 340px);
   margin: 0;
   justify-self: end;
 }
@@ -558,7 +558,7 @@ h1 {
 }
 
 .hero-ledger {
-  margin-top: clamp(2.25rem, 4vw, 4rem);
+  margin-top: clamp(1.75rem, 3vw, 2.75rem);
   padding-top: 1rem;
   border-top: 2px solid var(--accent);
 }
@@ -604,20 +604,20 @@ h1 {
 .achievements,
 .projects,
 .hobbies {
-  padding: clamp(4rem, 7vw, 6.25rem) 0;
+  padding: clamp(3rem, 5vw, 4.5rem) 0;
 }
 
 .section-heading {
   display: grid;
   grid-template-columns: minmax(10rem, 0.55fr) minmax(0, 1.6fr);
-  gap: clamp(2rem, 5vw, 5rem);
-  margin-bottom: clamp(3rem, 5vw, 4.5rem);
+  gap: clamp(1.75rem, 4vw, 4rem);
+  margin-bottom: clamp(2.25rem, 3.5vw, 3rem);
 }
 
 .section-heading h2 {
   max-width: 830px;
   margin: -0.15em 0 0;
-  font-size: clamp(2.35rem, 4vw, 4rem);
+  font-size: clamp(2.15rem, 3.4vw, 3.4rem);
   line-height: 1.02;
 }
 
@@ -629,11 +629,11 @@ h1 {
 }
 
 .achievements .section-heading {
-  margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
+  margin-bottom: clamp(2rem, 3vw, 2.75rem);
 }
 
 .achievements .section-heading h2 {
-  font-size: clamp(2.35rem, 3.6vw, 3.4rem);
+  font-size: clamp(2.15rem, 3vw, 3rem);
 }
 
 .progression-rail {
@@ -650,7 +650,7 @@ h1 {
   position: relative;
   min-width: 0;
   min-height: 13rem;
-  padding: 1rem 0.9rem 1.1rem;
+  padding: 0.8rem 0.75rem 0.9rem;
 }
 
 .progression-rail li + li {
@@ -676,8 +676,8 @@ h1 {
 }
 
 .progression-period {
-  min-height: 2.25rem;
-  margin-bottom: 0.7rem;
+  min-height: 2rem;
+  margin-bottom: 0.5rem;
   color: var(--accent);
   font-family: var(--mono);
   font-size: 0.66rem;
@@ -691,7 +691,7 @@ h1 {
   margin-bottom: 0.5rem;
   color: var(--accent-deep);
   font-family: var(--display);
-  font-size: clamp(1.05rem, 1.45vw, 1.4rem);
+  font-size: clamp(1rem, 1.25vw, 1.25rem);
   font-weight: 400;
   line-height: 1.08;
 }
@@ -737,8 +737,8 @@ h1 {
   display: block;
   width: auto;
   max-width: 100%;
-  height: 2.15rem;
-  margin-bottom: 0.75rem;
+  height: 1.85rem;
+  margin-bottom: 0.55rem;
   padding: 0.32rem 0.45rem;
   border: 1px solid rgba(42, 42, 42, 0.14);
   background: #fff;
@@ -751,11 +751,11 @@ h1 {
 }
 
 .progression-logo-parthenon {
-  height: 2.25rem;
+  height: 1.95rem;
 }
 
 .progression-logo-nyu {
-  height: 2.25rem;
+  height: 1.95rem;
 }
 
 .achievement-proof-grid {
@@ -844,14 +844,14 @@ h1 {
 
 .case-study {
   display: grid;
-  margin-top: clamp(3rem, 6vw, 5.5rem);
+  margin-top: clamp(2.25rem, 4vw, 3.75rem);
   border-top: 1px solid var(--border);
 }
 
 .case-study-enterprise {
   grid-template-columns: minmax(0, 0.95fr) minmax(25rem, 1.05fr);
-  gap: clamp(2.5rem, 5vw, 5rem);
-  padding-top: clamp(2rem, 3.5vw, 3rem);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  padding-top: clamp(1.5rem, 2.5vw, 2.25rem);
 }
 
 .case-meta {
@@ -875,7 +875,7 @@ h1 {
 
 .case-study h3 {
   margin: 0;
-  font-size: clamp(2.1rem, 3.7vw, 3.5rem);
+  font-size: clamp(1.95rem, 3vw, 3rem);
   line-height: 1.02;
 }
 
@@ -964,6 +964,8 @@ h1 {
   border: 1px solid var(--border);
   background: var(--surface-strong);
   box-shadow: var(--shadow);
+  justify-self: end;
+  max-width: 520px;
 }
 
 .system-map figcaption {
@@ -1068,14 +1070,14 @@ h1 {
 
 .case-study-mooscles {
   grid-template-columns: minmax(22rem, 0.85fr) minmax(0, 1.15fr);
-  gap: clamp(2.5rem, 5vw, 5rem);
+  gap: clamp(2rem, 4vw, 3.5rem);
   align-items: center;
-  padding-top: clamp(2rem, 4vw, 3rem);
+  padding-top: clamp(1.5rem, 2.5vw, 2.25rem);
 }
 
 .mooscles-visual {
   position: relative;
-  min-height: 440px;
+  min-height: 340px;
   overflow: hidden;
   border: 1px solid var(--border);
   background:
@@ -1184,9 +1186,9 @@ h1 {
 
 .case-study-blackjack {
   grid-template-columns: minmax(12rem, 0.35fr) minmax(0, 1fr);
-  gap: clamp(2.5rem, 5vw, 5rem);
+  gap: clamp(2rem, 4vw, 3.5rem);
   align-items: center;
-  padding: clamp(2rem, 4vw, 3rem) 0;
+  padding: clamp(1.5rem, 2.5vw, 2.25rem) 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -1195,7 +1197,7 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: min(100%, 260px);
+  width: min(100%, 200px);
   aspect-ratio: 0.72;
   padding: 1.2rem;
   border: 1px solid var(--text);
@@ -1247,13 +1249,13 @@ h1 {
 .enterprise-folio {
   display: grid;
   grid-template-columns: 1.2fr repeat(3, 1fr);
-  margin-top: clamp(3.5rem, 6vw, 5.5rem);
+  margin-top: clamp(2.5rem, 4vw, 3.75rem);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
 
 .enterprise-folio > * {
-  padding: clamp(1.35rem, 2.2vw, 1.8rem);
+  padding: clamp(1.1rem, 1.7vw, 1.4rem);
 }
 
 .enterprise-folio > * + * {
@@ -1270,8 +1272,8 @@ h1 {
 }
 
 .folio-intro h3 {
-  margin: 1.6rem 0 0;
-  font-size: 2.3rem;
+  margin: 1rem 0 0;
+  font-size: 1.9rem;
   line-height: 1.05;
 }
 
@@ -1283,7 +1285,7 @@ h1 {
 
 .enterprise-folio article {
   position: relative;
-  padding-top: 4rem;
+  padding-top: 3.25rem;
 }
 
 .folio-number {
@@ -1311,8 +1313,8 @@ h1 {
 
 .hobbies {
   overflow: hidden;
-  padding-top: clamp(3.5rem, 5vw, 5.5rem);
-  padding-bottom: clamp(3.5rem, 5vw, 5.5rem);
+  padding-top: clamp(2.75rem, 4vw, 3.75rem);
+  padding-bottom: clamp(2.75rem, 4vw, 3.75rem);
 }
 
 .hobbies::after {
@@ -1345,15 +1347,15 @@ h1 {
 
 .field-note {
   position: relative;
-  min-height: 15rem;
-  padding: clamp(1.35rem, 2vw, 2rem);
+  min-height: 13rem;
+  padding: clamp(1rem, 1.5vw, 1.5rem);
   background: var(--surface-strong);
 }
 
 .field-note h3 {
   max-width: 22rem;
   margin: 1.1rem 0 0;
-  font-size: clamp(1.7rem, 2.7vw, 2.4rem);
+  font-size: clamp(1.55rem, 2.2vw, 2rem);
   line-height: 1.04;
 }
 
@@ -1361,7 +1363,7 @@ h1 {
   max-width: 26rem;
   margin: 1.1rem 0 0;
   color: var(--text-soft);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
 }
 
 .field-note-league {
@@ -1370,7 +1372,7 @@ h1 {
   grid-template-columns: minmax(15rem, 0.8fr) minmax(15rem, 0.7fr) minmax(14rem, 0.65fr);
   gap: clamp(1.5rem, 4vw, 4rem);
   align-items: center;
-  min-height: 25rem;
+  min-height: 21rem;
   background: var(--accent);
   color: var(--ink-inverse);
 }
@@ -1387,7 +1389,7 @@ h1 {
 .league-copy > p:not(.note-label) {
   max-width: 24rem;
   margin: 1.1rem 0 0;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
 }
 
 .league-graphs {
@@ -1397,8 +1399,8 @@ h1 {
 .league-graphs img {
   display: block;
   width: 100%;
-  height: 17rem;
-  max-height: 17rem;
+  height: 13rem;
+  max-height: 13rem;
   border: 1px solid color-mix(in srgb, var(--ink-inverse) 35%, transparent);
   background: #f4f4f4;
   object-fit: cover;
@@ -1424,7 +1426,7 @@ h1 {
 }
 
 .league-rank > img {
-  width: clamp(5.5rem, 9vw, 7rem);
+  width: clamp(4.75rem, 7vw, 6rem);
   height: auto;
   margin: 0 auto 1rem;
 }
@@ -1539,7 +1541,7 @@ h1 {
 
 .field-note-objects {
   grid-row: auto;
-  min-height: 15rem;
+  min-height: 13rem;
   background: var(--warm-soft);
 }
 
@@ -1583,7 +1585,7 @@ h1 {
   grid-template-columns: minmax(15rem, 0.75fr) minmax(18rem, 1.25fr);
   gap: clamp(2rem, 5vw, 5rem);
   align-items: center;
-  min-height: 25rem;
+  min-height: 20rem;
   background: var(--accent-soft);
 }
 
@@ -1595,7 +1597,7 @@ h1 {
   max-width: 27rem;
   margin: 1.1rem 0 0;
   color: var(--text-soft);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
 }
 
 .beli-link {
@@ -1624,14 +1626,14 @@ h1 {
   width: auto;
   height: auto;
   max-width: 100%;
-  max-height: 20rem;
+  max-height: 15rem;
   background: #fff;
   object-fit: contain;
 }
 
 .field-note-movement {
   grid-column: span 2;
-  min-height: 9.5rem;
+  min-height: 8rem;
 }
 
 .field-note-movement h3 {
@@ -1639,7 +1641,7 @@ h1 {
 }
 
 .field-note-projects {
-  min-height: 9.5rem;
+  min-height: 8rem;
   background: var(--text);
   color: var(--bg);
 }
@@ -1767,12 +1769,12 @@ h1 {
 
   .system-map {
     position: static;
-    max-width: 720px;
+    max-width: 520px;
   }
 
   .mooscles-visual {
-    max-width: 640px;
-    min-height: 440px;
+    max-width: 560px;
+    min-height: 340px;
   }
 
   .case-study-mooscles .mooscles-visual {
@@ -1798,12 +1800,12 @@ h1 {
   .field-note-league,
   .field-note-objects {
     grid-row: span 1;
-    min-height: 16rem;
+    min-height: 13rem;
   }
 
   .field-note-league {
     grid-row: auto;
-    min-height: 25rem;
+    min-height: 21rem;
   }
 
   .field-note-movement {
@@ -1936,8 +1938,8 @@ h1 {
   }
 
   .about {
-    padding-top: 2rem;
-    padding-bottom: 3rem;
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
   }
 
   .hero-grid,
@@ -1966,8 +1968,8 @@ h1 {
 
   .portrait-frame {
     order: 4;
-    width: min(100%, 280px);
-    margin: 0.65rem auto 0;
+    width: min(100%, 220px);
+    margin: 0.45rem auto 0;
     justify-self: center;
   }
 
@@ -1976,7 +1978,7 @@ h1 {
   }
 
   .portrait-monogram {
-    font-size: clamp(4.2rem, 22vw, 6.5rem);
+    font-size: clamp(3.5rem, 18vw, 5.2rem);
   }
 
   .portrait-frame figcaption {
@@ -1990,7 +1992,7 @@ h1 {
 
   .hero-lede {
     order: 5;
-    margin-top: 1rem;
+    margin-top: 0.7rem;
   }
 
   .hero-support {
@@ -2000,15 +2002,15 @@ h1 {
 
   .hero-actions {
     order: 7;
-    margin-top: 0.8rem;
+    margin-top: 0.5rem;
   }
 
   h1 {
-    font-size: clamp(2.25rem, 10vw, 3.25rem);
+    font-size: clamp(2.1rem, 9vw, 2.85rem);
   }
 
   .hero-ledger {
-    margin-top: 2.25rem;
+    margin-top: 1.5rem;
   }
 
   .hero-ledger dl {
@@ -2039,11 +2041,11 @@ h1 {
   }
 
   .section-heading {
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.8rem;
   }
 
   .section-heading h2 {
-    font-size: clamp(2.25rem, 10vw, 3.2rem);
+    font-size: clamp(2.05rem, 8.5vw, 2.7rem);
   }
 
   .progression-rail {
@@ -2051,7 +2053,7 @@ h1 {
   }
 
   .progression-rail li {
-    min-height: 10.5rem;
+    min-height: 9.5rem;
   }
 
   .progression-rail li + li {
@@ -2068,7 +2070,7 @@ h1 {
 
   .progression-rail .progression-current {
     grid-column: auto;
-    min-height: 10.5rem;
+    min-height: 9.5rem;
   }
 
   .achievement-proof-grid {
@@ -2086,14 +2088,14 @@ h1 {
   }
 
   .case-study {
-    margin-top: 3rem;
+    margin-top: 2.25rem;
   }
 
   .case-study-enterprise,
   .case-study-mooscles,
   .case-study-blackjack {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .case-details > div {
@@ -2110,7 +2112,7 @@ h1 {
   .system-map svg {
     width: auto;
     max-width: 100%;
-    max-height: 260px;
+    max-height: 210px;
     margin: 0 auto;
   }
 
@@ -2120,24 +2122,24 @@ h1 {
   }
 
   .mooscles-visual {
-    min-height: 240px;
+    min-height: 190px;
   }
 
   .blackjack-mark {
-    width: 120px;
+    width: 95px;
   }
 
   .case-study-blackjack {
-    grid-template-columns: 7.5rem minmax(0, 1fr);
-    gap: 1.25rem;
+    grid-template-columns: 6rem minmax(0, 1fr);
+    gap: 1rem;
   }
 
   .case-study-blackjack h3 {
-    font-size: 2rem;
+    font-size: 1.7rem;
   }
 
   .app-store-badge {
-    width: 130px;
+    width: 115px;
   }
 
   .enterprise-folio {
@@ -2154,7 +2156,7 @@ h1 {
   }
 
   .enterprise-folio article {
-    padding-top: 3.5rem;
+    padding-top: 3rem;
   }
 
   .field-notes {
@@ -2165,14 +2167,14 @@ h1 {
   .field-note-league,
   .field-note-objects {
     grid-row: auto;
-    min-height: 14rem;
+    min-height: 11rem;
     transform: none;
   }
 
   .field-note-league {
     grid-column: 1 / -1;
     grid-template-columns: 1fr 1fr;
-    gap: 1.2rem;
+    gap: 0.85rem;
     min-height: 0;
   }
 
@@ -2181,40 +2183,40 @@ h1 {
   }
 
   .league-graphs img {
-    height: 14rem;
-    max-height: 14rem;
+    height: 11rem;
+    max-height: 11rem;
   }
 
   .league-rank {
-    min-height: 14rem;
-    padding: 1rem 0.75rem;
+    min-height: 11rem;
+    padding: 0.7rem 0.55rem;
   }
 
   .league-rank > img {
-    width: 5rem;
-    margin-bottom: 0.65rem;
+    width: 4rem;
+    margin-bottom: 0.4rem;
   }
 
   .league-rank strong {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
 
   .league-rank dl {
-    margin-top: 0.85rem;
+    margin-top: 0.6rem;
   }
 
   .league-rank dl > div {
-    padding-top: 0.75rem;
+    padding-top: 0.55rem;
   }
 
   .league-rank dt {
-    font-size: 1.15rem;
+    font-size: 1rem;
   }
 
   .field-note-beli {
     grid-column: 1 / -1;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: 1.1rem;
+    gap: 0.85rem;
     min-height: 0;
   }
 
@@ -2224,7 +2226,7 @@ h1 {
 
   .beli-profile img {
     width: auto;
-    max-height: 19rem;
+    max-height: 14rem;
   }
 
   .bead-line {
@@ -2236,7 +2238,14 @@ h1 {
   }
 
   .field-note:not(.field-note-league):not(.field-note-beli) h3 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+  }
+
+  .field-note > p:not(.note-label),
+  .league-copy > p:not(.note-label),
+  .beli-copy > p:not(.note-label) {
+    font-size: 0.74rem;
+    line-height: 1.5;
   }
 
 }
