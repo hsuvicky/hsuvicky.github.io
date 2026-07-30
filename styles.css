@@ -1219,6 +1219,7 @@ h1 {
 }
 
 .blackjack-mark {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1235,18 +1236,40 @@ h1 {
   transform: rotate(-2deg);
 }
 
+.blackjack-mark img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 64%;
+  height: auto;
+  border-radius: 22%;
+  box-shadow: 0 12px 32px rgba(15, 23, 32, 0.2);
+  transform: translate(-50%, -50%);
+}
+
 .blackjack-mark span:last-child {
   align-self: flex-end;
   transform: rotate(180deg);
 }
 
-.case-brief {
-  max-width: 620px;
-  margin: 1.35rem 0 0;
-  padding-left: 1rem;
-  border-left: 2px solid var(--border);
-  color: var(--muted);
-  font-size: 0.84rem;
+.app-store-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 50px;
+  margin-top: 1.5rem;
+  border-radius: 8px;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.app-store-link:hover {
+  opacity: 0.86;
+  transform: translateY(-2px);
+}
+
+.app-store-badge {
+  display: block;
+  width: 150px;
+  height: auto;
 }
 
 .enterprise-folio {
