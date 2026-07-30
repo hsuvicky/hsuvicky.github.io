@@ -737,25 +737,26 @@ h1 {
   display: block;
   width: auto;
   max-width: 100%;
-  height: 1.85rem;
-  margin-bottom: 0.55rem;
-  padding: 0.32rem 0.45rem;
-  border: 1px solid rgba(42, 42, 42, 0.14);
-  background: #fff;
+  height: 2.65rem;
+  margin-bottom: 0.65rem;
   object-fit: contain;
   object-position: left center;
 }
 
 .progression-logo-ey {
-  padding: 0.22rem;
+  height: 2.8rem;
 }
 
 .progression-logo-parthenon {
-  height: 1.95rem;
+  height: 2.75rem;
 }
 
 .progression-logo-nyu {
-  height: 1.95rem;
+  height: 2.75rem;
+}
+
+:root[data-theme="dark"] .progression-logo {
+  filter: grayscale(1) brightness(0) invert(1);
 }
 
 .achievement-proof-grid {
