@@ -594,70 +594,6 @@ h1 {
   font-size: 0.82rem;
 }
 
-.preview-notes {
-  display: grid;
-  grid-template-columns: 0.82fr 1.15fr 0.9fr;
-  margin-top: clamp(3.5rem, 7vw, 6.5rem);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.preview-note {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 1rem;
-  min-height: 10rem;
-  padding: 1.4rem;
-  text-decoration: none;
-  transition: background-color 160ms ease;
-}
-
-.preview-note + .preview-note {
-  border-left: 1px solid var(--border);
-}
-
-.preview-note:hover {
-  background: var(--surface);
-}
-
-.preview-index {
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 0.68rem;
-}
-
-.preview-body {
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-  gap: 0.45rem;
-  color: var(--text-soft);
-  font-size: 0.86rem;
-  line-height: 1.45;
-}
-
-.preview-title {
-  color: var(--text);
-  font-family: var(--display);
-  font-size: 1.55rem;
-}
-
-.preview-arrow {
-  align-self: end;
-  color: var(--accent);
-  font-size: 1.1rem;
-}
-
-.preview-projects {
-  background: var(--accent-soft);
-  transform: translateY(1.2rem);
-}
-
-.preview-hobbies {
-  min-height: 8.75rem;
-  transform: translateY(2.5rem);
-}
-
 .ruled-section {
   border-top: 1px solid var(--border-soft);
   border-bottom: 1px solid var(--border-soft);
@@ -2088,25 +2024,6 @@ h1 {
     border-top: 1px solid var(--border);
   }
 
-  .preview-notes {
-    grid-template-columns: 1fr;
-    margin-top: 4.5rem;
-  }
-
-  .preview-note {
-    min-height: 7.5rem;
-  }
-
-  .preview-note + .preview-note {
-    border-top: 1px solid var(--border);
-    border-left: 0;
-  }
-
-  .preview-projects,
-  .preview-hobbies {
-    transform: none;
-  }
-
   .section-heading {
     margin-bottom: 4rem;
   }
@@ -2351,7 +2268,6 @@ h1 {
   body::before,
   .site-header,
   .hero-actions,
-  .preview-notes,
   .site-footer,
   .mooscles-visual,
   .blackjack-mark {
