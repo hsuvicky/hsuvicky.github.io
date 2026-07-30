@@ -1,51 +1,624 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vicky Hsu | About Me</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="A personal website introducing Vicky Hsu, including career highlights, projects, and hobbies."
-    />
-    <link rel="stylesheet" href="styles.css" />
+      content="Vicky Hsu is a Senior Director and AI Product Manager who builds and commercializes 0-to-1 enterprise AI products."
+    >
+    <meta name="theme-color" content="#f3f1ec" id="theme-color">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Vicky Hsu · AI Product Leader">
+    <meta
+      property="og:description"
+      content="Senior Director and AI Product Manager building useful, explainable enterprise AI products from strategy through commercialization."
+    >
+    <meta property="og:url" content="https://hsuvicky.github.io/">
+    <meta property="og:site_name" content="Vicky Hsu">
+    <title>Vicky Hsu · Senior Director &amp; AI Product Manager</title>
+    <link rel="canonical" href="https://hsuvicky.github.io/">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css?v=20260729">
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+          const theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+          document.documentElement.dataset.theme = theme;
+        } catch {
+          document.documentElement.dataset.theme = "light";
+        }
+      })();
+    </script>
+    <script src="script.js?v=20260729" defer></script>
   </head>
   <body>
-    <nav class="top-nav" aria-label="Primary navigation">
-      <button class="theme-toggle" type="button" aria-label="Toggle color theme"></button>
-      <a href="#achievements">Achievements</a>
-      <a href="#projects">Projects</a>
-      <a href="/hobbies/">Hobbies</a>
-    </nav>
+    <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <header class="hero">
-      <div class="hero-content">
-        <h1>Vicky Hsu</h1>
-        <p class="intro">
-          I build and commercialize 0-to-1 AI products in complex, regulated industries, combining product strategy, technical depth, and hands-on execution. I currently lead a $1.5M-funded neurosymbolic AI platform from roadmap and product design through enterprise pilots, internal scale, and client commercialization.
-        </p>
-      </div>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="wordmark" href="#about" aria-label="Vicky Hsu, back to About">
+          <svg viewBox="0 0 36 36" aria-hidden="true">
+            <path d="M7 6.5 18 29.5 29 6.5M11 6.5l7 15 7-15"/>
+          </svg>
+          <span>Vicky Hsu</span>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primary-links"
+        >
+          <span class="nav-toggle-label">Menu</span>
+          <span class="nav-toggle-lines" aria-hidden="true"></span>
+        </button>
+
+        <div class="nav-links" id="primary-links">
+          <a href="#about" aria-current="location">About</a>
+          <a href="#achievements">Achievements</a>
+          <a href="#projects">Projects</a>
+          <a href="#hobbies">Hobbies</a>
+        </div>
+
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+          <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="3.5"/>
+            <path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6m11 11 1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6m11-11 1.6-1.6"/>
+          </svg>
+          <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20.2 15.1A8.6 8.6 0 0 1 8.9 3.8 8.6 8.6 0 1 0 20.2 15Z"/>
+          </svg>
+          <span class="visually-hidden">Change color theme</span>
+        </button>
+      </nav>
     </header>
 
-    <main>
-      <section id="achievements" class="card">
-        <h2>Achievements</h2>
-        <p>
-          My professional journey is shaped by curiosity, persistence, and a strong
-          commitment to continuous improvement. I enjoy learning new tools, taking on
-          challenges, and creating work that has a positive impact.
-        </p>
+    <main id="main-content">
+      <section class="about section" id="about" aria-labelledby="about-heading">
+        <div class="section-shell hero-grid">
+          <div class="hero-copy">
+            <p class="identity">Vicky Hsu · Senior Director &amp; AI Product Manager</p>
+            <h1 id="about-heading">I turn complex AI into products people actually use.</h1>
+            <div class="hero-proof-line" aria-label="Selected product scope">
+              <span>$1.5M funded</span>
+              <span>0→1 enterprise AI</span>
+              <span>Strategy → commercialization</span>
+            </div>
+            <p class="hero-lede">
+              I build and commercialize 0-to-1 AI products in complex, regulated industries.
+              I currently lead a <strong>neurosymbolic AI platform</strong> from roadmap and
+              product design through pilots, scale, and commercialization.
+            </p>
+            <p class="hero-support">
+              Product strategy · Technical systems · User experience · Delivery
+            </p>
+            <div class="hero-actions" aria-label="Portfolio links">
+              <a class="text-link text-link-strong" href="#projects">
+                Explore my work <span aria-hidden="true">↓</span>
+              </a>
+              <a class="text-link" href="#achievements">View achievements</a>
+              <a
+                class="text-link"
+                href="https://github.com/hsuvicky"
+                target="_blank"
+                rel="noreferrer"
+              >
+                GitHub <span class="external-mark" aria-hidden="true">↗</span>
+                <span class="visually-hidden">(opens in a new tab)</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Replace .portrait-art with an optimized <img> when a verified portrait is available. -->
+          <figure class="portrait-frame">
+            <div class="portrait-art" role="img" aria-label="Abstract portrait treatment for Vicky Hsu">
+              <svg viewBox="0 0 520 680" aria-hidden="true">
+                <path class="portrait-stem" d="M48 624C132 500 143 340 274 236 353 173 425 116 474 42"/>
+                <path class="portrait-stem portrait-stem-fine" d="M107 666c66-111 182-188 209-326 16-81 5-154 65-266"/>
+                <g class="portrait-leaves">
+                  <ellipse cx="137" cy="500" rx="43" ry="16" transform="rotate(-42 137 500)"/>
+                  <ellipse cx="185" cy="430" rx="48" ry="17" transform="rotate(28 185 430)"/>
+                  <ellipse cx="218" cy="350" rx="48" ry="17" transform="rotate(-38 218 350)"/>
+                  <ellipse cx="290" cy="273" rx="46" ry="16" transform="rotate(25 290 273)"/>
+                  <ellipse cx="362" cy="192" rx="42" ry="15" transform="rotate(-34 362 192)"/>
+                  <ellipse cx="423" cy="112" rx="37" ry="14" transform="rotate(24 423 112)"/>
+                  <ellipse cx="235" cy="523" rx="42" ry="15" transform="rotate(32 235 523)"/>
+                  <ellipse cx="282" cy="438" rx="44" ry="16" transform="rotate(-30 282 438)"/>
+                </g>
+                <circle cx="86" cy="82" r="34"/>
+                <circle cx="452" cy="590" r="72"/>
+              </svg>
+              <span class="portrait-monogram" aria-hidden="true">VH</span>
+              <span class="portrait-tag portrait-tag-one">AI + data</span>
+              <span class="portrait-tag portrait-tag-two">Product + design</span>
+              <span class="portrait-tag portrait-tag-three">Close to the work</span>
+            </div>
+            <figcaption>
+              <span>Vicky Hsu</span>
+              Product leader · Independent builder · Curious person
+            </figcaption>
+          </figure>
+        </div>
+
+        <aside class="section-shell hero-ledger" aria-label="Selected scale and scope">
+          <p class="annotation">Field note 01 · Evidence at a glance</p>
+          <dl>
+            <div>
+              <dt>$1.5M</dt>
+              <dd>funded AI platform</dd>
+            </div>
+            <div>
+              <dt>25+</dt>
+              <dd>MVP features</dd>
+            </div>
+            <div>
+              <dt>120+</dt>
+              <dd>enterprise data domains</dd>
+            </div>
+            <div>
+              <dt>4,000</dt>
+              <dd>data elements</dd>
+            </div>
+          </dl>
+        </aside>
+
+        <div class="section-shell preview-notes" aria-label="Portfolio preview">
+          <a class="preview-note preview-achievements" href="#achievements">
+            <span class="preview-index">01</span>
+            <span class="preview-body">
+              <span class="preview-title">Achievements</span>
+              <span>From enterprise delivery to senior AI product ownership.</span>
+            </span>
+            <span class="preview-arrow" aria-hidden="true">↓</span>
+          </a>
+          <a class="preview-note preview-projects" href="#projects">
+            <span class="preview-index">02</span>
+            <span class="preview-body">
+              <span class="preview-title">Projects</span>
+              <span>Product decisions, system design, and the work of making things real.</span>
+            </span>
+            <span class="preview-arrow" aria-hidden="true">↓</span>
+          </a>
+          <a class="preview-note preview-hobbies" href="#hobbies">
+            <span class="preview-index">03</span>
+            <span class="preview-body">
+              <span class="preview-title">Hobbies</span>
+              <span>Rabbits, ranked queues, curious objects, and other useful context.</span>
+            </span>
+            <span class="preview-arrow" aria-hidden="true">↓</span>
+          </a>
+        </div>
       </section>
 
-      <section id="projects" class="card">
-        <h2>Projects</h2>
-        <ul>
-          <li>Built personal websites and digital experiences that reflect creativity and clarity.</li>
-          <li>Explored projects that blend design, technology, and practical problem-solving.</li>
-          <li>Continually grow by turning ideas into useful, polished outcomes.</li>
-        </ul>
+      <section class="achievements section ruled-section" id="achievements" aria-labelledby="achievements-heading">
+        <div class="section-shell">
+          <header class="section-heading">
+            <p class="section-kicker">01 · Achievements</p>
+            <div>
+              <h2 id="achievements-heading">A career built by taking on more of the product.</h2>
+              <p>
+                I joined EY in 2017 and grew through increasingly senior product and technology
+                roles. The through-line: move closer to the decisions that determine whether a
+                complex system becomes a useful product.
+              </p>
+            </div>
+          </header>
+
+          <ol class="timeline">
+            <li class="timeline-item timeline-item-featured">
+              <div class="timeline-period">Current</div>
+              <article>
+                <p class="timeline-context">EY · AI product leadership</p>
+                <h3>Senior Director &amp; AI Product Manager</h3>
+                <p>
+                  I lead AI product work across platform strategy, productization, and
+                  commercialization—owning direction while staying close to workflow and
+                  interface decisions.
+                </p>
+                <p class="evidence"><strong>$1.5M</strong> funded 0-to-1 neurosymbolic AI platform</p>
+              </article>
+            </li>
+
+            <li class="timeline-item timeline-item-featured">
+              <div class="timeline-period">Current focus</div>
+              <article>
+                <p class="timeline-context">From system capability to product</p>
+                <h3>Making explainable AI ready for enterprise use</h3>
+                <p>
+                  My ownership spans product strategy, roadmap, product and workflow design,
+                  enterprise pilot preparation, internal scaling, and the path to client
+                  commercialization.
+                </p>
+              </article>
+            </li>
+
+            <li class="timeline-item">
+              <div class="timeline-period">Selected enterprise product work</div>
+              <article>
+                <p class="timeline-context">Financial services · Regulated industries</p>
+                <h3>Products where complexity is part of the brief</h3>
+                <div class="timeline-evidence-grid">
+                  <div>
+                    <strong>25+ MVP features</strong>
+                    <span>Syndicated-loans platform built with a seven-person engineering team.</span>
+                  </div>
+                  <div>
+                    <strong>120+ domains</strong>
+                    <span>Knowledge-graph and enterprise data-platform work spanning 4,000 data elements.</span>
+                  </div>
+                  <div>
+                    <strong>4 teams · ~35 people</strong>
+                    <span>Digital-experience and marketing-technology delivery across developers and product owners.</span>
+                  </div>
+                </div>
+              </article>
+            </li>
+
+            <li class="timeline-item">
+              <div class="timeline-period">2017–present</div>
+              <article>
+                <p class="timeline-context">EY · Increasing product and technology scope</p>
+                <h3>From delivering enterprise technology to setting product direction</h3>
+                <p>
+                  I progressed through roles with broader ownership of engineering teams,
+                  design decisions, operating responsibility, and executive stakeholders.
+                </p>
+              </article>
+            </li>
+
+            <li class="timeline-item timeline-item-quiet">
+              <div class="timeline-period">Along the way</div>
+              <article>
+                <h3>Investing beyond the immediate roadmap</h3>
+                <p>
+                  I have mentored professionals through firm programs and helped multiple
+                  mentees advance into management. I’m also completing a part-time MBA at
+                  NYU Stern.
+                </p>
+              </article>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="projects section" id="projects" aria-labelledby="projects-heading">
+        <div class="section-shell">
+          <header class="section-heading projects-heading">
+            <p class="section-kicker">02 · Projects</p>
+            <div>
+              <h2 id="projects-heading">Products, not product theater.</h2>
+              <p>
+                I like the part where an ambitious idea encounters real users, constraints,
+                systems, and tradeoffs. These are selected examples of what happens next.
+              </p>
+            </div>
+          </header>
+
+          <article class="case-study case-study-enterprise" aria-labelledby="enterprise-ai-heading">
+            <div class="case-copy">
+              <div class="case-meta">
+                <span>Enterprise AI</span>
+                <span>$1.5M funded</span>
+                <span>0-to-1</span>
+              </div>
+              <h3 id="enterprise-ai-heading">Enterprise neurosymbolic AI platform</h3>
+              <p class="case-purpose">
+                Turning complex enterprise knowledge and policy into explainable,
+                configurable decision support.
+              </p>
+
+              <details class="case-disclosure">
+                <summary>
+                  <span>Product notes</span>
+                  <span aria-hidden="true">+</span>
+                </summary>
+                <dl class="case-details">
+                  <div>
+                    <dt>Problem</dt>
+                    <dd>
+                      Enterprise decisions sit across documents, structured knowledge,
+                      business rules, and institutional context. A usable product has to
+                      connect them without hiding the reasoning.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>My role</dt>
+                    <dd>
+                      I lead product strategy, roadmap, product and workflow design, pilot
+                      readiness, internal scaling, and the commercialization path.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Approach</dt>
+                    <dd>
+                      Combine ontologies, knowledge graphs, configurable rules, document
+                      ingestion and OCR, and AI/ML in explainable workflows.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Current state</dt>
+                    <dd>
+                      Moving through enterprise pilot preparation, internal scale, and
+                      client commercialization.
+                    </dd>
+                  </div>
+                </dl>
+              </details>
+            </div>
+
+            <figure class="system-map">
+              <figcaption>
+                <span>Abstract system view</span>
+                Capability is only the beginning. The product is the path through it.
+              </figcaption>
+              <svg viewBox="0 0 640 520" role="img" aria-labelledby="system-title system-desc">
+                <title id="system-title">Neurosymbolic AI platform system view</title>
+                <desc id="system-desc">
+                  Documents and enterprise knowledge move through rules and AI reasoning
+                  into an explainable workflow.
+                </desc>
+                <defs>
+                  <pattern id="dot-field" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <circle cx="2" cy="2" r="1.3" class="map-dot"/>
+                  </pattern>
+                </defs>
+                <rect x="0" y="0" width="640" height="520" rx="2" class="map-bg"/>
+                <rect x="0" y="0" width="640" height="520" fill="url(#dot-field)" opacity=".48"/>
+                <path class="map-path" d="M160 146H278M362 146h118M160 356h118M362 356h118M320 194v114"/>
+                <path class="map-path map-path-dashed" d="M160 146 278 338M480 146 362 338"/>
+                <g class="map-node">
+                  <rect x="40" y="102" width="120" height="88"/>
+                  <text x="60" y="134">DOCUMENTS</text>
+                  <text x="60" y="161">OCR + ingestion</text>
+                </g>
+                <g class="map-node">
+                  <rect x="480" y="102" width="120" height="88"/>
+                  <text x="500" y="134">KNOWLEDGE</text>
+                  <text x="500" y="161">Ontology + graph</text>
+                </g>
+                <g class="map-node map-node-core">
+                  <rect x="278" y="104" width="84" height="84"/>
+                  <circle cx="320" cy="146" r="19"/>
+                  <text x="320" y="221" text-anchor="middle">REASONING</text>
+                </g>
+                <g class="map-node">
+                  <rect x="40" y="312" width="120" height="88"/>
+                  <text x="60" y="344">BUSINESS RULES</text>
+                  <text x="60" y="371">Configurable logic</text>
+                </g>
+                <g class="map-node">
+                  <rect x="480" y="312" width="120" height="88"/>
+                  <text x="500" y="344">AI / ML</text>
+                  <text x="500" y="371">Pattern + context</text>
+                </g>
+                <g class="map-node map-node-output">
+                  <rect x="250" y="308" width="140" height="96"/>
+                  <text x="320" y="344" text-anchor="middle">WORKFLOW</text>
+                  <text x="320" y="373" text-anchor="middle">Explainable action</text>
+                </g>
+                <text x="40" y="475" class="map-caption">SYSTEM CAPABILITY</text>
+                <path class="map-arrow" d="M184 470h272"/>
+                <text x="600" y="475" text-anchor="end" class="map-caption">PRODUCT USE</text>
+              </svg>
+            </figure>
+          </article>
+
+          <article class="case-study case-study-mooscles" aria-labelledby="mooscles-heading">
+            <div class="mooscles-visual" aria-hidden="true">
+              <span class="orbit orbit-one"></span>
+              <span class="orbit orbit-two"></span>
+              <span class="orbit orbit-three"></span>
+              <div class="rotation-note">
+                <span>Keep</span>
+                <strong>Anchor movement</strong>
+              </div>
+              <div class="rotation-note rotation-note-shift">
+                <span>Rotate</span>
+                <strong>Repetitive pattern</strong>
+              </div>
+              <div class="rotation-note rotation-note-cover">
+                <span>Cover</span>
+                <strong>Neglected muscle</strong>
+              </div>
+            </div>
+
+            <div class="case-copy">
+              <div class="case-meta">
+                <span>Consumer product</span>
+                <span>In progress</span>
+                <span>Local-first</span>
+              </div>
+              <h3 id="mooscles-heading">Mooscles</h3>
+              <p class="case-purpose">
+                A workout-refresh product for self-directed recreational lifters who
+                drift into repetitive routines.
+              </p>
+
+              <p class="not-this">
+                <span>Deliberately not</span>
+                a workout logger, black-box AI workout generator, or exercise encyclopedia.
+              </p>
+
+              <details class="case-disclosure">
+                <summary>
+                  <span>Product notes</span>
+                  <span aria-hidden="true">+</span>
+                </summary>
+                <dl class="case-details">
+                  <div>
+                    <dt>Problem</dt>
+                    <dd>
+                      Familiar movements get repeated until coverage narrows and the routine
+                      goes stale.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Judgment</dt>
+                    <dd>
+                      Show what is over-repeated, what is neglected, which anchor stays, and
+                      what rotates.
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Core ideas</dt>
+                    <dd>
+                      Smart Refresh, Muscle Roulette, Coverage Visualization, and explainable
+                      rotation—starting with curated lower-body and glute-led data.
+                    </dd>
+                  </div>
+                </dl>
+              </details>
+            </div>
+          </article>
+
+          <article class="case-study case-study-blackjack" aria-labelledby="blackjack-heading">
+            <div class="blackjack-mark" aria-hidden="true">
+              <span>A</span>
+              <span>♠</span>
+            </div>
+            <div class="case-copy">
+              <div class="case-meta">
+                <span>Independent build</span>
+                <span>Mobile application</span>
+              </div>
+              <h3 id="blackjack-heading">Blackjack mobile application</h3>
+              <p class="case-purpose">
+                An independently developed mobile application centered on blackjack.
+              </p>
+              <p class="case-brief">
+                No public product details or repository are currently listed.
+              </p>
+            </div>
+          </article>
+
+          <div class="enterprise-folio" aria-labelledby="enterprise-folio-heading">
+            <div class="folio-intro">
+              <p class="annotation">Selected enterprise systems</p>
+              <h3 id="enterprise-folio-heading">Other products shaped at scale.</h3>
+              <p>
+                Anonymized where the context is confidential; specific where the evidence
+                is useful.
+              </p>
+            </div>
+
+            <article>
+              <span class="folio-number">A</span>
+              <h4>Syndicated-loans platform MVP</h4>
+              <p>
+                Built an MVP with a seven-person engineering team and more than 25 features,
+                translating a complex financial-services workflow into a coherent product scope.
+              </p>
+            </article>
+            <article>
+              <span class="folio-number">B</span>
+              <h4>Knowledge graph &amp; enterprise data platform</h4>
+              <p>
+                Led work across more than 120 domains and 4,000 data elements—making
+                enterprise knowledge structured enough to support real systems and decisions.
+              </p>
+            </article>
+            <article>
+              <span class="folio-number">C</span>
+              <h4>Digital experience &amp; marketing technology</h4>
+              <p>
+                Led delivery across four teams and approximately 35 developers and product
+                owners, aligning a broad technical program around a usable experience.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="hobbies section ruled-section" id="hobbies" aria-labelledby="hobbies-heading">
+        <div class="section-shell">
+          <header class="section-heading hobbies-heading">
+            <p class="section-kicker">03 · Hobbies</p>
+            <div>
+              <h2 id="hobbies-heading">A few things that do not need a business case.</h2>
+              <p>Useful context about the person operating the roadmap.</p>
+            </div>
+          </header>
+
+          <div class="field-notes">
+            <article class="field-note field-note-league">
+              <p class="note-label">Long-running system</p>
+              <h3>League of Legends</h3>
+              <p>
+                Playing since 2011. Formerly around the top 5% in North America. This has
+                outlasted several technology stacks.
+              </p>
+              <svg viewBox="0 0 180 70" aria-hidden="true">
+                <path d="M4 54c23-4 27-34 50-28s26 35 48 22 24-35 44-27 20 27 30 14"/>
+                <circle cx="54" cy="26" r="4"/>
+                <circle cx="102" cy="48" r="4"/>
+                <circle cx="146" cy="21" r="4"/>
+              </svg>
+            </article>
+
+            <article class="field-note field-note-rabbits">
+              <p class="note-label">Household organization</p>
+              <h3>Peepo, Clemmy &amp; Goomy</h3>
+              <p>Three rabbits. The management structure remains unclear.</p>
+              <div class="rabbit-marks" aria-hidden="true">
+                <span><i></i></span>
+                <span><i></i></span>
+                <span><i></i></span>
+              </div>
+            </article>
+
+            <article class="field-note field-note-objects">
+              <p class="note-label">Material studies</p>
+              <h3>Small, strange, made by hand</h3>
+              <p>
+                I like handmade jewelry, unusual objects, and things where you can still see
+                the human hand behind them. I’ve done some beading. Silversmithing is on the
+                future-learning list.
+              </p>
+              <div class="bead-line" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </article>
+
+            <article class="field-note field-note-travel">
+              <p class="note-label">How I travel</p>
+              <h3>Follow the food and the local craft</h3>
+              <p>
+                Neighborhoods, unusual finds, and the places that make tea or coffee worth
+                slowing down for.
+              </p>
+              <div class="travel-coordinates" aria-hidden="true">walk → look → eat → repeat</div>
+            </article>
+
+            <article class="field-note field-note-movement">
+              <p class="note-label">Movement rotation</p>
+              <h3>Yoga · Boxing · Pilates · Fitness</h3>
+              <p>Different forms of attention, depending on the day.</p>
+            </article>
+
+            <article class="field-note field-note-projects">
+              <p class="note-label">Recurring behavior</p>
+              <h3>Oddly specific side projects</h3>
+              <p>I have a habit of turning oddly specific annoyances into products.</p>
+              <a href="#projects">See the current evidence <span aria-hidden="true">↑</span></a>
+            </article>
+          </div>
+        </div>
       </section>
     </main>
-    <script src="script.js"></script>
+
+    <footer class="site-footer">
+      <div class="section-shell">
+        <p>Vicky Hsu · Senior Director &amp; AI Product Manager</p>
+        <div>
+          <a href="#about">Back to top <span aria-hidden="true">↑</span></a>
+          <a href="https://github.com/hsuvicky" target="_blank" rel="noreferrer">
+            GitHub <span aria-hidden="true">↗</span>
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
