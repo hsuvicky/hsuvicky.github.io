@@ -1,7 +1,6 @@
-# Vicky Hsu — Portfolio
+# Vicky Hsu — About Me
 
-A recruiter-facing personal portfolio for Vicky Hsu, a Senior Director and AI Product
-Manager who builds and commercializes 0-to-1 enterprise AI products.
+Get to know me :) 
 
 The site uses semantic HTML, modern CSS, and a small amount of vanilla JavaScript. It has
 no build step, package manager, framework, or third-party dependency.
