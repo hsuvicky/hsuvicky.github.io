@@ -1089,16 +1089,22 @@ h1 {
 }
 
 .case-study-blackjack {
-  grid-template-columns: minmax(12rem, 0.35fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.35fr);
   gap: clamp(2rem, 4vw, 3.5rem);
   align-items: center;
   padding: clamp(1.5rem, 2.5vw, 2.25rem) 0;
   border-bottom: 1px solid var(--border);
 }
 
+.case-study-blackjack .case-copy {
+  order: 1;
+}
+
 .blackjack-mark {
   position: relative;
   display: flex;
+  order: 2;
+  justify-self: end;
   flex-direction: column;
   justify-content: space-between;
   width: min(100%, 200px);
@@ -2209,7 +2215,7 @@ h1 {
   }
 
   .case-study-blackjack {
-    grid-template-columns: 6rem minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 6rem;
     gap: 1rem;
   }
 
