@@ -344,28 +344,6 @@ h1 {
   line-height: 0.98;
 }
 
-.hero-proof-line {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1.15rem;
-}
-
-.hero-proof-line span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2rem;
-  padding: 0.25rem 0.65rem;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--accent-deep);
-  font-family: var(--mono);
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.045em;
-  text-transform: uppercase;
-}
-
 .hero-lede {
   max-width: 700px;
   margin: 1.25rem 0 0;
@@ -380,13 +358,25 @@ h1 {
 }
 
 .hero-support {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   max-width: 700px;
   margin: 1rem 0 0;
-  color: var(--muted);
+}
+
+.hero-support span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--accent-deep);
   font-family: var(--mono);
-  font-size: 0.69rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.045em;
   text-transform: uppercase;
 }
 
@@ -2092,11 +2082,6 @@ h1 {
 
   h1 {
     order: 2;
-  }
-
-  .hero-proof-line {
-    order: 3;
-    margin-top: 0.55rem;
   }
 
   .portrait-frame {
