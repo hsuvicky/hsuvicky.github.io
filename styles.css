@@ -725,7 +725,14 @@ h1 {
 }
 
 .progression-rail .progression-education {
+  display: flex;
+  flex-direction: column;
   background: var(--warm-soft);
+}
+
+.progression-rail .progression-education small {
+  margin-top: auto;
+  padding-top: 0.7rem;
 }
 
 .progression-rail .progression-current::before {
