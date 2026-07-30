@@ -152,7 +152,8 @@ button {
 
 .site-nav {
   display: grid;
-  grid-template-columns: minmax(11rem, 1fr) auto minmax(11rem, 1fr);
+  grid-template-columns: minmax(11rem, 1fr) auto auto;
+  column-gap: 1.25rem;
   align-items: center;
   width: min(calc(100% - 3rem), var(--max-width));
   height: 100%;
@@ -230,8 +231,8 @@ button {
   display: inline-grid;
   justify-self: end;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   border: 1px solid var(--border);
   border-radius: 50%;
@@ -247,8 +248,8 @@ button {
 
 .theme-icon {
   grid-area: 1 / 1;
-  width: 19px;
-  height: 19px;
+  width: 15px;
+  height: 15px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
