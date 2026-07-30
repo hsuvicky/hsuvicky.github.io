@@ -1554,6 +1554,11 @@ h1 {
   background: var(--warm-soft);
 }
 
+.field-note-cooking {
+  min-height: 13rem;
+  background: color-mix(in srgb, var(--accent-soft) 72%, var(--surface-strong));
+}
+
 .field-note-beli {
   display: grid;
   grid-column: 1 / -1;
@@ -2091,6 +2096,11 @@ h1 {
   .field-note-movement {
     grid-column: span 1;
   }
+
+  .field-note-cooking {
+    grid-column: 1 / -1;
+    min-height: 8rem;
+  }
 }
 
 @media (max-width: 760px) {
@@ -2449,6 +2459,11 @@ h1 {
     grid-row: auto;
     min-height: 11rem;
     transform: none;
+  }
+
+  .field-note-cooking {
+    grid-column: 1 / -1;
+    min-height: 8rem;
   }
 
   .field-note-league {
