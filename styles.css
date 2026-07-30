@@ -1,0 +1,179 @@
+/* Light Mode - Eucalyptus Grove */
+:root {
+  color-scheme: light;
+  --bg: #f2f0ef;
+  --card: #ffffff;
+  --text: #2a2a2a;
+  --accent: #4b6e48;
+  --accent-soft: #e8ede6;
+  --border: #d4ccc7;
+  --secondary-warm: #b2ac88;
+  --secondary-gray: #898989;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
+  transition: background-color 0.3s ease;
+}
+
+.top-nav a,
+.theme-toggle {
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 600;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.top-nav a:hover,
+.theme-toggle:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.theme-toggle {
+  position: relative;
+  width: 50px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  border: 2px solid var(--accent);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.theme-toggle::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  top: 2px;
+  left: 2px;
+  transition: left 0.3s ease;
+}
+
+body.dark .theme-toggle {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+body.dark .theme-toggle::after {
+  left: 26px;
+}
+
+/* Dark Mode - Blue Eclipse */
+body.dark {
+  --bg: #0f0e47;
+  --card: #272757;
+  --text: #f0f0f8;
+  --accent: #8686ac;
+  --accent-soft: #505081;
+  --border: #3d3c6b;
+  --secondary-warm: #505081;
+  --secondary-gray: #6b6b8f;
+}
+
+body.dark .top-nav {
+  background: rgba(39, 39, 87, 0.95);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hero {
+  background: linear-gradient(135deg, var(--accent), var(--secondary-warm));
+  color: white;
+  padding: 5rem 1.5rem;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.intro {
+  font-size: 1.1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.button {
+  display: inline-block;
+  background: white;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 999px;
+  font-weight: bold;
+}
+
+main {
+  max-width: 900px;
+  margin: -1.5rem auto 3rem;
+  padding: 0 1rem;
+}
+
+.theme-toggle {
+  margin-right: 0.5rem;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+}
+
+h2 {
+  margin-top: 0;
+  color: var(--accent);
+}
+
+ul {
+  padding-left: 1.2rem;
+}
