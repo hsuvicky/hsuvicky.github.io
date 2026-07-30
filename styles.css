@@ -822,6 +822,10 @@ h1 {
   border-top: 1px solid var(--border);
 }
 
+.career-footer .text-link {
+  font-size: 0.72rem;
+}
+
 .career-footer p {
   margin: 0;
   color: var(--text-soft);
