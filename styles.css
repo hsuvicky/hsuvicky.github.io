@@ -275,6 +275,11 @@ button {
   transform-origin: 3px 20px;
 }
 
+.blob-arm-fore {
+  transform-origin: 0 0;
+  transform: rotate(18deg);
+}
+
 .blob-arm-hand {
   transform-origin: 0 0;
 }
@@ -288,6 +293,10 @@ button {
 
 .blob[data-arm="waving"] .blob-arm-wave {
   animation: blob-arm-wave 0.7s ease-in-out 2;
+}
+
+.blob[data-arm="waving"] .blob-arm-fore {
+  animation: blob-arm-fore-wave 0.7s ease-in-out 2;
 }
 
 .blob[data-arm="waving"] .blob-arm-hand {
