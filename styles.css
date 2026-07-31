@@ -24,8 +24,13 @@
   --header-height: 72px;
   --max-width: 1220px;
   --reading-width: 720px;
-  --blob-fill: var(--moss);
   --blob-arm: #1a1f1c;
+  /* Matryoshka colors — largest is a lighter moss in light mode. */
+  --blob-color-0: #b8c4aa;
+  --blob-color-1: var(--moss);
+  --blob-color-2: var(--accent);
+  --blob-color-3: var(--warm);
+  --blob-color-4: var(--accent-deep);
 }
 
 :root[data-theme="dark"] {
@@ -48,8 +53,12 @@
   --ink-inverse: #101b14;
   --header-bg: rgba(15, 23, 32, 0.92);
   --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-  --blob-fill: var(--accent);
   --blob-arm: #ffffff;
+  --blob-color-0: #c5ddc2;
+  --blob-color-1: var(--accent);
+  --blob-color-2: var(--moss);
+  --blob-color-3: var(--stone);
+  --blob-color-4: var(--warm);
 }
 
 *,
@@ -188,11 +197,25 @@ button {
   display: none;
 }
 
+.blob-colony {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.3rem;
+  margin: 0 0 -1px 0;
+  min-height: 0;
+}
+
 .blob {
   --blob-w: 82px;
   --blob-h: 41px;
   --blob-eye-w: 8px;
   --blob-eye-h: 10px;
+  --blob-eye-w-wide: 14px;
+  --blob-eye-h-wide: 17px;
+  --blob-arm-w: 36px;
+  --blob-arm-h: 40px;
+  --blob-squint-size: 1.05rem;
+  --blob-fill: var(--blob-color-0);
   --eye-l-x: 28%;
   --eye-l-y: 48%;
   --eye-r-x: 72%;
@@ -204,7 +227,7 @@ button {
   place-items: end center;
   width: var(--blob-w);
   height: var(--blob-h);
-  margin: 0 0 -1px 0.35rem;
+  margin: 0;
   padding: 0;
   border: 0;
   background: transparent;
@@ -213,6 +236,71 @@ button {
   font: inherit;
   appearance: none;
   -webkit-appearance: none;
+}
+
+.blob[data-size="0"] {
+  --blob-w: 82px;
+  --blob-h: 41px;
+  --blob-eye-w: 8px;
+  --blob-eye-h: 10px;
+  --blob-eye-w-wide: 14px;
+  --blob-eye-h-wide: 17px;
+  --blob-arm-w: 36px;
+  --blob-arm-h: 40px;
+  --blob-squint-size: 1.05rem;
+  --blob-fill: var(--blob-color-0);
+}
+
+.blob[data-size="1"] {
+  --blob-w: 64px;
+  --blob-h: 32px;
+  --blob-eye-w: 6.5px;
+  --blob-eye-h: 8px;
+  --blob-eye-w-wide: 11px;
+  --blob-eye-h-wide: 13px;
+  --blob-arm-w: 28px;
+  --blob-arm-h: 31px;
+  --blob-squint-size: 0.9rem;
+  --blob-fill: var(--blob-color-1);
+}
+
+.blob[data-size="2"] {
+  --blob-w: 50px;
+  --blob-h: 25px;
+  --blob-eye-w: 5px;
+  --blob-eye-h: 6.5px;
+  --blob-eye-w-wide: 8.5px;
+  --blob-eye-h-wide: 10px;
+  --blob-arm-w: 22px;
+  --blob-arm-h: 24px;
+  --blob-squint-size: 0.72rem;
+  --blob-fill: var(--blob-color-2);
+}
+
+.blob[data-size="3"] {
+  --blob-w: 38px;
+  --blob-h: 19px;
+  --blob-eye-w: 4px;
+  --blob-eye-h: 5px;
+  --blob-eye-w-wide: 6.5px;
+  --blob-eye-h-wide: 8px;
+  --blob-arm-w: 17px;
+  --blob-arm-h: 19px;
+  --blob-squint-size: 0.58rem;
+  --blob-fill: var(--blob-color-3);
+}
+
+.blob[data-size="4"] {
+  --blob-w: 26px;
+  --blob-h: 13px;
+  --blob-eye-w: 3px;
+  --blob-eye-h: 3.5px;
+  --blob-eye-w-wide: 4.5px;
+  --blob-eye-h-wide: 5.5px;
+  --blob-arm-w: 12px;
+  --blob-arm-h: 13px;
+  --blob-squint-size: 0.45rem;
+  --blob-fill: var(--blob-color-4);
 }
 
 .blob:focus-visible {
@@ -263,15 +351,15 @@ button {
   top: 8%;
   left: 100%;
   z-index: 0;
-  width: 36px;
-  height: 40px;
+  width: var(--blob-arm-w);
+  height: var(--blob-arm-h);
   margin-left: -3px;
   overflow: visible;
   opacity: 0;
   pointer-events: none;
   /* Tucked down behind the body when hidden. */
   transform: translate(-8px, 4px) rotate(70deg);
-  transform-origin: 2px 30px;
+  transform-origin: 6% 75%;
 }
 
 .blob-arm line {
@@ -280,10 +368,11 @@ button {
   stroke-width: 1.85;
   stroke-linecap: round;
   stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
 }
 
 .blob-arm-wave {
-  transform-origin: 2px 30px;
+  transform-origin: 6% 75%;
 }
 
 .blob-arm-fore {
@@ -373,7 +462,7 @@ button {
   display: none;
   color: #1a1f1c;
   font-family: var(--mono);
-  font-size: 1.05rem;
+  font-size: var(--blob-squint-size);
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.04em;
@@ -438,8 +527,8 @@ button {
 
 .blob[data-state="startled"] {
   pointer-events: none;
-  --blob-eye-w: 14px;
-  --blob-eye-h: 17px;
+  --blob-eye-w: var(--blob-eye-w-wide);
+  --blob-eye-h: var(--blob-eye-h-wide);
 }
 
 .blob[data-state="startled"] .blob-body {
@@ -3148,11 +3237,6 @@ h1 {
   .blob-arm-hand,
   .blob[data-arm="tucking"] .blob-arm {
     animation: none;
-  }
-
-  .blob[data-state="startled"] {
-    --blob-eye-w: 8px;
-    --blob-eye-h: 10px;
   }
 
   .blob[data-state="popping"] .blob-body,
