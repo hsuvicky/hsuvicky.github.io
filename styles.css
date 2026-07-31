@@ -595,107 +595,146 @@ h1 {
   font-size: clamp(1.9rem, 2.7vw, 2.65rem);
 }
 
+.career-timeline {
+  position: relative;
+}
+
+.timeline-instruction {
+  margin: 0 0 0.55rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.59rem;
+  letter-spacing: 0.055em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.timeline-viewport {
+  margin-inline: calc((100vw - min(calc(100vw - 3rem), var(--max-width))) / -2);
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  overscroll-behavior-inline: contain;
+}
+
+.timeline-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.timeline-viewport:active {
+  cursor: grabbing;
+}
+
+.timeline-viewport:focus-visible {
+  outline-offset: -3px;
+}
+
 .progression-rail {
-  display: grid;
-  grid-template-columns: 0.9fr 0.85fr 0.95fr 1fr 1.05fr 1.25fr;
+  position: relative;
+  display: flex;
+  width: max-content;
+  min-width: 100%;
   margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  padding: 0 max(14rem, calc((100vw - var(--max-width)) / 2 + 14rem));
   list-style: none;
+}
+
+.progression-rail::before {
+  position: absolute;
+  top: 3.3rem;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--border);
+  content: "";
 }
 
 .progression-rail li {
   position: relative;
-  min-width: 0;
-  min-height: 11.5rem;
-  padding: 0.8rem 0.75rem 0.9rem;
-}
-
-.progression-rail li + li {
-  border-left: 1px solid var(--border);
-}
-
-.progression-rail li::before {
-  position: absolute;
-  top: -4px;
-  left: 1.15rem;
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: var(--stone);
-  content: "";
+  flex: 0 0 clamp(14.5rem, 22vw, 17.5rem);
+  min-height: 12.5rem;
+  padding: 0 2.2rem 1rem 0;
+  opacity: 0;
+  transition: opacity 180ms linear;
+  will-change: opacity;
 }
 
 .progression-period,
-.progression-rail strong,
-.progression-rail li > span:not(.progression-period),
-.progression-rail small {
+.progression-description strong,
+.progression-description > span,
+.progression-description small {
   display: block;
 }
 
 .progression-period {
-  min-height: 2rem;
-  margin-bottom: 0.5rem;
+  height: 3.3rem;
   color: var(--accent);
   font-family: var(--mono);
-  font-size: 0.66rem;
+  font-size: 0.67rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.055em;
   line-height: 1.4;
   text-transform: uppercase;
 }
 
-.progression-rail strong {
-  margin-bottom: 0.5rem;
+.progression-marker {
+  position: absolute;
+  top: calc(3.3rem - 4px);
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--bg);
+  border-radius: 999px;
+  background: var(--stone);
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.progression-description {
+  padding-top: 1.25rem;
+}
+
+.progression-description strong {
+  max-width: 15.5rem;
+  margin-bottom: 0.42rem;
   color: var(--accent-deep);
   font-family: var(--display);
-  font-size: clamp(1rem, 1.25vw, 1.25rem);
+  font-size: clamp(0.98rem, 1.2vw, 1.18rem);
   font-weight: 400;
-  line-height: 1.08;
+  line-height: 1.12;
 }
 
-.progression-rail li > span:not(.progression-period) {
+.progression-description > span {
+  max-width: 15rem;
   color: var(--text-soft);
-  font-size: 0.73rem;
-  line-height: 1.45;
+  font-size: 0.71rem;
+  line-height: 1.5;
 }
 
-.progression-rail small {
-  margin-top: 0.7rem;
+.progression-description small {
+  max-width: 15rem;
+  margin-top: 0.62rem;
   color: var(--accent);
   font-family: var(--mono);
-  font-size: 0.6rem;
+  font-size: 0.57rem;
   font-weight: 700;
   letter-spacing: 0.025em;
   line-height: 1.45;
   text-transform: uppercase;
 }
 
-.progression-rail .progression-current {
-  background: var(--accent-soft);
-}
-
-.progression-rail .progression-education {
-  display: flex;
-  flex-direction: column;
-  background: var(--warm-soft);
-}
-
-.progression-rail .progression-education small {
-  margin-top: auto;
-  padding-top: 0.7rem;
-}
-
-.progression-rail .progression-current::before {
-  width: 9px;
-  height: 9px;
+.progression-current .progression-marker {
+  width: 10px;
+  height: 10px;
+  top: calc(3.3rem - 5px);
   background: var(--accent);
 }
 
-.progression-rail .progression-education::before {
-  width: 9px;
-  height: 9px;
+.progression-education .progression-marker {
+  width: 10px;
+  height: 10px;
+  top: calc(3.3rem - 5px);
   background: var(--warm);
 }
 
@@ -703,22 +742,22 @@ h1 {
   display: block;
   width: auto;
   max-width: 100%;
-  height: 2.65rem;
-  margin-bottom: 0.65rem;
+  height: 2rem;
+  margin-bottom: 0.7rem;
   object-fit: contain;
   object-position: left center;
 }
 
 .progression-logo-ey {
-  height: 2.8rem;
+  height: 2.15rem;
 }
 
 .progression-logo-parthenon {
-  height: 2.75rem;
+  height: 2rem;
 }
 
 .progression-logo-nyu {
-  height: 2.75rem;
+  height: 2rem;
   transform: translateY(2px);
 }
 
@@ -1866,26 +1905,6 @@ h1 {
     gap: 3rem;
   }
 
-  .progression-rail {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .progression-rail li + li {
-    border-left: 0;
-  }
-
-  .progression-rail li:nth-child(even) {
-    border-left: 1px solid var(--border);
-  }
-
-  .progression-rail li:nth-child(n + 3) {
-    border-top: 1px solid var(--border);
-  }
-
-  .progression-rail .progression-current {
-    grid-column: auto;
-  }
-
   .case-study-enterprise,
   .case-study-mooscles {
     grid-template-columns: 1fr;
@@ -2141,29 +2160,17 @@ h1 {
     font-size: clamp(1.8rem, 7.5vw, 2.3rem);
   }
 
+  .timeline-viewport {
+    margin-inline: -1rem;
+  }
+
   .progression-rail {
-    grid-template-columns: repeat(2, 1fr);
+    padding-right: 3rem;
+    padding-left: 6rem;
   }
 
   .progression-rail li {
-    min-height: 9.5rem;
-  }
-
-  .progression-rail li + li {
-    border-left: 0;
-  }
-
-  .progression-rail li:nth-child(even) {
-    border-left: 1px solid var(--border);
-  }
-
-  .progression-rail li:nth-child(n + 3) {
-    border-top: 1px solid var(--border);
-  }
-
-  .progression-rail .progression-current {
-    grid-column: auto;
-    min-height: 9.5rem;
+    flex-basis: min(72vw, 15.5rem);
   }
 
   .career-footer {

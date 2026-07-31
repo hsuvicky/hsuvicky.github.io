@@ -124,7 +124,6 @@ function setupScrollReveals() {
 
   const revealGroups = [
     [".section-heading", 0],
-    [".progression-rail li", 55],
     [".case-study", 0],
     [".enterprise-folio > *", 55],
     [".field-note", 55],
@@ -184,3 +183,97 @@ function setupScrollReveals() {
 }
 
 setupScrollReveals();
+
+function setupCareerTimeline() {
+  const timeline = document.querySelector("[data-career-timeline]");
+  const viewport = timeline?.querySelector("[data-timeline-viewport]");
+  const cards = viewport ? [...viewport.querySelectorAll(".progression-rail > li")] : [];
+
+  if (!viewport || !cards.length) return;
+
+  let fadeFrame;
+  let dragging = false;
+  let dragStartX = 0;
+  let dragStartScroll = 0;
+
+  function updateCardFades() {
+    const viewportRect = viewport.getBoundingClientRect();
+    const fadeWidth = Math.min(210, Math.max(90, viewportRect.width * 0.18));
+    const rightEdge = viewportRect.right - Math.min(40, viewportRect.width * 0.04);
+
+    cards.forEach((card) => {
+      const cardRect = card.getBoundingClientRect();
+      const leftOpacity = (cardRect.left - viewportRect.left) / fadeWidth;
+      const rightOpacity = (rightEdge - cardRect.left) / fadeWidth;
+      const opacity = Math.max(0, Math.min(1, leftOpacity, rightOpacity));
+      card.style.opacity = reducedMotion.matches ? "1" : opacity.toFixed(3);
+    });
+  }
+
+  function requestFadeUpdate() {
+    if (fadeFrame) return;
+    fadeFrame = requestAnimationFrame(() => {
+      updateCardFades();
+      fadeFrame = null;
+    });
+  }
+
+  viewport.addEventListener("scroll", requestFadeUpdate, { passive: true });
+  window.addEventListener("resize", requestFadeUpdate);
+
+  viewport.addEventListener(
+    "wheel",
+    (event) => {
+      if (!event.shiftKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      event.preventDefault();
+      viewport.scrollLeft += event.deltaY;
+    },
+    { passive: false },
+  );
+
+  viewport.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "touch") return;
+    dragging = true;
+    dragStartX = event.clientX;
+    dragStartScroll = viewport.scrollLeft;
+    viewport.setPointerCapture(event.pointerId);
+  });
+
+  viewport.addEventListener("pointermove", (event) => {
+    if (!dragging) return;
+    viewport.scrollLeft = dragStartScroll - (event.clientX - dragStartX);
+  });
+
+  function stopDragging(event) {
+    if (!dragging) return;
+    dragging = false;
+    if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
+  }
+
+  viewport.addEventListener("pointerup", stopDragging);
+  viewport.addEventListener("pointercancel", stopDragging);
+
+  viewport.addEventListener("keydown", (event) => {
+    const distance = Math.max(180, viewport.clientWidth * 0.38);
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
+      viewport.scrollBy({
+        left: event.key === "ArrowLeft" ? -distance : distance,
+        behavior: reducedMotion.matches ? "auto" : "smooth",
+      });
+    } else if (event.key === "Home" || event.key === "End") {
+      event.preventDefault();
+      viewport.scrollTo({
+        left: event.key === "Home" ? 0 : viewport.scrollWidth,
+        behavior: reducedMotion.matches ? "auto" : "smooth",
+      });
+    }
+  });
+
+  requestAnimationFrame(() => {
+    viewport.scrollLeft = viewport.scrollWidth - viewport.clientWidth;
+    updateCardFades();
+  });
+}
+
+setupCareerTimeline();
