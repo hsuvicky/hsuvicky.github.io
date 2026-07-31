@@ -4,7 +4,7 @@ const themeColor = document.querySelector("#theme-color");
 const navToggle = document.querySelector(".nav-toggle");
 const navLinks = document.querySelector(".nav-links");
 const homeLink = document.querySelector('.nav-links a[href="/"]');
-const isHomePage = Boolean(document.querySelector("#home"));
+const isHomePage = Boolean(document.querySelector("[data-career-timeline]"));
 const sectionLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
 const sections = sectionLinks
   .map((link) => document.querySelector(link.getAttribute("href")))
