@@ -875,6 +875,10 @@ h1 {
   height: 1.75rem;
 }
 
+.progression-personal-event .progression-logo-twitch {
+  height: 1.55rem;
+}
+
 .progression-personal-event strong {
   margin-bottom: 0.32rem;
   color: var(--text-soft);
@@ -979,6 +983,7 @@ h1 {
 
 :root[data-theme="dark"] .progression-logo-lol,
 :root[data-theme="dark"] .progression-logo-rank,
+:root[data-theme="dark"] .progression-logo-twitch,
 :root[data-theme="dark"] .progression-logo-nyu {
   filter: none;
 }
