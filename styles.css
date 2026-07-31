@@ -339,7 +339,8 @@ button {
 .blob-svg path {
   fill: currentColor;
   stroke: currentColor;
-  stroke-width: 1;
+  /* Slightly heavier round stroke hides micro-corners on the silhouette. */
+  stroke-width: 2.25;
   stroke-linejoin: round;
   stroke-linecap: round;
   paint-order: stroke fill;

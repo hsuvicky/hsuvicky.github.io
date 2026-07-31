@@ -411,7 +411,7 @@ function setupBlobColony() {
       <span class="blob-stage">
         <span class="blob-body" data-blob-body>
           <svg class="blob-svg" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
-            <path data-blob-path d="M0 50A50 50 0 0 1 100 50Z"></path>
+            <path data-blob-path d="M12 50C28 50 22 8 50 2C78 8 72 50 88 50Z"></path>
           </svg>
           <span class="blob-eye blob-eye-l" data-blob-eye="l"></span>
           <span class="blob-eye blob-eye-r" data-blob-eye="r"></span>
@@ -504,13 +504,14 @@ function setupBlobColony() {
 
     function restPoint(theta) {
       const c = Math.cos(theta);
-      const s = Math.sin(theta);
-      // Pull the lower sides inward so feet curve into the line (no tombstone walls).
-      const base = Math.pow(Math.max(s, 0), 0.45);
-      const xPull = 0.36 * (1 - base);
+      const s = Math.max(Math.sin(theta), 0);
+      // Round half-dome: pull feet in so the silhouette never meets the
+      // baseline at a knife corner / tombstone wall.
+      const footRound = Math.pow(1 - s, 2.6);
+      const radiusScale = 1 - 0.24 * footRound;
       return {
-        x: VB_W / 2 + RX * c * (1 - xPull),
-        y: VB_H - RY * Math.pow(Math.max(s, 0), 0.88),
+        x: VB_W / 2 + RX * c * radiusScale,
+        y: VB_H - RY * Math.pow(s, 0.96) * (1 - 0.06 * footRound),
         theta,
       };
     }
@@ -522,35 +523,36 @@ function setupBlobColony() {
     }
 
     function deformPoint(theta) {
-      if (theta <= 0.001) return { x: VB_W, y: VB_H, theta: 0 };
-      if (theta >= Math.PI - 0.001) return { x: 0, y: VB_H, theta: Math.PI };
-
-      let { x, y } = restPoint(theta);
-      const upper = Math.sin(theta);
+      // Keep feet on the rounded rest curve — never snap to box corners.
+      const t = clamp(theta, 0.001, Math.PI - 0.001);
+      let { x, y } = restPoint(t);
+      const upper = Math.sin(t);
 
       const squash = morph.squash;
       if (squash > 0.001) {
         const height = VB_H - y;
         y = VB_H - height * (1 - squash * 0.42);
-        const bulge = 1 + squash * 0.18 * upper;
+        // Soft side bulge — ease off near the feet so they stay round.
+        const bulge = 1 + squash * 0.14 * Math.pow(upper, 1.35);
         x = VB_W / 2 + (x - VB_W / 2) * bulge;
       }
 
       const dent = morph.dent;
       if (dent > 0.001) {
-        let dAng = theta - morph.contactAng;
+        let dAng = t - morph.contactAng;
         while (dAng > Math.PI) dAng -= Math.PI * 2;
         while (dAng < -Math.PI) dAng += Math.PI * 2;
-        const falloff = Math.exp(-((dAng / 0.78) ** 2));
+        // Wider, softer falloff so presses don’t crease a sharp edge.
+        const falloff = Math.exp(-((dAng / 0.95) ** 2));
         const nx = VB_W / 2 - x;
         const ny = VB_H - y;
         const len = Math.hypot(nx, ny) || 1;
-        const depth = dent * (15 - upper * 5) * falloff;
+        const depth = dent * (12 - upper * 4) * falloff;
         x += (nx / len) * depth;
-        y += (ny / len) * depth * (0.72 - upper * 0.18);
+        y += (ny / len) * depth * (0.68 - upper * 0.16);
       }
 
-      y = Math.min(y, VB_H - 0.2);
+      y = Math.min(y, VB_H - 0.35);
 
       const maxApexY = VB_H - RY * 0.5;
       if (upper > 0.12) {
@@ -558,7 +560,7 @@ function setupBlobColony() {
         y = softCeiling(y, limit, 5);
       }
 
-      return { x, y, theta };
+      return { x, y, theta: t };
     }
 
     function eyePoint(theta, inset) {
@@ -626,14 +628,29 @@ function setupBlobColony() {
     }
 
     function buildPath() {
-      const pts = [];
+      const raw = [];
       for (let i = 0; i <= SEGMENTS; i += 1) {
         const theta = Math.PI * (1 - i / SEGMENTS);
-        pts.push(deformPoint(theta));
+        raw.push(deformPoint(theta));
       }
 
-      pts[0] = { x: 0, y: VB_H, theta: Math.PI };
-      pts[pts.length - 1] = { x: VB_W, y: VB_H, theta: 0 };
+      // Seat feet on the ground at the rounded inset — never the box corners.
+      const leftFootX = raw[0].x;
+      const rightFootX = raw[raw.length - 1].x;
+      raw[0] = { x: leftFootX, y: VB_H, theta: Math.PI };
+      raw[raw.length - 1] = { x: rightFootX, y: VB_H, theta: 0 };
+
+      // One Laplacian pass keeps morph dents from forming sharp creases.
+      const pts = raw.map((p) => ({ ...p }));
+      for (let i = 1; i < raw.length - 1; i += 1) {
+        pts[i] = {
+          x: raw[i].x * 0.55 + (raw[i - 1].x + raw[i + 1].x) * 0.225,
+          y: raw[i].y * 0.55 + (raw[i - 1].y + raw[i + 1].y) * 0.225,
+          theta: raw[i].theta,
+        };
+      }
+      pts[0] = raw[0];
+      pts[pts.length - 1] = raw[raw.length - 1];
 
       let d = `M${pts[0].x.toFixed(2)} ${pts[0].y.toFixed(2)}`;
       for (let i = 0; i < pts.length - 1; i += 1) {
@@ -646,25 +663,28 @@ function setupBlobColony() {
         let c2x;
         let c2y;
         if (i === 0) {
-          // Horizontal leave from the base — soft left foot, no knife corner.
-          c1x = p1.x + 16;
+          // Long horizontal leave — round left foot into the nav line.
+          const lift = Math.min(14, Math.max(8, (p2.y < p1.y ? p1.y - p2.y : 10) * 0.9));
+          c1x = p1.x + lift * 1.35;
           c1y = p1.y;
-          c2x = p2.x - (p3.x - p1.x) / 5;
-          c2y = p2.y - (p3.y - p1.y) / 5;
+          c2x = p2.x - (p3.x - p1.x) / 4.5;
+          c2y = p2.y - (p3.y - p1.y) / 4.5;
         } else if (i >= pts.length - 2) {
-          // Horizontal arrive into the base — soft right foot.
-          c1x = p1.x + (p2.x - p0.x) / 5;
-          c1y = p1.y + (p2.y - p0.y) / 5;
-          c2x = p2.x - 16;
+          // Long horizontal arrive — round right foot into the nav line.
+          const lift = Math.min(14, Math.max(8, (p1.y < p2.y ? p2.y - p1.y : 10) * 0.9));
+          c1x = p1.x + (p2.x - p0.x) / 4.5;
+          c1y = p1.y + (p2.y - p0.y) / 4.5;
+          c2x = p2.x - lift * 1.35;
           c2y = p2.y;
         } else {
-          c1x = p1.x + (p2.x - p0.x) / 6;
-          c1y = p1.y + (p2.y - p0.y) / 6;
-          c2x = p2.x - (p3.x - p1.x) / 6;
-          c2y = p2.y - (p3.y - p1.y) / 6;
+          c1x = p1.x + (p2.x - p0.x) / 6.5;
+          c1y = p1.y + (p2.y - p0.y) / 6.5;
+          c2x = p2.x - (p3.x - p1.x) / 6.5;
+          c2y = p2.y - (p3.y - p1.y) / 6.5;
         }
         d += `C${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}`;
       }
+      // Close along the baseline between the soft feet.
       return `${d}Z`;
     }
 
