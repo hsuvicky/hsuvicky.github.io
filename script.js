@@ -560,11 +560,12 @@ function setupBlob() {
 
     const localX = (pointerX - rect.left) / rect.width;
     const localY = (pointerY - rect.top) / rect.height;
-    const onBlob =
-      localX >= -0.08 &&
-      localX <= 1.08 &&
-      localY >= -0.2 &&
-      localY <= 1.15;
+    const nearBlob =
+      localX >= -0.15 &&
+      localX <= 1.15 &&
+      localY >= -0.85 &&
+      localY <= 1.2;
+    const cursorAbove = localY < 0.12;
 
     // Socket anchors follow the deformed body (including squash). Shared Y keeps
     // the pair level; gap keeps > < from touching.
@@ -576,18 +577,21 @@ function setupBlob() {
     const socketMidX = (socketL.x + socketR.x) / 2;
     const apex = deformPoint(Math.PI / 2);
 
-    const lookGain = onBlob ? 7 : 4.5;
+    const lookGain = nearBlob ? 8 : 5;
     const lookX = clamp((localX - 0.5) * lookGain * 2, -7, 7);
-    // When squashed, don't let upward look fight the compressed body (floating eyes).
-    const lookY =
-      clamp((localY - 0.42) * lookGain * 1.2, -5.5, 5.5) * (1 - morph.squash * 1.35);
+    let lookY = clamp((localY - 0.42) * lookGain * 1.35, -10, 5.5);
+    // Only damp upward look while the cursor is pressing into the body —
+    // not when it's above and the eyes should glance up at it.
+    if (lookY < 0 && morph.squash > 0.08 && !cursorAbove) {
+      lookY *= 1 - morph.squash * 1.2;
+    }
 
     const minGap = 42;
-    let centerX = socketMidX + lookX * (1 - morph.squash * 0.35);
+    let centerX = socketMidX + lookX * (1 - morph.squash * 0.25);
     let eyeY = socketY + lookY;
 
-    // Clamp to the *current* squashed crown, not the resting silhouette.
-    const minEyeY = apex.y + 7;
+    // Clamp to the *current* crown; allow a bit higher when looking up.
+    const minEyeY = apex.y + (cursorAbove || lookY < -2 ? 3.5 : 7);
     const maxEyeY = VB_H - 11;
     centerX = clamp(centerX, 32, 68);
     eyeY = clamp(eyeY, minEyeY, maxEyeY);
