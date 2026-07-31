@@ -599,14 +599,34 @@ h1 {
   position: relative;
 }
 
-.timeline-instruction {
-  margin: 0 0 0.55rem;
+.timeline-labels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 7.5rem;
+  height: 100%;
+  pointer-events: none;
+}
+
+.timeline-labels span {
+  position: absolute;
+  left: 0;
   color: var(--muted);
   font-family: var(--mono);
   font-size: 0.59rem;
+  font-weight: 700;
   letter-spacing: 0.055em;
-  text-align: right;
+  line-height: 1.4;
   text-transform: uppercase;
+}
+
+.timeline-label-year {
+  top: 0;
+}
+
+.timeline-label-milestones {
+  top: 4.55rem;
 }
 
 .timeline-viewport {
