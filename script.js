@@ -554,31 +554,35 @@ function setupBlob() {
       localY >= -0.2 &&
       localY <= 1.15;
 
-    // Socket anchors follow the deformed body, then we force a shared Y so the
-    // pair never looks slanted, and keep a hard gap so > < never touch.
-    const inset = clamp(0.48 + morph.squash * 0.08 + morph.dent * 0.1, 0.46, 0.58);
+    // Socket anchors follow the deformed body (including squash). Shared Y keeps
+    // the pair level; gap keeps > < from touching.
+    const inset = clamp(0.4 + morph.squash * 0.06 + morph.dent * 0.08, 0.38, 0.52);
     const halfSep = 0.36;
     const socketL = eyePoint(Math.PI / 2 + halfSep, inset);
     const socketR = eyePoint(Math.PI / 2 - halfSep, inset);
     const socketY = (socketL.y + socketR.y) / 2;
     const socketMidX = (socketL.x + socketR.x) / 2;
+    const apex = deformPoint(Math.PI / 2);
 
     const lookGain = onBlob ? 9 : 5.5;
     const lookX = clamp((localX - 0.5) * lookGain * 2, -9, 9);
-    const lookY = clamp((localY - 0.42) * lookGain * 1.35, -7, 7);
+    // When squashed, don't let upward look fight the compressed body (floating eyes).
+    const lookY =
+      clamp((localY - 0.42) * lookGain * 1.35, -7, 7) * (1 - morph.squash * 1.35);
 
     const minGap = 30;
-    let centerX = socketMidX + lookX;
+    let centerX = socketMidX + lookX * (1 - morph.squash * 0.35);
     let eyeY = socketY + lookY;
 
-    // Keep the pair inside the upper face band, away from the silhouette edge.
+    // Clamp to the *current* squashed crown, not the resting silhouette.
+    const minEyeY = apex.y + 7;
+    const maxEyeY = VB_H - 11;
     centerX = clamp(centerX, 34, 66);
-    eyeY = clamp(eyeY, VB_H - RY * 0.68, VB_H - RY * 0.3);
+    eyeY = clamp(eyeY, minEyeY, maxEyeY);
 
     let leftX = centerX - minGap / 2;
     let rightX = centerX + minGap / 2;
 
-    // Extra margin from left/right edges of the body.
     if (leftX < 20) {
       rightX += 20 - leftX;
       leftX = 20;
