@@ -696,6 +696,24 @@ h1 {
   will-change: opacity;
 }
 
+.progression-rail .progression-empty {
+  flex-basis: 5rem;
+  min-height: 12.5rem;
+  padding-right: 0;
+}
+
+.progression-empty .progression-period {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.progression-empty .progression-marker {
+  top: calc(3.3rem - 3px);
+  width: 6px;
+  height: 6px;
+  background: var(--border);
+}
+
 .progression-period,
 .progression-description strong,
 .progression-description > span,
@@ -831,6 +849,50 @@ h1 {
   color: var(--muted);
   font-size: 0.61rem;
   line-height: 1.45;
+}
+
+.progression-career-event {
+  max-width: 15rem;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+}
+
+.progression-career-event strong,
+.progression-career-event span,
+.progression-career-event small {
+  display: block;
+}
+
+.progression-career-event .progression-logo {
+  height: 1.55rem;
+  margin-bottom: 0.5rem;
+}
+
+.progression-career-event strong {
+  margin-bottom: 0.35rem;
+  color: var(--accent-deep);
+  font-family: var(--display);
+  font-size: 0.92rem;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.progression-career-event span {
+  color: var(--text-soft);
+  font-size: 0.66rem;
+  line-height: 1.45;
+}
+
+.progression-career-event small {
+  margin-top: 0.45rem;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.54rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .progression-logo {
