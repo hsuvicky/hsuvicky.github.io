@@ -446,8 +446,8 @@ function setupBlob() {
     const alongTop = clamp(1 - Math.abs(lx - 0.5) / 0.62, 0, 1);
 
     // outside < 0 means the cursor has crossed into / past that face.
-    const dentR = clamp(softTouch(lx - 1, alongRight), 0, 1);
-    const dentL = clamp(softTouch(-lx, alongLeft), 0, 1);
+    const dentR = clamp(softTouch(lx - 1, alongRight) * (lx > 0.42 ? 1 : 0), 0, 1);
+    const dentL = clamp(softTouch(-lx, alongLeft) * (lx < 0.58 ? 1 : 0), 0, 1);
     const squash = clamp(softTouch(-ly, alongTop) * 1.05, 0, 1);
     const lean = clamp((dentR - dentL) * -0.85, -1, 1);
 
