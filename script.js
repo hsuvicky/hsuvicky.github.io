@@ -204,6 +204,7 @@ function setupCareerTimeline() {
   const hobbiesToggle = document.querySelector("[data-timeline-hobbies-toggle]");
   const hobbyContents = timeline ? [...timeline.querySelectorAll("[data-hobby-content]")] : [];
   const cards = viewport ? [...viewport.querySelectorAll(".progression-rail > li")] : [];
+  const onwards = viewport?.querySelector("[data-timeline-onwards]");
 
   if (!viewport || !cards.length) return;
 
@@ -214,17 +215,25 @@ function setupCareerTimeline() {
   let dragStartX = 0;
   let dragStartScroll = 0;
 
+  // The closing note lands once the rail settles at the present, or as soon as the
+  // visitor takes over, so it never stays hidden behind an interrupted intro.
+  function revealOnwards() {
+    onwards?.setAttribute("data-revealed", "true");
+  }
+
   function stopAutoScroll() {
     autoScrolling = false;
     if (autoScrollFrame) cancelAnimationFrame(autoScrollFrame);
     autoScrollFrame = null;
+    revealOnwards();
   }
 
   function updateCardFades() {
     const viewportRect = viewport.getBoundingClientRect();
     const labelsRect = timeline.querySelector(".timeline-labels")?.getBoundingClientRect();
-    const fadeWidth = Math.min(210, Math.max(90, viewportRect.width * 0.18));
-    const leftEdge = labelsRect ? labelsRect.right + 12 : viewportRect.left;
+    const fadeWidth = Math.min(210, Math.max(70, viewportRect.width * 0.18));
+    const hasLabels = Boolean(labelsRect?.width);
+    const leftEdge = hasLabels ? labelsRect.right + 12 : viewportRect.left + 8;
     const rightEdge = viewportRect.right - Math.min(40, viewportRect.width * 0.04);
     const atStart = viewport.scrollLeft <= 1;
     const atEnd = viewport.scrollLeft >= viewport.scrollWidth - viewport.clientWidth - 1;
@@ -324,6 +333,7 @@ function setupCareerTimeline() {
       if (reducedMotion.matches || targetDistance <= 1) {
         viewport.scrollLeft = targetDistance;
         updateCardFades();
+        revealOnwards();
         return;
       }
 
@@ -347,6 +357,7 @@ function setupCareerTimeline() {
           autoScrolling = false;
           autoScrollFrame = null;
           updateCardFades();
+          revealOnwards();
         }
       }
 

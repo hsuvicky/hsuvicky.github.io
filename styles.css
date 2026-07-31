@@ -4,6 +4,7 @@
   --surface: #f8f7f4;
   --surface-strong: #ffffff;
   --text: #2a2a2a;
+  --text-strong: #101010;
   --text-soft: #565a56;
   --muted: #666a66;
   --accent: #4b6e48;
@@ -32,6 +33,7 @@
   --surface: #16212b;
   --surface-strong: #1c2933;
   --text: #e6f0e8;
+  --text-strong: #f6fcf7;
   --text-soft: #c0cdc4;
   --muted: #9aa8a0;
   --accent: #8bbf87;
@@ -598,7 +600,11 @@ h1 {
 .career-timeline {
   position: relative;
   --timeline-backdrop: color-mix(in srgb, var(--surface) 68%, var(--bg));
+  /* Distance from the viewport edge to the content column, so the rail can bleed to
+     the screen edge while its contents still line up with the rest of the section. */
+  --timeline-gutter: calc((100vw - min(calc(100vw - 3rem), var(--max-width))) / 2);
   --timeline-title-size: 0.7rem;
+  --timeline-grade-size: 0.52rem;
   --timeline-detail-size: 0.62rem;
 }
 
@@ -670,7 +676,7 @@ h1 {
 }
 
 .timeline-viewport {
-  margin-inline: calc((100vw - min(calc(100vw - 3rem), var(--max-width))) / -2);
+  margin-inline: calc(var(--timeline-gutter) * -1);
   overflow-x: auto;
   overflow-y: hidden;
   cursor: default;
@@ -693,7 +699,9 @@ h1 {
   width: max-content;
   min-width: 100%;
   margin: 0;
-  padding: 0 max(14rem, calc((100vw - var(--max-width)) / 2 + 14rem));
+  /* Trailing room for the closing note, which is pinned rather than laid out. */
+  padding-right: calc(var(--timeline-gutter) + 8rem);
+  padding-left: max(14rem, calc((100vw - var(--max-width)) / 2 + 14rem));
   list-style: none;
 }
 
@@ -709,12 +717,50 @@ h1 {
 
 .progression-rail li {
   position: relative;
+  display: flex;
   flex: 0 0 clamp(10.75rem, 15vw, 12rem);
+  flex-direction: column;
+  align-items: center;
   min-height: 14rem;
-  padding: 0 1.25rem 1rem 0;
+  padding: 0 0.55rem 1rem;
   opacity: 0;
+  text-align: center;
   transition: opacity 180ms linear;
   will-change: opacity;
+}
+
+/* Pinned rather than laid out, so the closing note costs the rail no scroll width.
+   A phone has no room for a trailing column, and an in-flow note there pushed the
+   final milestone back into the edge fade. */
+.progression-rail .progression-onwards {
+  position: absolute;
+  top: 0;
+  right: var(--timeline-gutter);
+  min-height: 0;
+  padding: 0;
+}
+
+.progression-onwards-text {
+  display: block;
+  height: 3.3rem;
+  /* Sits the serif on the same baseline as the mono year labels beside it. */
+  margin-top: -0.2rem;
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-0.75rem);
+  transition:
+    opacity 620ms ease 160ms,
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1) 160ms;
+}
+
+.progression-onwards[data-revealed="true"] .progression-onwards-text {
+  opacity: 1;
+  transform: none;
 }
 
 .progression-empty .progression-period {
@@ -728,15 +774,14 @@ h1 {
 }
 
 .progression-period,
-.progression-description strong,
-.progression-description > span,
-.progression-description small {
+.progression-description > *,
+.progression-career-event > *,
+.progression-personal-event > * {
   display: block;
   transition: color 180ms ease;
 }
 
 .progression-period {
-  width: 2.75rem;
   height: 3.3rem;
   color: var(--accent);
   font-family: var(--mono);
@@ -744,54 +789,65 @@ h1 {
   font-weight: 700;
   letter-spacing: 0.055em;
   line-height: 1.4;
-  text-align: center;
   text-transform: uppercase;
 }
 
 .progression-marker {
   position: absolute;
   top: calc(3.3rem - 0.35rem);
-  left: calc(1.375rem - 0.5px);
+  left: 50%;
   width: 1px;
   height: 0.7rem;
+  margin-left: -0.5px;
   background: var(--stone);
+  transition: height 300ms ease, background-color 300ms ease;
+}
+
+/* Hover uses the standalone scale property rather than transform, so the hobby
+   reveal below can translate the same elements without the two overwriting
+   each other. */
+.progression-description,
+.progression-career-event,
+.progression-personal-event {
+  transform-origin: top center;
+  transition: scale 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .progression-description {
+  width: 100%;
   padding-top: 1.25rem;
 }
 
-.progression-description strong {
-  max-width: 15.5rem;
-  margin-bottom: 0.32rem;
+.progression-role {
+  margin-bottom: 0.34rem;
   color: var(--accent-deep);
   font-family: var(--display);
   font-size: var(--timeline-title-size);
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 1.3;
+  text-wrap: balance;
 }
 
-.progression-description > span {
-  max-width: 15rem;
-  color: var(--text-soft);
-  font-size: var(--timeline-detail-size);
-  line-height: 1.5;
-}
-
-.progression-description small {
-  max-width: 15rem;
-  margin-top: 0.62rem;
-  color: var(--accent);
+.progression-grade {
+  margin-bottom: 0.36rem;
+  color: var(--muted);
   font-family: var(--mono);
-  font-size: 0.57rem;
+  font-size: var(--timeline-grade-size);
   font-weight: 700;
-  letter-spacing: 0.025em;
-  line-height: 1.45;
+  letter-spacing: 0.085em;
+  line-height: 1.4;
   text-transform: uppercase;
 }
 
+.progression-domain {
+  color: var(--text-soft);
+  font-size: var(--timeline-detail-size);
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
 .progression-current .progression-marker {
-  left: calc(1.375rem - 1px);
+  margin-left: -1px;
   width: 2px;
   height: 0.85rem;
   top: calc(3.3rem - 0.425rem);
@@ -799,7 +855,7 @@ h1 {
 }
 
 .progression-education .progression-marker {
-  left: calc(1.375rem - 1px);
+  margin-left: -1px;
   width: 2px;
   height: 0.85rem;
   top: calc(3.3rem - 0.425rem);
@@ -821,25 +877,26 @@ h1 {
   font-weight: 600;
 }
 
-[data-hobby-content] {
-  visibility: visible;
-  opacity: 1;
-  transition: opacity 180ms ease, visibility 0s linear;
-}
-
 .career-timeline[data-hobbies-visible="false"] [data-hobby-content] {
   display: none;
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 180ms ease, visibility 0s linear 180ms;
 }
 
-.progression-personal .progression-description {
-  padding-top: 1.8rem;
+/* The entries are display:none while hidden so they claim no vertical space, and a
+   transition cannot run off that. A keyframe does, because it starts the moment the
+   element is rendered again. */
+.career-timeline[data-hobbies-visible="true"] [data-hobby-content] {
+  animation: hobby-arrive 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.progression-personal .progression-description strong {
+@keyframes hobby-arrive {
+  from {
+    opacity: 0;
+    translate: 0 0.55rem;
+  }
+}
+
+.progression-personal .progression-description .progression-role,
+.progression-personal-event .progression-role {
   color: var(--text-soft);
   font-family: var(--sans);
   font-size: var(--timeline-title-size);
@@ -847,146 +904,74 @@ h1 {
   line-height: 1.3;
 }
 
-.progression-personal .progression-description > span {
+.progression-personal .progression-description .progression-domain,
+.progression-personal-event .progression-domain {
   color: var(--muted);
   font-size: var(--timeline-detail-size);
   line-height: 1.45;
 }
 
-.progression-personal .progression-logo {
-  height: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.progression-personal .progression-logo-form-flow {
-  height: 2.4rem;
-}
-
-.progression-personal-event {
-  max-width: 15rem;
-}
-
-.progression-personal-event strong,
-.progression-personal-event span {
-  display: block;
-  transition: color 180ms ease;
-}
-
-.progression-personal-event .progression-logo {
-  height: 1.4rem;
-  margin-bottom: 0.45rem;
-}
-
-.progression-personal-event .progression-logo-activity {
-  margin-top: 0.35rem;
-  margin-bottom: 0.25rem;
-}
-
-.progression-personal-event .progression-logo-rank {
-  height: 1.75rem;
-  margin-bottom: 0.15rem;
-}
-
-.progression-personal-event .progression-logo-twitch {
-  height: 1.55rem;
-}
-
-.progression-personal-event strong {
-  margin-bottom: 0.32rem;
-  color: var(--text-soft);
-  font-size: var(--timeline-title-size);
-  line-height: 1.3;
-}
-
-.progression-personal-event span {
-  color: var(--muted);
-  font-size: var(--timeline-detail-size);
-  line-height: 1.45;
-}
-
+.progression-personal-event,
 .progression-career-event {
-  max-width: 15rem;
+  width: 100%;
+  margin-top: 1.3rem;
 }
 
-.progression-career-event strong,
-.progression-career-event span,
-.progression-career-event small {
-  display: block;
-  transition: color 180ms ease;
-}
 
-.progression-career-event .progression-logo {
-  height: 1.15rem;
-  margin-bottom: 0.5rem;
-}
-
-.progression-career-event strong {
-  margin-bottom: 0.3rem;
-  color: var(--accent-deep);
-  font-family: var(--display);
-  font-size: var(--timeline-title-size);
-  font-weight: 700;
-  line-height: 1.25;
-}
-
-.progression-career-event span {
-  color: var(--text-soft);
-  font-size: var(--timeline-detail-size);
-  line-height: 1.45;
-}
-
-.progression-career-event small {
-  margin-top: 0.45rem;
-  color: var(--accent);
-  font-family: var(--mono);
-  font-size: 0.54rem;
-  font-weight: 700;
-  letter-spacing: 0.025em;
-  line-height: 1.4;
-  text-transform: uppercase;
-}
-
+/* Every logo shares one 1.75rem box so the role line starts at the same height in
+   every column. Per-logo padding does the optical sizing inside that box. */
 .progression-logo {
   display: block;
   width: auto;
   max-width: 100%;
-  height: 1.25rem;
-  margin-bottom: 0.7rem;
+  height: 1.75rem;
+  margin: 0 auto 0.6rem;
+  padding-block: 0.25rem;
   object-fit: contain;
-  object-position: left center;
+  object-position: center;
 }
 
-.progression-logo-ey {
-  height: 1.3rem;
-}
-
+.progression-logo-ey,
 .progression-logo-parthenon {
-  height: 1.3rem;
+  padding-block: 0.225rem;
 }
 
 .progression-logo-nyu {
-  height: 1.25rem;
-  transform: translateY(2px);
+  padding-block: 0.26rem 0.14rem;
 }
 
-.progression-logo-rank {
-  height: 1.5rem;
+.progression-logo-lol,
+.progression-logo-twitch {
+  padding-block: 0.125rem;
 }
 
-.progression-logo-lol {
-  height: 1.5rem;
+.progression-logo-rank,
+.progression-logo-form-flow {
+  padding-block: 0;
 }
 
-.progression-rail li:hover > .progression-period,
-.progression-rail li:hover .progression-description strong,
-.progression-rail li:hover .progression-description > span,
-.progression-rail li:hover .progression-description small,
-.progression-rail li:hover .progression-career-event strong,
-.progression-rail li:hover .progression-career-event span,
-.progression-rail li:hover .progression-career-event small,
-.progression-rail li:hover .progression-personal-event strong,
-.progression-rail li:hover .progression-personal-event span {
-  color: var(--text);
+.progression-logo-activity {
+  padding-block: 0.2rem;
+}
+
+/* Only where a pointer can rest. On touch the state sticks after a tap or after a
+   drag of the rail, leaving a milestone stranded at hover size. */
+@media (hover: hover) {
+  .progression-rail li:hover > .progression-period,
+  .progression-rail li:hover .progression-role,
+  .progression-rail li:hover .progression-domain {
+    color: var(--text-strong);
+  }
+
+  .progression-rail li:hover .progression-grade {
+    color: var(--accent-deep);
+  }
+
+  .progression-rail li:hover .progression-description,
+  .progression-rail li:hover .progression-career-event,
+  .progression-rail li:hover .progression-personal-event {
+    scale: 1.05;
+  }
 }
 
 :root[data-theme="dark"] .progression-logo {
@@ -2313,17 +2298,33 @@ h1 {
     font-size: clamp(1.8rem, 7.5vw, 2.3rem);
   }
 
-  .timeline-viewport {
-    margin-inline: -1rem;
+  .career-timeline {
+    --timeline-gutter: 1rem;
+    margin-top: 2.6rem;
   }
 
+  /* The label gutter and its scrim cost a third of a phone screen, which left the
+     cards permanently inside the fade. The rail runs edge to edge instead and the
+     toggle sits above it. The gutter collapses to zero width rather than going
+     static, because the fade script measures it to find where the rail begins. */
+  .timeline-labels > span,
   .career-timeline::before {
-    left: -1rem;
+    display: none;
+  }
+
+  .timeline-labels {
+    width: 0;
+  }
+
+  .timeline-hobbies-toggle {
+    top: -2.5rem;
+    min-height: 0;
+    white-space: nowrap;
   }
 
   .progression-rail {
-    padding-right: 3rem;
-    padding-left: 14rem;
+    padding-right: calc(var(--timeline-gutter) + 6rem);
+    padding-left: var(--timeline-gutter);
   }
 
   .progression-rail li {
@@ -2550,6 +2551,12 @@ h1 {
   .reveal-ready .reveal-item {
     opacity: 1;
     transform: none;
+  }
+
+  .progression-rail li:hover .progression-description,
+  .progression-rail li:hover .progression-career-event,
+  .progression-rail li:hover .progression-personal-event {
+    scale: none;
   }
 }
 
