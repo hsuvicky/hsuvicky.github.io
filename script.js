@@ -600,9 +600,11 @@ function setupBlob() {
       localX >= -0.15 &&
       localX <= 1.15 &&
       localY >= -0.85 &&
-      localY <= 1.2;
+      localY <= 1.85;
     // Cursor is above / right over the crown — prioritize looking up.
     const cursorAbove = localY < 0.16;
+    // Cursor is below mid-face / under the blob — prioritize looking down.
+    const cursorBelow = localY > 0.58;
 
     // Socket anchors follow the deformed body (including squash). Shared Y keeps
     // the pair level; gap keeps > < from touching.
@@ -614,14 +616,20 @@ function setupBlob() {
     const socketMidX = (socketL.x + socketR.x) / 2;
     const apex = deformPoint(Math.PI / 2);
 
-    const lookGain = nearBlob || cursorAbove ? 8.5 : 5;
+    const lookGain = nearBlob || cursorAbove || cursorBelow ? 8.5 : 5;
     const lookX = clamp((localX - 0.5) * lookGain * 2, -7, 7);
-    // Neutral gaze sits a bit low so “above” clearly pulls the pupils up.
-    let lookY = clamp((localY - 0.5) * lookGain * (cursorAbove ? 2.1 : 1.4), -20, 5.5);
+    const lookYGain = cursorAbove ? 2.1 : cursorBelow ? 2.35 : 1.5;
+    // Allow a wide vertical range so down-gaze is as dramatic as up-gaze.
+    let lookY = clamp((localY - 0.48) * lookGain * lookYGain, -20, 22);
     if (cursorAbove) {
       // Pull hard toward the crown so an overhead cursor is unmistakable.
       const overhead = clamp(0.2 - localY, 0, 1.4);
       lookY = Math.min(lookY, -10 - overhead * 7);
+    }
+    if (cursorBelow) {
+      // Bias hard toward the base so a low cursor clearly drops the eyes.
+      const under = clamp(localY - 0.5, 0, 1.6);
+      lookY = Math.max(lookY, 5 + under * 10);
     }
     // Only damp upward look while the cursor is pressing into the body —
     // not when it's above and the eyes should glance up at it.
@@ -633,15 +641,21 @@ function setupBlob() {
     let centerX = socketMidX + lookX * (1 - morph.squash * 0.25);
     let eyeY = socketY + lookY;
 
-    // Clamp to the *current* crown; keep pupils inside the semicircle fill.
+    // Clamp to the *current* crown / base; keep pupils inside the semicircle fill.
     const minEyeY = apex.y + (cursorAbove || lookY < -2 ? 5.5 : 8);
-    const maxEyeY = VB_H - 9;
+    const maxEyeY = VB_H - (cursorBelow || lookY > 4 ? 6 : 9);
     centerX = clamp(centerX, 32, 68);
     eyeY = clamp(eyeY, minEyeY, maxEyeY);
     if (cursorAbove) {
       // Ease toward the crown so gaze reads as “looking up,” not just a nudge.
       const crownTarget = apex.y + 6;
       eyeY += (crownTarget - eyeY) * clamp(0.22 - localY, 0.35, 0.85);
+      eyeY = clamp(eyeY, minEyeY, maxEyeY);
+    }
+    if (cursorBelow) {
+      // Ease toward the base so gaze reads as “looking down.”
+      const floorTarget = VB_H - 7;
+      eyeY += (floorTarget - eyeY) * clamp(localY - 0.52, 0.3, 0.9);
       eyeY = clamp(eyeY, minEyeY, maxEyeY);
     }
 
@@ -679,13 +693,15 @@ function setupBlob() {
       `${((((eyeSmooth.ly + eyeSmooth.ry) / 2) / VB_H) * 100).toFixed(2)}%`,
     );
 
-    // Don't swap to > < while the cursor is above — keep oval eyes looking up.
+    // Keep oval eyes while looking up/down at the cursor — > < is for face pokes.
     const facePress =
       !cursorAbove &&
+      !cursorBelow &&
       morph.dent > (squintOn ? 0.18 : 0.3) &&
       Math.sin(morph.contactAng) > 0.72;
     const wantSquint =
       !cursorAbove &&
+      !cursorBelow &&
       (morph.squash > (squintOn ? 0.12 : 0.22) || facePress);
     squintOn = wantSquint;
     blob.dataset.squint = squintOn ? "true" : "false";
