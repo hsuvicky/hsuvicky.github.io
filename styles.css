@@ -686,10 +686,14 @@ h1 {
 
 .progression-rail li {
   position: relative;
+  display: flex;
   flex: 0 0 clamp(14.5rem, 22vw, 17.5rem);
+  flex-direction: column;
+  align-items: center;
   min-height: 18rem;
-  padding: 0 2.2rem 1rem 0;
+  padding: 0 1.1rem 1rem;
   opacity: 0;
+  text-align: center;
   transition: opacity 180ms linear;
   will-change: opacity;
 }
@@ -697,7 +701,7 @@ h1 {
 .progression-rail .progression-empty {
   flex-basis: 5rem;
   min-height: 18rem;
-  padding-right: 0;
+  padding-inline: 0.6rem;
 }
 
 .progression-empty .progression-period {
@@ -711,15 +715,14 @@ h1 {
 }
 
 .progression-period,
-.progression-description strong,
-.progression-description > span,
-.progression-description small {
+.progression-description > *,
+.progression-career-event > *,
+.progression-personal-event > * {
   display: block;
   transition: color 180ms ease;
 }
 
 .progression-period {
-  width: 2.75rem;
   height: 3.3rem;
   color: var(--accent);
   font-family: var(--mono);
@@ -727,54 +730,54 @@ h1 {
   font-weight: 700;
   letter-spacing: 0.055em;
   line-height: 1.4;
-  text-align: center;
   text-transform: uppercase;
 }
 
 .progression-marker {
   position: absolute;
   top: calc(3.3rem - 0.35rem);
-  left: calc(1.375rem - 0.5px);
+  left: 50%;
   width: 1px;
   height: 0.7rem;
+  margin-left: -0.5px;
   background: var(--stone);
 }
 
 .progression-description {
+  width: 100%;
   padding-top: 1.25rem;
 }
 
-.progression-description strong {
-  max-width: 15.5rem;
-  margin-bottom: 0.32rem;
+.progression-role {
+  margin-bottom: 0.34rem;
   color: var(--accent-deep);
   font-family: var(--display);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 400;
-  line-height: 1.25;
+  line-height: 1.3;
+  text-wrap: balance;
 }
 
-.progression-description > span {
-  max-width: 15rem;
-  color: var(--text-soft);
-  font-size: 0.71rem;
-  line-height: 1.5;
-}
-
-.progression-description small {
-  max-width: 15rem;
-  margin-top: 0.62rem;
-  color: var(--accent);
+.progression-grade {
+  margin-bottom: 0.45rem;
+  color: var(--muted);
   font-family: var(--mono);
-  font-size: 0.57rem;
+  font-size: 0.55rem;
   font-weight: 700;
-  letter-spacing: 0.025em;
-  line-height: 1.45;
+  letter-spacing: 0.085em;
+  line-height: 1.4;
   text-transform: uppercase;
 }
 
+.progression-domain {
+  color: var(--text-soft);
+  font-size: 0.71rem;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
 .progression-current .progression-marker {
-  left: calc(1.375rem - 1px);
+  margin-left: -1px;
   width: 2px;
   height: 0.85rem;
   top: calc(3.3rem - 0.425rem);
@@ -782,7 +785,7 @@ h1 {
 }
 
 .progression-education .progression-marker {
-  left: calc(1.375rem - 1px);
+  margin-left: -1px;
   width: 2px;
   height: 0.85rem;
   top: calc(3.3rem - 0.425rem);
@@ -817,11 +820,8 @@ h1 {
   transition: opacity 180ms ease, visibility 0s linear 180ms;
 }
 
-.progression-personal .progression-description {
-  padding-top: 1.8rem;
-}
-
-.progression-personal .progression-description strong {
+.progression-personal .progression-description .progression-role,
+.progression-personal-event .progression-role {
   color: var(--text-soft);
   font-family: var(--sans);
   font-size: 0.7rem;
@@ -829,134 +829,65 @@ h1 {
   line-height: 1.3;
 }
 
-.progression-personal .progression-description > span {
+.progression-personal .progression-description .progression-domain,
+.progression-personal-event .progression-domain {
   color: var(--muted);
   font-size: 0.62rem;
   line-height: 1.45;
 }
 
-.progression-personal .progression-logo {
-  height: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.progression-personal-event {
-  max-width: 15rem;
-  margin-top: 2.45rem;
-}
-
-.progression-personal-event strong,
-.progression-personal-event span {
-  display: block;
-  transition: color 180ms ease;
-}
-
-.progression-personal-event .progression-logo {
-  height: 1.4rem;
-  margin-bottom: 0.45rem;
-}
-
-.progression-personal-event .progression-logo-rank {
-  height: 1.75rem;
-}
-
-.progression-personal-event strong {
-  margin-bottom: 0.32rem;
-  color: var(--text-soft);
-  font-size: 0.7rem;
-  line-height: 1.3;
-}
-
-.progression-personal-event span {
-  color: var(--muted);
-  font-size: 0.61rem;
-  line-height: 1.45;
-}
-
+.progression-personal-event,
 .progression-career-event {
-  max-width: 15rem;
-  margin-top: 1.35rem;
+  width: 100%;
+  margin-top: 1.5rem;
 }
 
-.progression-career-event strong,
-.progression-career-event span,
-.progression-career-event small {
-  display: block;
-  transition: color 180ms ease;
+.progression-career-event .progression-role {
+  font-size: 0.8rem;
 }
 
-.progression-career-event .progression-logo {
-  height: 1.15rem;
-  margin-bottom: 0.5rem;
-}
-
-.progression-career-event strong {
-  margin-bottom: 0.3rem;
-  color: var(--accent-deep);
-  font-family: var(--display);
-  font-size: 0.77rem;
-  font-weight: 400;
-  line-height: 1.25;
-}
-
-.progression-career-event span {
-  color: var(--text-soft);
+.progression-career-event .progression-domain {
   font-size: 0.66rem;
-  line-height: 1.45;
 }
 
-.progression-career-event small {
-  margin-top: 0.45rem;
-  color: var(--accent);
-  font-family: var(--mono);
-  font-size: 0.54rem;
-  font-weight: 700;
-  letter-spacing: 0.025em;
-  line-height: 1.4;
-  text-transform: uppercase;
-}
-
+/* Every logo shares one 1.75rem box so the role line starts at the same height in
+   every column. Per-logo padding does the optical sizing inside that box. */
 .progression-logo {
   display: block;
   width: auto;
   max-width: 100%;
-  height: 1.25rem;
-  margin-bottom: 0.7rem;
+  height: 1.75rem;
+  margin: 0 auto 0.6rem;
+  padding-block: 0.25rem;
   object-fit: contain;
-  object-position: left center;
+  object-position: center;
 }
 
-.progression-logo-ey {
-  height: 1.3rem;
-}
-
+.progression-logo-ey,
 .progression-logo-parthenon {
-  height: 1.3rem;
+  padding-block: 0.225rem;
 }
 
 .progression-logo-nyu {
-  height: 1.25rem;
-  transform: translateY(2px);
-}
-
-.progression-logo-rank {
-  height: 1.5rem;
+  padding-block: 0.26rem 0.14rem;
 }
 
 .progression-logo-lol {
-  height: 1.5rem;
+  padding-block: 0.125rem;
+}
+
+.progression-logo-rank {
+  padding-block: 0;
 }
 
 .progression-rail li:hover > .progression-period,
-.progression-rail li:hover .progression-description strong,
-.progression-rail li:hover .progression-description > span,
-.progression-rail li:hover .progression-description small,
-.progression-rail li:hover .progression-career-event strong,
-.progression-rail li:hover .progression-career-event span,
-.progression-rail li:hover .progression-career-event small,
-.progression-rail li:hover .progression-personal-event strong,
-.progression-rail li:hover .progression-personal-event span {
+.progression-rail li:hover .progression-role,
+.progression-rail li:hover .progression-domain {
   color: var(--text);
+}
+
+.progression-rail li:hover .progression-grade {
+  color: var(--accent);
 }
 
 :root[data-theme="dark"] .progression-logo {
