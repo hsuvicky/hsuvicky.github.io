@@ -383,6 +383,8 @@ function setupBlobColony() {
   let pointerX = window.innerWidth * 0.5;
   let pointerY = window.innerHeight * 0.35;
   let resetting = false;
+  let scareFocus = null;
+  let scareUntil = 0;
   const instances = [];
 
   function clamp(value, min, max) {
@@ -457,7 +459,7 @@ function setupBlobColony() {
     let squintOn = false;
     let frozenMorph = null;
     let spawnOnRise = false;
-    const eyeSmooth = { lx: 32, ly: 38, rx: 68, ry: 38 };
+    const eyeSmooth = { lx: 32, ly: 26, rx: 68, ry: 26 };
 
     const morph = {
       squash: 0,
@@ -498,9 +500,14 @@ function setupBlobColony() {
     }
 
     function restPoint(theta) {
+      const c = Math.cos(theta);
+      const s = Math.sin(theta);
+      // Pull the lower sides inward so feet curve into the line (no tombstone walls).
+      const base = Math.pow(Math.max(s, 0), 0.4);
+      const xPull = 0.28 * (1 - base);
       return {
-        x: VB_W / 2 + RX * Math.cos(theta),
-        y: VB_H - RY * Math.sin(theta),
+        x: VB_W / 2 + RX * c * (1 - xPull),
+        y: VB_H - RY * Math.pow(Math.max(s, 0), 0.9),
         theta,
       };
     }
@@ -563,10 +570,6 @@ function setupBlobColony() {
     }
 
     function buildPath() {
-      if (morph.squash < 0.001 && morph.dent < 0.001) {
-        return `M0 ${VB_H}A${RX} ${RY} 0 0 1 ${VB_W} ${VB_H}Z`;
-      }
-
       const pts = [];
       for (let i = 0; i <= SEGMENTS; i += 1) {
         const theta = Math.PI * (1 - i / SEGMENTS);
@@ -582,14 +585,28 @@ function setupBlobColony() {
         const p1 = pts[i];
         const p2 = pts[i + 1];
         const p3 = pts[i + 2] || p2;
-        const t1x = i === 0 ? p2.x - p1.x : (p2.x - p0.x) / 6;
-        const t1y = i === 0 ? (p2.y - p1.y) / 3 : (p2.y - p0.y) / 6;
-        const t2x = i >= pts.length - 2 ? p2.x - p1.x : (p3.x - p1.x) / 6;
-        const t2y = i >= pts.length - 2 ? (p2.y - p1.y) / 3 : (p3.y - p1.y) / 6;
-        const c1x = p1.x + t1x;
-        const c1y = p1.y + t1y;
-        const c2x = p2.x - t2x;
-        const c2y = p2.y - t2y;
+        let c1x;
+        let c1y;
+        let c2x;
+        let c2y;
+        if (i === 0) {
+          // Horizontal leave from the base — soft left foot, no knife corner.
+          c1x = p1.x + 12;
+          c1y = p1.y;
+          c2x = p2.x - (p3.x - p1.x) / 6;
+          c2y = p2.y - (p3.y - p1.y) / 6;
+        } else if (i >= pts.length - 2) {
+          // Horizontal arrive into the base — soft right foot.
+          c1x = p1.x + (p2.x - p0.x) / 6;
+          c1y = p1.y + (p2.y - p0.y) / 6;
+          c2x = p2.x - 12;
+          c2y = p2.y;
+        } else {
+          c1x = p1.x + (p2.x - p0.x) / 6;
+          c1y = p1.y + (p2.y - p0.y) / 6;
+          c2x = p2.x - (p3.x - p1.x) / 6;
+          c2y = p2.y - (p3.y - p1.y) / 6;
+        }
         d += `C${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}`;
       }
       return `${d}Z`;
@@ -646,17 +663,24 @@ function setupBlobColony() {
       const rect = body.getBoundingClientRect();
       if (rect.width < 1 || rect.height < 1) return;
 
-      const localX = (pointerX - rect.left) / rect.width;
-      const localY = (pointerY - rect.top) / rect.height;
+      const scared = blob.dataset.scare === "true" && scareFocus;
+      let localX = (pointerX - rect.left) / rect.width;
+      let localY = (pointerY - rect.top) / rect.height;
+      if (scared) {
+        localX = (scareFocus.x - rect.left) / rect.width;
+        localY = (scareFocus.y - rect.top) / rect.height;
+      }
+
       const nearBlob =
         localX >= -0.15 &&
         localX <= 1.15 &&
         localY >= -0.85 &&
         localY <= 1.85;
-      const cursorAbove = localY < 0.16;
-      const cursorBelow = localY > 0.58;
+      const cursorAbove = !scared && localY < 0.16;
+      const cursorBelow = !scared && localY > 0.58;
 
-      const inset = clamp(0.4 + morph.squash * 0.06 + morph.dent * 0.08, 0.38, 0.52);
+      // Shallower inset so resting eyes sit higher in the face.
+      const inset = clamp(0.28 + morph.squash * 0.06 + morph.dent * 0.08, 0.26, 0.44);
       const halfSep = 0.42;
       const socketL = eyePoint(Math.PI / 2 + halfSep, inset);
       const socketR = eyePoint(Math.PI / 2 - halfSep, inset);
@@ -664,38 +688,42 @@ function setupBlobColony() {
       const socketMidX = (socketL.x + socketR.x) / 2;
       const apex = deformPoint(Math.PI / 2);
 
-      const lookGain = nearBlob || cursorAbove || cursorBelow ? 8.5 : 5;
+      const lookGain = scared || nearBlob || cursorAbove || cursorBelow ? 8.5 : 5;
       const lookX = clamp((localX - 0.5) * lookGain * 2, -7, 7);
-      const lookYGain = cursorAbove ? 2.1 : cursorBelow ? 2.35 : 1.5;
-      let lookY = clamp((localY - 0.48) * lookGain * lookYGain, -20, 22);
+      const lookYGain = cursorAbove ? 2.1 : cursorBelow ? 2.0 : 1.4;
+      // Neutral gaze sits higher so “looking” doesn’t read as chin-level.
+      let lookY = clamp((localY - 0.32) * lookGain * lookYGain, -16, 12);
       if (cursorAbove) {
         const overhead = clamp(0.2 - localY, 0, 1.4);
-        lookY = Math.min(lookY, -10 - overhead * 7);
+        lookY = Math.min(lookY, -7 - overhead * 5);
       }
       if (cursorBelow) {
         const under = clamp(localY - 0.5, 0, 1.6);
-        lookY = Math.max(lookY, 5 + under * 10);
+        lookY = Math.max(lookY, 2 + under * 6);
       }
-      if (lookY < 0 && morph.squash > 0.08 && !cursorAbove) {
+      if (scared) {
+        lookY = clamp(lookY, -8, 6);
+      }
+      if (lookY < 0 && morph.squash > 0.08 && !cursorAbove && !scared) {
         lookY *= 1 - morph.squash * 1.2;
       }
 
       const minGap = 42;
       let centerX = socketMidX + lookX * (1 - morph.squash * 0.25);
-      let eyeY = socketY + lookY;
+      let eyeY = socketY + lookY - 3.5;
 
-      const minEyeY = apex.y + (cursorAbove || lookY < -2 ? 5.5 : 8);
-      const maxEyeY = VB_H - (cursorBelow || lookY > 4 ? 6 : 9);
+      const minEyeY = apex.y + (cursorAbove || lookY < -2 ? 4.5 : 6);
+      const maxEyeY = VB_H - (cursorBelow || lookY > 4 ? 14 : 16);
       centerX = clamp(centerX, 32, 68);
       eyeY = clamp(eyeY, minEyeY, maxEyeY);
       if (cursorAbove) {
-        const crownTarget = apex.y + 6;
+        const crownTarget = apex.y + 5.5;
         eyeY += (crownTarget - eyeY) * clamp(0.22 - localY, 0.35, 0.85);
         eyeY = clamp(eyeY, minEyeY, maxEyeY);
       }
       if (cursorBelow) {
-        const floorTarget = VB_H - 7;
-        eyeY += (floorTarget - eyeY) * clamp(localY - 0.52, 0.3, 0.9);
+        const floorTarget = VB_H - 12;
+        eyeY += (floorTarget - eyeY) * clamp(localY - 0.52, 0.25, 0.7);
         eyeY = clamp(eyeY, minEyeY, maxEyeY);
       }
 
@@ -717,7 +745,7 @@ function setupBlobColony() {
         rightX = VB_W / 2 + minGap / 2;
       }
 
-      const ease = reducedMotion.matches ? 1 : 0.16;
+      const ease = reducedMotion.matches ? 1 : scared ? 0.28 : 0.16;
       eyeSmooth.lx += (leftX - eyeSmooth.lx) * ease;
       eyeSmooth.ly += (eyeY - eyeSmooth.ly) * ease;
       eyeSmooth.rx += (rightX - eyeSmooth.rx) * ease;
@@ -731,6 +759,12 @@ function setupBlobColony() {
         "--squint-y",
         `${((((eyeSmooth.ly + eyeSmooth.ry) / 2) / VB_H) * 100).toFixed(2)}%`,
       );
+
+      if (scared) {
+        squintOn = false;
+        blob.dataset.squint = "false";
+        return;
+      }
 
       const facePress =
         !cursorAbove &&
@@ -844,10 +878,11 @@ function setupBlobColony() {
       stateTimer = window.setTimeout(finishPop, POP_MS);
     }
 
-    function beginPopSequence({ spawn = false, delay = 0 } = {}) {
+    function beginPopSequence({ spawn = false, delay = 0, scareOthers = true } = {}) {
       clearTimers();
       setArmState("hidden");
       spawnOnRise = spawn;
+      blob.dataset.scare = "false";
 
       frozenMorph = {
         squash: morph.squash,
@@ -858,6 +893,7 @@ function setupBlobColony() {
       renderMorph();
 
       const run = () => {
+        if (scareOthers) scareSiblings(inst);
         setState("startled");
         squintOn = false;
         blob.dataset.squint = "false";
@@ -873,23 +909,26 @@ function setupBlobColony() {
       const state = blob.dataset.state;
       const active = state === "idle";
       const holdingShape = state === "startled" || state === "popping";
+      const scared = blob.dataset.scare === "true";
 
       if (holdingShape) {
         holdFrozenMorph();
       } else {
-        const targets = active
-          ? morphTargets()
-          : { squash: 0, dent: 0, contactAng: morph.contactAng };
+        // Scared blobs freeze soft-body so they just stare.
+        const targets =
+          active && !scared
+            ? morphTargets()
+            : { squash: 0, dent: 0, contactAng: morph.contactAng };
 
         springTo("squash", targets.squash);
         springTo("dent", targets.dent);
 
-        if (active && targets.dent + targets.squash > 0.02) {
+        if (active && !scared && targets.dent + targets.squash > 0.02) {
           morph.contactAng = lerpAngle(morph.contactAng, targets.contactAng, 0.1);
         }
       }
 
-      if (active && armState === "waving" && (morph.dent > 0.12 || morph.squash > 0.12)) {
+      if (active && armState === "waving" && (scared || morph.dent > 0.12 || morph.squash > 0.12)) {
         tuckArm();
       }
 
@@ -971,18 +1010,69 @@ function setupBlobColony() {
     instances.push(inst);
   }
 
+  function scareSiblings(victim) {
+    const rect = victim.blob.getBoundingClientRect();
+    scareFocus = {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height * 0.35,
+    };
+    scareUntil = performance.now() + STARTLE_MS + POP_MS + 550;
+
+    instances.forEach((inst) => {
+      if (inst === victim) return;
+      if (inst.state !== "idle") return;
+      inst.blob.dataset.scare = "true";
+      inst.blob.dataset.squint = "false";
+    });
+  }
+
+  function clearScare() {
+    scareFocus = null;
+    scareUntil = 0;
+    instances.forEach((inst) => {
+      if (inst.blob.dataset.scare === "true") {
+        inst.blob.dataset.scare = "false";
+      }
+    });
+  }
+
   function resetColony() {
     if (resetting) return;
     resetting = true;
+    clearScare();
 
     const alive = [...instances];
-    alive.forEach((inst, index) => {
-      inst.clearTimers();
-      inst.forcePop({ spawn: false, delay: index * 70 });
-    });
+    // First scare everyone toward the clicked blob, then cascade-pop.
+    const focus = alive[alive.length - 1] || alive[0];
+    if (focus) {
+      const rect = focus.blob.getBoundingClientRect();
+      scareFocus = {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height * 0.35,
+      };
+      scareUntil = performance.now() + 280;
+      alive.forEach((inst) => {
+        if (inst.state === "idle") {
+          inst.blob.dataset.scare = "true";
+          inst.blob.dataset.squint = "false";
+        }
+      });
+    }
+
+    window.setTimeout(() => {
+      clearScare();
+      alive.forEach((inst, index) => {
+        inst.clearTimers();
+        inst.forcePop({ spawn: false, delay: index * 70, scareOthers: false });
+      });
+    }, reducedMotion.matches ? 40 : 280);
 
     const totalDelay =
-      (alive.length - 1) * 70 + STARTLE_MS + POP_MS + GONE_MS;
+      (reducedMotion.matches ? 40 : 280) +
+      (alive.length - 1) * 70 +
+      STARTLE_MS +
+      POP_MS +
+      GONE_MS;
 
     window.setTimeout(() => {
       instances.splice(0).forEach((inst) => inst.destroy());
@@ -998,6 +1088,9 @@ function setupBlobColony() {
   }
 
   function frame() {
+    if (scareFocus && performance.now() > scareUntil) {
+      clearScare();
+    }
     for (let i = 0; i < instances.length; i += 1) {
       instances[i].tick();
     }
