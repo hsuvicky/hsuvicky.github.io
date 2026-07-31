@@ -258,17 +258,18 @@ button {
 
 .blob-arm {
   position: absolute;
-  top: 38%;
+  top: 8%;
   left: 100%;
   z-index: 0;
-  width: 40px;
-  height: 32px;
+  width: 36px;
+  height: 40px;
   margin-left: -3px;
   overflow: visible;
   opacity: 0;
   pointer-events: none;
-  transform: translate(-10px, -4px) rotate(50deg);
-  transform-origin: 2px 18px;
+  /* Tucked down behind the body when hidden. */
+  transform: translate(-8px, 4px) rotate(70deg);
+  transform-origin: 2px 30px;
 }
 
 .blob-arm line {
@@ -280,12 +281,12 @@ button {
 }
 
 .blob-arm-wave {
-  transform-origin: 2px 18px;
+  transform-origin: 2px 30px;
 }
 
 .blob-arm-fore {
   transform-origin: 0 0;
-  transform: rotate(18deg);
+  transform: rotate(-8deg);
 }
 
 .blob-arm-hand {
@@ -295,7 +296,8 @@ button {
 .blob[data-arm="waving"] .blob-arm {
   z-index: 3;
   opacity: 1;
-  transform: translate(0, 0) rotate(-6deg);
+  /* Raised up-and-out wave pose (not folded over the head). */
+  transform: translate(0, 0) rotate(8deg);
   transition: opacity 120ms ease;
 }
 
@@ -319,7 +321,7 @@ button {
 .blob[data-arm="hidden"] .blob-arm {
   z-index: 0;
   opacity: 0;
-  transform: translate(-10px, -4px) rotate(50deg);
+  transform: translate(-8px, 4px) rotate(70deg);
 }
 
 .blob[data-state="startled"] .blob-arm,
@@ -580,63 +582,63 @@ button {
 
 @keyframes blob-arm-wave {
   0% {
-    transform: rotate(-6deg);
+    transform: rotate(8deg);
   }
 
   25% {
-    transform: rotate(34deg);
+    transform: rotate(-12deg);
   }
 
   50% {
-    transform: rotate(-10deg);
+    transform: rotate(16deg);
   }
 
   75% {
-    transform: rotate(30deg);
+    transform: rotate(-10deg);
   }
 
   100% {
-    transform: rotate(4deg);
+    transform: rotate(8deg);
   }
 }
 
 @keyframes blob-arm-fore-wave {
   0% {
-    transform: rotate(14deg);
+    transform: rotate(-8deg);
   }
 
   25% {
-    transform: rotate(28deg);
+    transform: rotate(12deg);
   }
 
   50% {
-    transform: rotate(10deg);
+    transform: rotate(-14deg);
   }
 
   75% {
-    transform: rotate(26deg);
+    transform: rotate(10deg);
   }
 
   100% {
-    transform: rotate(16deg);
+    transform: rotate(-6deg);
   }
 }
 
 @keyframes blob-fingers-wave {
   0% {
-    transform: rotate(-16deg);
+    transform: rotate(-8deg);
   }
 
   25% {
-    transform: rotate(22deg);
+    transform: rotate(14deg);
   }
 
   50% {
-    transform: rotate(-18deg);
+    transform: rotate(-12deg);
   }
 
   75% {
-    transform: rotate(20deg);
+    transform: rotate(12deg);
   }
 
   100% {
@@ -647,17 +649,17 @@ button {
 @keyframes blob-arm-tuck {
   0% {
     opacity: 1;
-    transform: translate(0, 0) rotate(-6deg);
+    transform: translate(0, 0) rotate(8deg);
   }
 
   55% {
     opacity: 1;
-    transform: translate(-6px, -4px) rotate(28deg);
+    transform: translate(-6px, 2px) rotate(40deg);
   }
 
   100% {
     opacity: 0;
-    transform: translate(-10px, -4px) rotate(50deg);
+    transform: translate(-8px, 4px) rotate(70deg);
   }
 }
 
