@@ -212,8 +212,8 @@ button {
   --blob-eye-h: 7px;
   --blob-eye-w-wide: 9px;
   --blob-eye-h-wide: 11px;
-  --blob-arm-w: 36px;
-  --blob-arm-h: 40px;
+  --blob-arm-w: 40px;
+  --blob-arm-h: 36px;
   --blob-squint-size: 0.9rem;
   --blob-fill: var(--blob-color-0);
   --eye-l-x: 28%;
@@ -245,8 +245,8 @@ button {
   --blob-eye-h: 7px;
   --blob-eye-w-wide: 9px;
   --blob-eye-h-wide: 11px;
-  --blob-arm-w: 36px;
-  --blob-arm-h: 40px;
+  --blob-arm-w: 40px;
+  --blob-arm-h: 36px;
   --blob-squint-size: 0.9rem;
   --blob-fill: var(--blob-color-0);
 }
@@ -258,8 +258,8 @@ button {
   --blob-eye-h: 5.5px;
   --blob-eye-w-wide: 7.5px;
   --blob-eye-h-wide: 9px;
-  --blob-arm-w: 28px;
-  --blob-arm-h: 31px;
+  --blob-arm-w: 31px;
+  --blob-arm-h: 28px;
   --blob-squint-size: 0.75rem;
   --blob-fill: var(--blob-color-1);
 }
@@ -271,8 +271,8 @@ button {
   --blob-eye-h: 4.5px;
   --blob-eye-w-wide: 6px;
   --blob-eye-h-wide: 7.5px;
-  --blob-arm-w: 22px;
-  --blob-arm-h: 24px;
+  --blob-arm-w: 24px;
+  --blob-arm-h: 22px;
   --blob-squint-size: 0.6rem;
   --blob-fill: var(--blob-color-2);
 }
@@ -284,8 +284,8 @@ button {
   --blob-eye-h: 3.75px;
   --blob-eye-w-wide: 4.75px;
   --blob-eye-h-wide: 6px;
-  --blob-arm-w: 17px;
-  --blob-arm-h: 19px;
+  --blob-arm-w: 19px;
+  --blob-arm-h: 17px;
   --blob-squint-size: 0.48rem;
   --blob-fill: var(--blob-color-3);
 }
@@ -297,8 +297,8 @@ button {
   --blob-eye-h: 2.75px;
   --blob-eye-w-wide: 3.5px;
   --blob-eye-h-wide: 4.25px;
-  --blob-arm-w: 12px;
-  --blob-arm-h: 13px;
+  --blob-arm-w: 13px;
+  --blob-arm-h: 12px;
   --blob-squint-size: 0.38rem;
   --blob-fill: var(--blob-color-4);
 }
@@ -348,7 +348,7 @@ button {
 
 .blob-arm {
   position: absolute;
-  top: 8%;
+  top: 22%;
   left: 100%;
   z-index: 0;
   width: var(--blob-arm-w);
@@ -358,8 +358,8 @@ button {
   opacity: 0;
   pointer-events: none;
   /* Tucked down behind the body when hidden. */
-  transform: translate(-8px, 4px) rotate(70deg);
-  transform-origin: 6% 75%;
+  transform: translate(-8px, 6px) rotate(78deg);
+  transform-origin: 5% 50%;
 }
 
 .blob-arm line {
@@ -371,13 +371,19 @@ button {
   vector-effect: non-scaling-stroke;
 }
 
+.blob-arm-elbow {
+  fill: var(--blob-arm);
+  stroke: none;
+}
+
 .blob-arm-wave {
-  transform-origin: 6% 75%;
+  transform-origin: 5% 50%;
 }
 
 .blob-arm-fore {
   transform-origin: 0 0;
-  transform: rotate(-8deg);
+  /* Slightly open L at the elbow in the rest pose. */
+  transform: rotate(12deg);
 }
 
 .blob-arm-hand {
@@ -387,8 +393,8 @@ button {
 .blob[data-arm="waving"] .blob-arm {
   z-index: 3;
   opacity: 1;
-  /* Raised up-and-out wave pose (not folded over the head). */
-  transform: translate(0, 0) rotate(8deg);
+  /* Lower side-wave: upper arm out/down, forearm hinged up. */
+  transform: translate(0, 2px) rotate(28deg);
   transition: opacity 120ms ease;
 }
 
@@ -412,7 +418,7 @@ button {
 .blob[data-arm="hidden"] .blob-arm {
   z-index: 0;
   opacity: 0;
-  transform: translate(-8px, 4px) rotate(70deg);
+  transform: translate(-8px, 6px) rotate(78deg);
 }
 
 .blob[data-state="startled"] .blob-arm,
@@ -702,63 +708,64 @@ button {
 
 @keyframes blob-arm-wave {
   0% {
-    transform: rotate(8deg);
+    transform: rotate(0deg);
   }
 
   25% {
-    transform: rotate(-12deg);
+    transform: rotate(-6deg);
   }
 
   50% {
-    transform: rotate(16deg);
+    transform: rotate(8deg);
   }
 
   75% {
-    transform: rotate(-10deg);
+    transform: rotate(-5deg);
   }
 
   100% {
-    transform: rotate(8deg);
+    transform: rotate(0deg);
   }
 }
 
 @keyframes blob-arm-fore-wave {
+  /* Elbow hinge does most of the wave. */
   0% {
-    transform: rotate(-8deg);
-  }
-
-  25% {
     transform: rotate(12deg);
   }
 
+  25% {
+    transform: rotate(-18deg);
+  }
+
   50% {
-    transform: rotate(-14deg);
+    transform: rotate(28deg);
   }
 
   75% {
-    transform: rotate(10deg);
+    transform: rotate(-14deg);
   }
 
   100% {
-    transform: rotate(-6deg);
+    transform: rotate(12deg);
   }
 }
 
 @keyframes blob-fingers-wave {
   0% {
-    transform: rotate(-8deg);
+    transform: rotate(-6deg);
   }
 
   25% {
-    transform: rotate(14deg);
+    transform: rotate(12deg);
   }
 
   50% {
-    transform: rotate(-12deg);
+    transform: rotate(-10deg);
   }
 
   75% {
-    transform: rotate(12deg);
+    transform: rotate(10deg);
   }
 
   100% {
@@ -769,17 +776,17 @@ button {
 @keyframes blob-arm-tuck {
   0% {
     opacity: 1;
-    transform: translate(0, 0) rotate(8deg);
+    transform: translate(0, 2px) rotate(28deg);
   }
 
   55% {
     opacity: 1;
-    transform: translate(-6px, 2px) rotate(40deg);
+    transform: translate(-6px, 4px) rotate(52deg);
   }
 
   100% {
     opacity: 0;
-    transform: translate(-8px, 4px) rotate(70deg);
+    transform: translate(-8px, 6px) rotate(78deg);
   }
 }
 

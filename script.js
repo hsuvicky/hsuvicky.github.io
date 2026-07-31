@@ -419,17 +419,20 @@ function setupBlobColony() {
             <span class="blob-squint-l">&gt;</span>
             <span class="blob-squint-r">&lt;</span>
           </span>
-          <svg class="blob-arm" viewBox="0 0 36 40" aria-hidden="true">
+          <svg class="blob-arm" viewBox="0 0 40 36" aria-hidden="true">
             <g class="blob-arm-wave">
-              <line class="blob-arm-upper" x1="2" y1="30" x2="9" y2="14"></line>
-              <g transform="translate(9 14)">
+              <!-- Upper arm: out and a bit down so the elbow reads as a hinge. -->
+              <line class="blob-arm-upper" x1="2" y1="18" x2="18" y2="26"></line>
+              <circle class="blob-arm-elbow" cx="18" cy="26" r="1.35"></circle>
+              <g transform="translate(18 26)">
                 <g class="blob-arm-fore">
-                  <line x1="0" y1="0" x2="6" y2="-11"></line>
-                  <g transform="translate(6 -11)">
+                  <!-- Forearm bent up from the elbow (~L wave). -->
+                  <line x1="0" y1="0" x2="4" y2="-13"></line>
+                  <g transform="translate(4 -13)">
                     <g class="blob-arm-hand">
-                      <line x1="0" y1="0" x2="-5" y2="-7"></line>
-                      <line x1="0" y1="0" x2="1" y2="-9"></line>
-                      <line x1="0" y1="0" x2="6" y2="-6"></line>
+                      <line x1="0" y1="0" x2="-5" y2="-4"></line>
+                      <line x1="0" y1="0" x2="0" y2="-7"></line>
+                      <line x1="0" y1="0" x2="5" y2="-3"></line>
                     </g>
                   </g>
                 </g>
