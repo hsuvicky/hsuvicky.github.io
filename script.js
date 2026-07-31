@@ -568,7 +568,7 @@ function setupBlob() {
       rightTheta = mid - minThetaGap / 2;
     }
 
-    const inset = clamp(0.3 + morph.squash * 0.1 + morph.dent * 0.12, 0.28, 0.48);
+    const inset = clamp(0.42 + morph.squash * 0.12 + morph.dent * 0.14, 0.4, 0.58);
     const left = eyePoint(leftTheta, inset);
     const right = eyePoint(rightTheta, inset);
 
