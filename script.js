@@ -374,7 +374,7 @@ function setupBlob() {
     ? { stiffness: 1, damping: 1 }
     : { stiffness: 0.065, damping: 0.8 };
 
-  const ARM_INTERVAL_MS = 30000;
+  const ARM_INTERVAL_MS = 60000;
   const ARM_WAVE_MS = reducedMotion.matches ? 80 : 1400;
   const ARM_TUCK_MS = reducedMotion.matches ? 80 : 480;
 
