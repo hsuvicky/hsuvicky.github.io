@@ -587,12 +587,8 @@ h1 {
   font-size: 1.05rem;
 }
 
-.achievements .section-heading {
-  margin-bottom: clamp(1.6rem, 2.5vw, 2rem);
-}
-
-.achievements .section-heading h2 {
-  font-size: clamp(1.9rem, 2.7vw, 2.65rem);
+.achievements-label {
+  margin-bottom: clamp(1.4rem, 2.2vw, 1.9rem);
 }
 
 .career-timeline {
