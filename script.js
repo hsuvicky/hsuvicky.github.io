@@ -402,20 +402,20 @@ function setupBlob() {
   function softTouch(outside, along) {
     // Ignore the far side of the body so a right-side poke doesn't dent the left.
     if (outside < -0.95) return 0;
-    const approach = outside > 0 ? clamp(1 - outside / 0.75, 0, 1) : 1;
-    const depth = clamp(-outside, 0, 0.85);
-    return (approach * 0.42 + depth * 0.9) * along;
+    const approach = outside > 0 ? clamp(1 - outside / 1.05, 0, 1) : 1;
+    const depth = clamp(-outside, 0, 1);
+    return (approach * 0.55 + depth * 1.05) * along;
   }
 
   function buildPath(dentL, dentR, squash, lean) {
     // Base corners stay pinned at (0,50) and (100,50).
-    const top = 1.5 + squash * 28;
-    const sideY = 26 + squash * 10;
-    const apexX = 50 + lean * 14;
-    const leftMidX = 20 + dentL * 26;
-    const rightMidX = 80 - dentR * 26;
-    const leftCtrlX = 0 + dentL * 10;
-    const rightCtrlX = 100 - dentR * 10;
+    const top = 1.5 + squash * 34;
+    const sideY = 26 + squash * 12;
+    const apexX = 50 + lean * 18;
+    const leftMidX = 20 + dentL * 34;
+    const rightMidX = 80 - dentR * 34;
+    const leftCtrlX = 0 + dentL * 16;
+    const rightCtrlX = 100 - dentR * 16;
 
     return `M0 50C${leftCtrlX.toFixed(2)} ${sideY.toFixed(2)} ${leftMidX.toFixed(2)} ${top.toFixed(2)} ${apexX.toFixed(2)} ${top.toFixed(2)}C${rightMidX.toFixed(2)} ${top.toFixed(2)} ${rightCtrlX.toFixed(2)} ${sideY.toFixed(2)} 100 50Z`;
   }
@@ -446,10 +446,10 @@ function setupBlob() {
     const alongTop = clamp(1 - Math.abs(lx - 0.5) / 0.62, 0, 1);
 
     // outside < 0 means the cursor has crossed into / past that face.
-    const dentR = clamp(softTouch(lx - 1, alongRight) * (lx > 0.42 ? 1 : 0), 0, 1);
-    const dentL = clamp(softTouch(-lx, alongLeft) * (lx < 0.58 ? 1 : 0), 0, 1);
-    const squash = clamp(softTouch(-ly, alongTop) * 1.05, 0, 1);
-    const lean = clamp((dentR - dentL) * -0.85, -1, 1);
+    const dentR = clamp(softTouch(lx - 1, alongRight) * (lx > 0.42 ? 1 : 0), 0, 1.15);
+    const dentL = clamp(softTouch(-lx, alongLeft) * (lx < 0.58 ? 1 : 0), 0, 1.15);
+    const squash = clamp(softTouch(-ly, alongTop) * 1.2, 0, 1.15);
+    const lean = clamp((dentR - dentL) * -0.95, -1.1, 1.1);
 
     return { dentL, dentR, squash, lean };
   }
