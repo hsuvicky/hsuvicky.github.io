@@ -765,7 +765,7 @@ h1 {
   color: var(--accent-deep);
   font-family: var(--display);
   font-size: 0.82rem;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.25;
 }
 
@@ -871,8 +871,14 @@ h1 {
   margin-bottom: 0.45rem;
 }
 
+.progression-personal-event .progression-logo-activity {
+  margin-top: 0.35rem;
+  margin-bottom: 0.25rem;
+}
+
 .progression-personal-event .progression-logo-rank {
   height: 1.75rem;
+  margin-bottom: 0.15rem;
 }
 
 .progression-personal-event .progression-logo-twitch {
@@ -913,7 +919,7 @@ h1 {
   color: var(--accent-deep);
   font-family: var(--display);
   font-size: 0.77rem;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.25;
 }
 
