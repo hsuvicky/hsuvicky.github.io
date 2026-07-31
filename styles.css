@@ -2317,17 +2317,23 @@ h1 {
     margin-inline: -1rem;
   }
 
+  /* The label gutter and its scrim cost a third of a phone screen, which left the
+     cards permanently inside the fade. The rail runs edge to edge instead. */
+  .timeline-labels,
   .career-timeline::before {
-    left: -1rem;
+    display: none;
   }
 
   .progression-rail {
-    padding-right: 3rem;
-    padding-left: 14rem;
+    padding-inline: 1rem;
   }
 
   .progression-rail li {
-    flex-basis: min(72vw, 15.5rem);
+    flex-basis: min(76vw, 16rem);
+  }
+
+  .progression-rail .progression-empty {
+    flex-basis: 4rem;
   }
 
   .case-study {

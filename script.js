@@ -223,8 +223,9 @@ function setupCareerTimeline() {
   function updateCardFades() {
     const viewportRect = viewport.getBoundingClientRect();
     const labelsRect = timeline.querySelector(".timeline-labels")?.getBoundingClientRect();
-    const fadeWidth = Math.min(210, Math.max(90, viewportRect.width * 0.18));
-    const leftEdge = labelsRect ? labelsRect.right + 12 : viewportRect.left;
+    const fadeWidth = Math.min(210, Math.max(70, viewportRect.width * 0.18));
+    const hasLabels = Boolean(labelsRect?.width);
+    const leftEdge = hasLabels ? labelsRect.right + 12 : viewportRect.left + 8;
     const rightEdge = viewportRect.right - Math.min(40, viewportRect.width * 0.04);
     const atStart = viewport.scrollLeft <= 1;
     const atEnd = viewport.scrollLeft >= viewport.scrollWidth - viewport.clientWidth - 1;
