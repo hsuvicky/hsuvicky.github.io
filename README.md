@@ -29,7 +29,7 @@ python3 -m http.server 8000
 ```
 
 Open <http://localhost:8000>. Direct section URLs such as
-<http://localhost:8000/#projects> work as they do on GitHub Pages.
+<http://localhost:8000/about/#projects> work as they do on GitHub Pages.
 
 ## GitHub Pages deployment
 
@@ -44,8 +44,8 @@ GitHub Pages build and deployment.
 ## Update content
 
 - Edit copy and section structure in `index.html`.
-- Keep the four permanent destinations: `#about`, `#achievements`, `#projects`, and
-  `#hobbies`.
+- Keep the permanent `#achievements` destination on the homepage and the `#about` and
+  `#projects` destinations on the About page.
 - Keep professional claims specific and verifiable. Do not add confidential client details.
 - Update colors, spacing, or layouts through the custom properties and responsive rules in
   `styles.css`.
