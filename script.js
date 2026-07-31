@@ -460,6 +460,18 @@ function setupBlob() {
     return { x, y, theta };
   }
 
+  // Pull a surface point inward so eyes sit inside the deformed body.
+  function eyePoint(theta, inset) {
+    const surface = deformPoint(theta);
+    const cx = VB_W / 2;
+    const cy = VB_H;
+    return {
+      x: surface.x + (cx - surface.x) * inset,
+      y: surface.y + (cy - surface.y) * inset,
+      theta,
+    };
+  }
+
   function buildPath() {
     const pts = [];
     for (let i = 0; i <= SEGMENTS; i += 1) {
@@ -536,31 +548,34 @@ function setupBlob() {
       localY >= -0.2 &&
       localY <= 1.15;
 
-    // Eyes live on the deformed body near the upper face.
-    const leftBase = deformPoint(Math.PI * 0.64);
-    const rightBase = deformPoint(Math.PI * 0.36);
-    const midY = (leftBase.y + rightBase.y) / 2 / VB_H;
-    const lookStrength = onBlob ? maxLookClose : maxLook;
-    const lookX = (localX - 0.5) * lookStrength;
-    const lookY = (localY - midY) * lookStrength;
+    // Look by sliding eye anchors along the deformed surface, then inset inward
+    // so they stay inside the body instead of floating outside dents.
+    const lookAng = clamp(
+      Math.atan2(1 - localY, localX - 0.5),
+      0.2,
+      Math.PI - 0.2,
+    );
+    const lookPull = onBlob ? maxLookClose : maxLook;
+    let leftTheta = Math.PI * 0.66;
+    let rightTheta = Math.PI * 0.34;
+    leftTheta = clamp(leftTheta + (lookAng - leftTheta) * lookPull * 1.4, 0.35, Math.PI - 0.18);
+    rightTheta = clamp(rightTheta + (lookAng - rightTheta) * lookPull * 1.4, 0.18, Math.PI - 0.35);
 
-    let leftX = leftBase.x / VB_W + lookX;
-    let rightX = rightBase.x / VB_W + lookX;
-    let leftY = leftBase.y / VB_H + lookY;
-    let rightY = rightBase.y / VB_H + lookY;
-
-    // Keep a readable gap and stay above the base.
-    const minGap = 0.3;
-    if (rightX - leftX < minGap) {
-      const mid = (leftX + rightX) / 2;
-      leftX = mid - minGap / 2;
-      rightX = mid + minGap / 2;
+    const minThetaGap = 0.48;
+    if (leftTheta - rightTheta < minThetaGap) {
+      const mid = (leftTheta + rightTheta) / 2;
+      leftTheta = mid + minThetaGap / 2;
+      rightTheta = mid - minThetaGap / 2;
     }
 
-    leftY = clamp(leftY, 0.22, 0.78);
-    rightY = clamp(rightY, 0.22, 0.78);
-    leftX = clamp(leftX, 0.12, 0.45);
-    rightX = clamp(rightX, 0.55, 0.88);
+    const inset = clamp(0.3 + morph.squash * 0.1 + morph.dent * 0.12, 0.28, 0.48);
+    const left = eyePoint(leftTheta, inset);
+    const right = eyePoint(rightTheta, inset);
+
+    const leftX = left.x / VB_W;
+    const leftY = left.y / VB_H;
+    const rightX = right.x / VB_W;
+    const rightY = right.y / VB_H;
 
     blob.style.setProperty("--eye-l-x", `${(leftX * 100).toFixed(2)}%`);
     blob.style.setProperty("--eye-l-y", `${(leftY * 100).toFixed(2)}%`);
@@ -588,7 +603,7 @@ function setupBlob() {
 
     // Ease contact angle toward the poke point for a traveling concave.
     if (active && targets.dent + targets.squash > 0.02) {
-      morph.contactAng = lerpAngle(morph.contactAng, targets.contactAng, 0.18);
+      morph.contactAng = lerpAngle(morph.contactAng, targets.contactAng, 0.1);
     }
 
     renderMorph();
