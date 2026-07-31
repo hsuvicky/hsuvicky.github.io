@@ -364,11 +364,11 @@ function setupBlob() {
   const body = blob?.querySelector("[data-blob-body]");
   if (!blob || !body) return;
 
-  const eyeSize = 7.5;
-  const restGap = 0.48;
-  const minGap = 0.3;
-  const maxLook = 0.17;
-  const maxLookClose = 0.3;
+  const eyePad = 0.11;
+  const restGap = 0.56;
+  const minGap = 0.4;
+  const maxLook = 0.15;
+  const maxLookClose = 0.24;
   let pointerX = window.innerWidth * 0.5;
   let pointerY = window.innerHeight * 0.35;
   let frame = 0;
@@ -383,26 +383,12 @@ function setupBlob() {
     return Math.min(max, Math.max(min, value));
   }
 
-  function pointInSemicircle(nx, ny, padding) {
-    const cx = 0.5;
-    const cy = 1;
+  function maxHalfSpanAtY(ny, padding) {
     const radius = 0.5 - padding;
-    const dx = nx - cx;
-    const dy = ny - cy;
-    const distance = Math.hypot(dx, dy);
-    if (distance <= radius && ny <= cy - padding * 0.35) {
-      return { x: nx, y: ny };
-    }
-
-    if (distance < 0.0001) {
-      return { x: cx, y: cy - radius };
-    }
-
-    const scale = radius / distance;
-    return {
-      x: cx + dx * scale,
-      y: Math.min(cy - padding * 0.35, cy + dy * scale),
-    };
+    const dy = 1 - ny;
+    const inside = radius * radius - dy * dy;
+    if (inside <= 0) return 0;
+    return Math.sqrt(inside);
   }
 
   function placeEyes() {
@@ -420,30 +406,31 @@ function setupBlob() {
       localY <= 1.2 &&
       Math.hypot(localX - 0.5, localY - 1) <= 0.62;
 
-    const restY = 0.46;
+    const restY = 0.48;
     const lookStrength = onBlob ? maxLookClose : maxLook;
     const lookX = (localX - 0.5) * lookStrength * 2;
-    const lookY = (localY - restY) * lookStrength * 1.35;
-    const gap = onBlob ? minGap + (restGap - minGap) * 0.35 : restGap;
+    const lookY = (localY - restY) * lookStrength * 1.1;
+    const desiredGap = onBlob ? minGap + (restGap - minGap) * 0.45 : restGap;
 
-    const centerX = 0.5 + clamp(lookX, -lookStrength, lookStrength);
-    const centerY = restY + clamp(lookY, -lookStrength, lookStrength * 0.9);
-    const padding = eyeSize / rect.width + 0.08;
+    // Keep eyes in the wider band of the semicircle so spacing stays readable.
+    let centerY = clamp(restY + lookY, 0.36, 0.72);
+    let gap = desiredGap;
+    let halfSpan = maxHalfSpanAtY(centerY, eyePad);
 
-    let left = pointInSemicircle(centerX - gap / 2, centerY, padding);
-    let right = pointInSemicircle(centerX + gap / 2, centerY, padding);
-
-    const currentGap = right.x - left.x;
-    if (currentGap < minGap) {
-      const mid = (left.x + right.x) / 2;
-      left = pointInSemicircle(mid - minGap / 2, left.y, padding);
-      right = pointInSemicircle(mid + minGap / 2, right.y, padding);
+    while (halfSpan < gap / 2 + 0.02 && centerY < 0.7) {
+      centerY += 0.02;
+      halfSpan = maxHalfSpanAtY(centerY, eyePad);
     }
 
-    blob.style.setProperty("--eye-l-x", `${(left.x * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-l-y", `${(left.y * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-r-x", `${(right.x * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-r-y", `${(right.y * 100).toFixed(2)}%`);
+    gap = Math.min(desiredGap, Math.max(minGap, halfSpan * 1.7));
+    const centerX = clamp(0.5 + lookX, 0.5 - (halfSpan - gap / 2), 0.5 + (halfSpan - gap / 2));
+    const leftX = centerX - gap / 2;
+    const rightX = centerX + gap / 2;
+
+    blob.style.setProperty("--eye-l-x", `${(leftX * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-l-y", `${(centerY * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-r-x", `${(rightX * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-r-y", `${(centerY * 100).toFixed(2)}%`);
   }
 
   function requestEyeUpdate() {
@@ -492,15 +479,14 @@ function setupBlob() {
     }, popMs);
   }
 
-  window.addEventListener(
-    "pointermove",
-    (event) => {
-      pointerX = event.clientX;
-      pointerY = event.clientY;
-      requestEyeUpdate();
-    },
-    { passive: true },
-  );
+  function onPointer(event) {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+    requestEyeUpdate();
+  }
+
+  window.addEventListener("pointermove", onPointer, { passive: true });
+  window.addEventListener("mousemove", onPointer, { passive: true });
 
   window.addEventListener("scroll", requestEyeUpdate, { passive: true });
   window.addEventListener("resize", requestEyeUpdate);

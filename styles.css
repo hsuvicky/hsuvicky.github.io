@@ -187,12 +187,12 @@ button {
 .blob {
   --blob-w: 54px;
   --blob-h: 27px;
-  --blob-eye-w: 6px;
-  --blob-eye-h: 7.5px;
-  --eye-l-x: 28%;
-  --eye-l-y: 44%;
-  --eye-r-x: 72%;
-  --eye-r-y: 44%;
+  --blob-eye-w: 5.5px;
+  --blob-eye-h: 8px;
+  --eye-l-x: 23%;
+  --eye-l-y: 46%;
+  --eye-r-x: 77%;
+  --eye-r-y: 46%;
   position: relative;
   z-index: 2;
   display: grid;
