@@ -488,29 +488,36 @@ function setupBlob() {
     const px = lx * VB_W;
     const py = ly * VB_H;
 
+    // Far from the blob: no force.
+    if (lx < -0.7 || lx > 1.7 || ly < -0.9 || ly > 1.55) {
+      return { squash: 0, dent: 0, contactAng: morph.contactAng };
+    }
+
     let ang = Math.atan2(VB_H - py, px - VB_W / 2);
     ang = clamp(ang, 0.08, Math.PI - 0.08);
 
     const surface = restPoint(ang);
     const cursorR = Math.hypot(px - VB_W / 2, py - VB_H);
     const surfaceR = Math.hypot(surface.x - VB_W / 2, surface.y - VB_H);
+    // + outside the skin, - inside the body (finger pressing into jello).
     const outside = (cursorR - surfaceR) / RX;
 
-    // Nearby approach + shallow press. Far side of the body is ignored.
-    if (outside < -1.15) {
+    if (outside > 1.05) {
       return { squash: 0, dent: 0, contactAng: morph.contactAng };
     }
 
-    const approach = outside > 0 ? clamp(1 - outside / 0.95, 0, 1) : 1;
-    const depth = clamp(-outside, 0, 1);
-    const pressure = clamp(approach * 0.5 + depth * 1.05, 0, 1.2);
+    // Inside the body still counts as contact — that's a press into the face/eyes.
+    const approach = outside > 0 ? clamp(1 - outside / 1.05, 0, 1) : 1;
+    const penetration = outside < 0 ? clamp(-outside, 0, 1.25) : 0;
+    const pressure = clamp(approach * 0.48 + penetration * 1.05, 0, 1.3);
 
-    const topness = Math.pow(Math.sin(ang), 1.55);
-    const sideness = Math.pow(Math.abs(Math.cos(ang)), 1.05);
+    const topness = Math.pow(Math.sin(ang), 1.25);
 
+    // Primary response: local concave dent wherever you poke (including eye center).
+    // Extra squash when the poke is on/near the crown.
     return {
-      squash: pressure * topness,
-      dent: pressure * sideness * 1.15,
+      squash: pressure * topness * 0.9,
+      dent: pressure * 1.1,
       contactAng: ang,
     };
   }
@@ -561,7 +568,8 @@ function setupBlob() {
     blob.style.setProperty("--eye-r-y", `${(rightY * 100).toFixed(2)}%`);
     blob.style.setProperty("--squint-y", `${(((leftY + rightY) / 2) * 100).toFixed(2)}%`);
 
-    const squished = morph.squash > 0.22;
+    const facePress = morph.dent > 0.26 && Math.sin(morph.contactAng) > 0.72;
+    const squished = morph.squash > 0.18 || facePress;
     blob.dataset.squint = squished ? "true" : "false";
   }
 
