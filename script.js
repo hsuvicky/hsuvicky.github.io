@@ -202,6 +202,7 @@ function setupCareerTimeline() {
   const timeline = document.querySelector("[data-career-timeline]");
   const viewport = timeline?.querySelector("[data-timeline-viewport]");
   const hobbiesToggle = document.querySelector("[data-timeline-hobbies-toggle]");
+  const hobbyContents = timeline ? [...timeline.querySelectorAll("[data-hobby-content]")] : [];
   const cards = viewport ? [...viewport.querySelectorAll(".progression-rail > li")] : [];
 
   if (!viewport || !cards.length) return;
@@ -254,19 +255,12 @@ function setupCareerTimeline() {
   hobbiesToggle?.addEventListener("click", () => {
     stopAutoScroll();
     const showHobbies = timeline.dataset.hobbiesVisible !== "true";
-    const wasAtStart = viewport.scrollLeft <= 1;
-    const previousScrollLeft = viewport.scrollLeft;
-    const previousScrollWidth = viewport.scrollWidth;
 
     timeline.dataset.hobbiesVisible = String(showHobbies);
     hobbiesToggle.textContent = showHobbies ? "Hide hobbies" : "Show hobbies";
     hobbiesToggle.setAttribute("aria-expanded", String(showHobbies));
-
-    requestAnimationFrame(() => {
-      const widthChange = viewport.scrollWidth - previousScrollWidth;
-      viewport.scrollLeft = wasAtStart ? 0 : previousScrollLeft + widthChange;
-      updateCardFades();
-    });
+    hobbyContents.forEach((content) => content.setAttribute("aria-hidden", String(!showHobbies)));
+    requestFadeUpdate();
   });
 
   viewport.addEventListener(
