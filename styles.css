@@ -316,6 +316,7 @@ button {
   transform: translate(-10px, -4px) rotate(50deg);
 }
 
+.blob[data-state="startled"] .blob-arm,
 .blob[data-state="popping"] .blob-arm,
 .blob[data-state="gone"] .blob-arm,
 .blob[data-state="rising"] .blob-arm {
@@ -336,6 +337,9 @@ button {
   transform-origin: 50% 50%;
   pointer-events: none;
   will-change: left, top, transform;
+  transition:
+    width 140ms ease-out,
+    height 140ms ease-out;
 }
 
 .blob[data-state="idle"]:not([data-squint="true"]) .blob-eye {
@@ -422,6 +426,24 @@ button {
 .blob-pop-burst span:nth-child(4) { transform: rotate(33deg) translateY(-24px); }
 .blob-pop-burst span:nth-child(5) { transform: rotate(66deg) translateY(-22px); }
 
+.blob[data-state="startled"] {
+  pointer-events: none;
+  --blob-eye-w: 13px;
+  --blob-eye-h: 16px;
+}
+
+.blob[data-state="startled"] .blob-body {
+  animation: blob-startle-shake 520ms ease-in-out;
+}
+
+.blob[data-state="startled"] .blob-eye {
+  animation: none;
+}
+
+.blob[data-state="startled"] .blob-squint {
+  display: none;
+}
+
 .blob[data-state="popping"] {
   pointer-events: none;
 }
@@ -432,6 +454,10 @@ button {
 
 .blob[data-state="popping"] .blob-pop-burst {
   animation: blob-burst 480ms ease-out forwards;
+}
+
+.blob[data-state="popping"] .blob-eye {
+  animation: none;
 }
 
 .blob[data-state="gone"] {
@@ -462,6 +488,37 @@ button {
 
 .blob[data-state="rising"] .blob-squint {
   display: flex;
+}
+
+@keyframes blob-startle-shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+
+  16% {
+    transform: translateX(-3px) rotate(-4deg);
+  }
+
+  32% {
+    transform: translateX(3px) rotate(4deg);
+  }
+
+  48% {
+    transform: translateX(-2.5px) rotate(-3deg);
+  }
+
+  64% {
+    transform: translateX(2.5px) rotate(3deg);
+  }
+
+  80% {
+    transform: translateX(-1.5px) rotate(-2deg);
+  }
+
+  92% {
+    transform: translateX(1px) rotate(1deg);
+  }
 }
 
 @keyframes blob-pop {
@@ -3071,6 +3128,7 @@ h1 {
     transform: none;
   }
 
+  .blob[data-state="startled"] .blob-body,
   .blob[data-state="popping"] .blob-body,
   .blob[data-state="popping"] .blob-pop-burst,
   .blob[data-state="rising"] .blob-body,
@@ -3082,11 +3140,17 @@ h1 {
     animation: none;
   }
 
+  .blob[data-state="startled"] {
+    --blob-eye-w: 8px;
+    --blob-eye-h: 10px;
+  }
+
   .blob[data-state="popping"] .blob-body,
   .blob[data-state="gone"] .blob-body {
     opacity: 0;
   }
 
+  .blob[data-state="startled"] .blob-body,
   .blob[data-state="rising"] .blob-body,
   .blob[data-state="idle"] .blob-body {
     opacity: 1;

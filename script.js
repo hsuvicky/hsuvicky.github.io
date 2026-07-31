@@ -386,7 +386,9 @@ function setupBlob() {
   let armPhaseTimer = 0;
   let armState = "hidden";
   let squintOn = false;
+  let frozenMorph = null;
   const eyeSmooth = { lx: 32, ly: 38, rx: 68, ry: 38 };
+  const STARTLE_MS = reducedMotion.matches ? 40 : 520;
 
   const morph = {
     squash: 0,
@@ -706,18 +708,35 @@ function setupBlob() {
     armPhaseTimer = window.setTimeout(tuckArm, ARM_WAVE_MS);
   }
 
+  function holdFrozenMorph() {
+    if (!frozenMorph) return;
+    morph.squash = frozenMorph.squash;
+    morph.dent = frozenMorph.dent;
+    morph.contactAng = frozenMorph.contactAng;
+    morph.vSquash = 0;
+    morph.vDent = 0;
+    morph.vContactAng = 0;
+  }
+
   function tick() {
-    const active = blob.dataset.state === "idle";
-    const targets = active
-      ? morphTargets()
-      : { squash: 0, dent: 0, contactAng: morph.contactAng };
+    const state = blob.dataset.state;
+    const active = state === "idle";
+    const holdingShape = state === "startled" || state === "popping";
 
-    springTo("squash", targets.squash);
-    springTo("dent", targets.dent);
+    if (holdingShape) {
+      holdFrozenMorph();
+    } else {
+      const targets = active
+        ? morphTargets()
+        : { squash: 0, dent: 0, contactAng: morph.contactAng };
 
-    // Ease contact angle toward the poke point for a traveling concave.
-    if (active && targets.dent + targets.squash > 0.02) {
-      morph.contactAng = lerpAngle(morph.contactAng, targets.contactAng, 0.1);
+      springTo("squash", targets.squash);
+      springTo("dent", targets.dent);
+
+      // Ease contact angle toward the poke point for a traveling concave.
+      if (active && targets.dent + targets.squash > 0.02) {
+        morph.contactAng = lerpAngle(morph.contactAng, targets.contactAng, 0.1);
+      }
     }
 
     // If poked while waving, stash the arm behind the body.
@@ -727,7 +746,7 @@ function setupBlob() {
 
     renderMorph();
     if (active) placeEyes();
-    else if (blob.dataset.state === "rising") blob.dataset.squint = "true";
+    else if (state === "rising") blob.dataset.squint = "true";
 
     requestAnimationFrame(tick);
   }
@@ -746,6 +765,7 @@ function setupBlob() {
   }
 
   function startRise() {
+    frozenMorph = null;
     setState("rising");
     blob.dataset.squint = "true";
     blob.setAttribute("aria-label", "Blob is coming back.");
@@ -759,21 +779,42 @@ function setupBlob() {
     stateTimer = window.setTimeout(finishRise, riseMs);
   }
 
+  function finishPop() {
+    setState("gone");
+    frozenMorph = null;
+    regenerateTimer = window.setTimeout(startRise, reducedMotion.matches ? 900 : 2600);
+  }
+
+  function beginPopBurst() {
+    setState("popping");
+    blob.setAttribute("aria-label", "Blob popped.");
+    const popMs = reducedMotion.matches ? 80 : 420;
+    stateTimer = window.setTimeout(finishPop, popMs);
+  }
+
   function popBlob() {
     if (blob.dataset.state !== "idle") return;
 
     clearTimers();
     window.clearTimeout(armTimer);
     setArmState("hidden");
-    setState("popping");
-    blob.dataset.squint = "false";
-    blob.setAttribute("aria-label", "Blob popped.");
 
-    const popMs = reducedMotion.matches ? 80 : 420;
-    stateTimer = window.setTimeout(() => {
-      setState("gone");
-      regenerateTimer = window.setTimeout(startRise, reducedMotion.matches ? 900 : 2600);
-    }, popMs);
+    // Freeze the squashed/dented silhouette so the startle + pop keep that shape.
+    frozenMorph = {
+      squash: morph.squash,
+      dent: morph.dent,
+      contactAng: morph.contactAng,
+    };
+    holdFrozenMorph();
+    renderMorph();
+
+    // Anticipation: eyes widen + shake in place, then pop.
+    setState("startled");
+    squintOn = false;
+    blob.dataset.squint = "false";
+    blob.setAttribute("aria-label", "Blob is about to pop.");
+
+    stateTimer = window.setTimeout(beginPopBurst, STARTLE_MS);
   }
 
   function onPointer(event) {
