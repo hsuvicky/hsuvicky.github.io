@@ -515,12 +515,6 @@ function setupBlobColony() {
       };
     }
 
-    function softCeiling(value, limit, range) {
-      if (value <= limit) return value;
-      const excess = value - limit;
-      return limit + (excess * range) / (excess + range);
-    }
-
     function deformPoint(theta) {
       if (theta <= 0.001) return { x: VB_W, y: VB_H, theta: 0 };
       if (theta >= Math.PI - 0.001) return { x: 0, y: VB_H, theta: Math.PI };
@@ -555,12 +549,6 @@ function setupBlobColony() {
       }
 
       y = Math.min(y, VB_H);
-
-      const maxApexY = VB_H - RY * 0.5;
-      if (upper > 0.12) {
-        const limit = maxApexY + (1 - upper) * 10;
-        y = softCeiling(y, limit, 5);
-      }
 
       return { x, y, theta };
     }

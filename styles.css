@@ -349,11 +349,12 @@ button {
 .blob-arm {
   position: absolute;
   top: 12%;
-  left: 100%;
+  /* Start beneath the body so the visible arm meets the curved silhouette. */
+  left: 90%;
   z-index: 0;
   width: var(--blob-arm-w);
   height: var(--blob-arm-h);
-  margin-left: -3px;
+  margin-left: 0;
   overflow: visible;
   opacity: 0;
   pointer-events: none;
