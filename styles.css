@@ -187,10 +187,11 @@ button {
 .blob {
   --blob-w: 54px;
   --blob-h: 27px;
-  --blob-eye: 7px;
-  --eye-l-x: 31%;
+  --blob-eye-w: 6px;
+  --blob-eye-h: 7.5px;
+  --eye-l-x: 28%;
   --eye-l-y: 44%;
-  --eye-r-x: 69%;
+  --eye-r-x: 72%;
   --eye-r-y: 44%;
   position: relative;
   z-index: 2;
@@ -242,8 +243,8 @@ button {
   position: absolute;
   top: 0;
   left: 0;
-  width: var(--blob-eye);
-  height: var(--blob-eye);
+  width: var(--blob-eye-w);
+  height: var(--blob-eye-h);
   border-radius: 50%;
   background: #1a1f1c;
   box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.12);
@@ -268,7 +269,7 @@ button {
   display: none;
   align-items: center;
   justify-content: space-between;
-  padding: 0 22% 6%;
+  padding: 0 16% 6%;
   color: #1a1f1c;
   font-family: var(--mono);
   font-size: 0.72rem;
