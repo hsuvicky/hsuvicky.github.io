@@ -25,6 +25,7 @@
   --max-width: 1220px;
   --reading-width: 720px;
   --blob-fill: var(--moss);
+  --blob-arm: #1a1f1c;
 }
 
 :root[data-theme="dark"] {
@@ -48,6 +49,7 @@
   --header-bg: rgba(15, 23, 32, 0.92);
   --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
   --blob-fill: var(--accent);
+  --blob-arm: #ffffff;
 }
 
 *,
@@ -274,7 +276,7 @@ button {
 
 .blob-arm line {
   fill: none;
-  stroke: #1a1f1c;
+  stroke: var(--blob-arm);
   stroke-width: 1.85;
   stroke-linecap: round;
   stroke-linejoin: round;
