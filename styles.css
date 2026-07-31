@@ -458,7 +458,7 @@ button {
 }
 
 .blob[data-state="idle"][data-scare="true"] .blob-eye {
-  animation: blob-eye-panic 620ms steps(1, end) infinite;
+  animation: none;
 }
 
 .blob[data-state="idle"][data-arm="waving"] .blob-eye {
@@ -744,24 +744,6 @@ button {
   93%,
   96% {
     transform: translate(-50%, -50%) scaleY(0.08);
-  }
-}
-
-@keyframes blob-eye-panic {
-  0%, 100% {
-    transform: translate(-50%, -50%) translate(-2px, -2px);
-  }
-  20% {
-    transform: translate(-50%, -50%) translate(3px, 1px);
-  }
-  40% {
-    transform: translate(-50%, -50%) translate(-2px, 3px);
-  }
-  60% {
-    transform: translate(-50%, -50%) translate(2px, -3px);
-  }
-  80% {
-    transform: translate(-50%, -50%) translate(0, 2px);
   }
 }
 

@@ -379,11 +379,21 @@ function setupBlobColony() {
   const POP_MS = reducedMotion.matches ? 80 : 420;
   const GONE_MS = reducedMotion.matches ? 900 : 2600;
   const RISE_MS = reducedMotion.matches ? 80 : 1350;
+  const PANIC_DART_MS = 125;
+  const PANIC_LEAD_OUT_MS = 2000;
+  const PANIC_DARTS = [
+    { x: -8, y: -5 },
+    { x: 8, y: 3 },
+    { x: -6, y: 6 },
+    { x: 7, y: -6 },
+    { x: 0, y: 4 },
+  ];
 
   let pointerX = window.innerWidth * 0.5;
   let pointerY = window.innerHeight * 0.35;
   let resetting = false;
   let scareFocus = null;
+  let scareStartedAt = 0;
   let scareUntil = 0;
   const instances = [];
 
@@ -729,10 +739,16 @@ function setupBlobColony() {
 
       const { halfW, halfH } = eyeHalfSize();
       const lookGain = scared || nearBlob || cursorAbove || cursorBelow ? 8.5 : 5;
-      const lookX = clamp((localX - 0.5) * lookGain * 2, -7, 7);
+      let lookX = clamp((localX - 0.5) * lookGain * 2, -7, 7);
       const lookYGain = cursorAbove ? 1.55 : cursorBelow ? 2.0 : 1.4;
       // Neutral gaze sits higher so “looking” doesn’t read as chin-level.
       let lookY = clamp((localY - 0.32) * lookGain * lookYGain, -10, 12);
+      if (scared && !reducedMotion.matches) {
+        const dartIndex = Math.floor((performance.now() - scareStartedAt) / PANIC_DART_MS);
+        const dart = PANIC_DARTS[((dartIndex % PANIC_DARTS.length) + PANIC_DARTS.length) % PANIC_DARTS.length];
+        lookX = dart.x;
+        lookY = dart.y;
+      }
       if (cursorAbove) {
         // Glance up, but never hard-yank toward/past the crown.
         const overhead = clamp(0.2 - localY, 0, 1.4);
@@ -800,7 +816,7 @@ function setupBlobColony() {
       rightX = rightC.x;
       eyeY = Math.max(leftC.y, rightC.y);
 
-      const ease = reducedMotion.matches ? 1 : scared ? 0.28 : 0.16;
+      const ease = reducedMotion.matches || scared ? 1 : 0.16;
       eyeSmooth.lx += (leftX - eyeSmooth.lx) * ease;
       eyeSmooth.ly += (eyeY - eyeSmooth.ly) * ease;
       eyeSmooth.rx += (rightX - eyeSmooth.rx) * ease;
@@ -1093,8 +1109,9 @@ function setupBlobColony() {
       x: rect.left + rect.width / 2,
       y: rect.top + rect.height * 0.35,
     };
-    // startRise clears the reaction; this is only a safety timeout.
-    scareUntil = performance.now() + STARTLE_MS + POP_MS + GONE_MS + RISE_MS;
+    scareStartedAt = performance.now();
+    scareUntil =
+      scareStartedAt + STARTLE_MS + POP_MS + Math.max(0, GONE_MS - PANIC_LEAD_OUT_MS);
 
     instances.forEach((inst) => {
       if (inst === victim) return;
@@ -1106,6 +1123,7 @@ function setupBlobColony() {
 
   function clearScare() {
     scareFocus = null;
+    scareStartedAt = 0;
     scareUntil = 0;
     instances.forEach((inst) => {
       if (inst.blob.dataset.scare === "true") {
@@ -1128,7 +1146,8 @@ function setupBlobColony() {
         x: rect.left + rect.width / 2,
         y: rect.top + rect.height * 0.35,
       };
-      scareUntil = performance.now() + 280;
+      scareStartedAt = performance.now();
+      scareUntil = scareStartedAt + 280;
       alive.forEach((inst) => {
         if (inst.state === "idle") {
           inst.blob.dataset.scare = "true";
