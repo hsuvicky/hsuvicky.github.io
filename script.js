@@ -207,9 +207,17 @@ function setupCareerTimeline() {
   if (!viewport || !cards.length) return;
 
   let fadeFrame;
+  let autoScrollFrame;
+  let autoScrolling = false;
   let dragging = false;
   let dragStartX = 0;
   let dragStartScroll = 0;
+
+  function stopAutoScroll() {
+    autoScrolling = false;
+    if (autoScrollFrame) cancelAnimationFrame(autoScrollFrame);
+    autoScrollFrame = null;
+  }
 
   function updateCardFades() {
     const viewportRect = viewport.getBoundingClientRect();
@@ -238,9 +246,13 @@ function setupCareerTimeline() {
   }
 
   viewport.addEventListener("scroll", requestFadeUpdate, { passive: true });
-  window.addEventListener("resize", requestFadeUpdate);
+  window.addEventListener("resize", () => {
+    stopAutoScroll();
+    requestFadeUpdate();
+  });
 
   hobbiesToggle?.addEventListener("click", () => {
+    stopAutoScroll();
     const showHobbies = timeline.dataset.hobbiesVisible !== "true";
     const wasAtStart = viewport.scrollLeft <= 1;
     const previousScrollLeft = viewport.scrollLeft;
@@ -260,6 +272,7 @@ function setupCareerTimeline() {
   viewport.addEventListener(
     "wheel",
     (event) => {
+      stopAutoScroll();
       if (!event.shiftKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
       event.preventDefault();
       viewport.scrollLeft += event.deltaY;
@@ -268,6 +281,7 @@ function setupCareerTimeline() {
   );
 
   viewport.addEventListener("pointerdown", (event) => {
+    stopAutoScroll();
     if (event.pointerType === "touch") return;
     dragging = true;
     dragStartX = event.clientX;
@@ -290,6 +304,7 @@ function setupCareerTimeline() {
   viewport.addEventListener("pointercancel", stopDragging);
 
   viewport.addEventListener("keydown", (event) => {
+    stopAutoScroll();
     const distance = Math.max(180, viewport.clientWidth * 0.38);
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       event.preventDefault();
@@ -306,10 +321,46 @@ function setupCareerTimeline() {
     }
   });
 
-  requestAnimationFrame(() => {
-    viewport.scrollLeft = viewport.scrollWidth - viewport.clientWidth;
-    updateCardFades();
-  });
+  function startTimelineIntro() {
+    requestAnimationFrame(() => {
+      const targetDistance = viewport.scrollWidth - viewport.clientWidth;
+      viewport.scrollLeft = 0;
+      updateCardFades();
+
+      if (reducedMotion.matches || targetDistance <= 1) {
+        viewport.scrollLeft = targetDistance;
+        updateCardFades();
+        return;
+      }
+
+      const duration = Math.min(4200, Math.max(3000, targetDistance * 1.8));
+      let startTime;
+      autoScrolling = true;
+
+      function step(timestamp) {
+        if (!autoScrolling) return;
+        if (startTime === undefined) startTime = timestamp;
+
+        const progress = Math.min(1, (timestamp - startTime) / duration);
+        const acceleratedProgress = progress * progress;
+        viewport.scrollLeft = targetDistance * acceleratedProgress;
+        updateCardFades();
+
+        if (progress < 1) {
+          autoScrollFrame = requestAnimationFrame(step);
+        } else {
+          viewport.scrollLeft = targetDistance;
+          autoScrolling = false;
+          autoScrollFrame = null;
+          updateCardFades();
+        }
+      }
+
+      autoScrollFrame = requestAnimationFrame(step);
+    });
+  }
+
+  startTimelineIntro();
 }
 
 setupCareerTimeline();
