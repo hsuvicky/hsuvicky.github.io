@@ -648,7 +648,7 @@ h1 {
   margin-inline: calc((100vw - min(calc(100vw - 3rem), var(--max-width))) / -2);
   overflow-x: auto;
   overflow-y: hidden;
-  cursor: grab;
+  cursor: default;
   scrollbar-width: none;
   touch-action: pan-x;
   overscroll-behavior-inline: contain;
@@ -656,10 +656,6 @@ h1 {
 
 .timeline-viewport::-webkit-scrollbar {
   display: none;
-}
-
-.timeline-viewport:active {
-  cursor: grabbing;
 }
 
 .timeline-viewport:focus-visible {
@@ -719,6 +715,7 @@ h1 {
 .progression-description > span,
 .progression-description small {
   display: block;
+  transition: color 180ms ease;
 }
 
 .progression-period {
@@ -817,7 +814,7 @@ h1 {
 }
 
 .progression-personal .progression-logo {
-  height: 1.55rem;
+  height: 1.3rem;
   margin-bottom: 0.5rem;
 }
 
@@ -831,10 +828,11 @@ h1 {
 .progression-personal-event strong,
 .progression-personal-event span {
   display: block;
+  transition: color 180ms ease;
 }
 
 .progression-personal-event .progression-logo {
-  height: 1.35rem;
+  height: 1.1rem;
   margin-bottom: 0.45rem;
 }
 
@@ -862,10 +860,11 @@ h1 {
 .progression-career-event span,
 .progression-career-event small {
   display: block;
+  transition: color 180ms ease;
 }
 
 .progression-career-event .progression-logo {
-  height: 1.55rem;
+  height: 1.35rem;
   margin-bottom: 0.5rem;
 }
 
@@ -899,31 +898,43 @@ h1 {
   display: block;
   width: auto;
   max-width: 100%;
-  height: 2rem;
+  height: 1.65rem;
   margin-bottom: 0.7rem;
   object-fit: contain;
   object-position: left center;
 }
 
 .progression-logo-ey {
-  height: 2.15rem;
+  height: 1.75rem;
 }
 
 .progression-logo-parthenon {
-  height: 2rem;
+  height: 1.7rem;
 }
 
 .progression-logo-nyu {
-  height: 2rem;
+  height: 1.7rem;
   transform: translateY(2px);
 }
 
 .progression-logo-rank {
-  height: 2.35rem;
+  height: 1.8rem;
 }
 
 .progression-logo-lol {
-  height: 2.35rem;
+  height: 1.8rem;
+}
+
+.progression-rail li:hover > .progression-period,
+.progression-rail li:hover .progression-description strong,
+.progression-rail li:hover .progression-description > span,
+.progression-rail li:hover .progression-description small,
+.progression-rail li:hover .progression-career-event strong,
+.progression-rail li:hover .progression-career-event span,
+.progression-rail li:hover .progression-career-event small,
+.progression-rail li:hover .progression-personal-event strong,
+.progression-rail li:hover .progression-personal-event span {
+  color: var(--text);
 }
 
 :root[data-theme="dark"] .progression-logo {
