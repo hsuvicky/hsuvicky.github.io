@@ -503,11 +503,11 @@ function setupBlobColony() {
       const c = Math.cos(theta);
       const s = Math.sin(theta);
       // Pull the lower sides inward so feet curve into the line (no tombstone walls).
-      const base = Math.pow(Math.max(s, 0), 0.4);
-      const xPull = 0.28 * (1 - base);
+      const base = Math.pow(Math.max(s, 0), 0.45);
+      const xPull = 0.36 * (1 - base);
       return {
         x: VB_W / 2 + RX * c * (1 - xPull),
-        y: VB_H - RY * Math.pow(Math.max(s, 0), 0.9),
+        y: VB_H - RY * Math.pow(Math.max(s, 0), 0.88),
         theta,
       };
     }
@@ -591,15 +591,15 @@ function setupBlobColony() {
         let c2y;
         if (i === 0) {
           // Horizontal leave from the base — soft left foot, no knife corner.
-          c1x = p1.x + 12;
+          c1x = p1.x + 16;
           c1y = p1.y;
-          c2x = p2.x - (p3.x - p1.x) / 6;
-          c2y = p2.y - (p3.y - p1.y) / 6;
+          c2x = p2.x - (p3.x - p1.x) / 5;
+          c2y = p2.y - (p3.y - p1.y) / 5;
         } else if (i >= pts.length - 2) {
           // Horizontal arrive into the base — soft right foot.
-          c1x = p1.x + (p2.x - p0.x) / 6;
-          c1y = p1.y + (p2.y - p0.y) / 6;
-          c2x = p2.x - 12;
+          c1x = p1.x + (p2.x - p0.x) / 5;
+          c1y = p1.y + (p2.y - p0.y) / 5;
+          c2x = p2.x - 16;
           c2y = p2.y;
         } else {
           c1x = p1.x + (p2.x - p0.x) / 6;

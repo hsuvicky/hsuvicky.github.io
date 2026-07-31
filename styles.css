@@ -208,19 +208,19 @@ button {
 .blob {
   --blob-w: 82px;
   --blob-h: 41px;
-  --blob-eye-w: 6.5px;
-  --blob-eye-h: 8px;
-  --blob-eye-w-wide: 11px;
-  --blob-eye-h-wide: 13px;
+  --blob-eye-w: 5.5px;
+  --blob-eye-h: 7px;
+  --blob-eye-w-wide: 9px;
+  --blob-eye-h-wide: 11px;
   --blob-arm-w: 36px;
   --blob-arm-h: 40px;
-  --blob-squint-size: 0.95rem;
+  --blob-squint-size: 0.9rem;
   --blob-fill: var(--blob-color-0);
   --eye-l-x: 28%;
-  --eye-l-y: 34%;
+  --eye-l-y: 30%;
   --eye-r-x: 72%;
-  --eye-r-y: 34%;
-  --squint-y: 34%;
+  --eye-r-y: 30%;
+  --squint-y: 30%;
   position: relative;
   z-index: 2;
   display: grid;
@@ -241,65 +241,65 @@ button {
 .blob[data-size="0"] {
   --blob-w: 82px;
   --blob-h: 41px;
-  --blob-eye-w: 6.5px;
-  --blob-eye-h: 8px;
-  --blob-eye-w-wide: 11px;
-  --blob-eye-h-wide: 13px;
+  --blob-eye-w: 5.5px;
+  --blob-eye-h: 7px;
+  --blob-eye-w-wide: 9px;
+  --blob-eye-h-wide: 11px;
   --blob-arm-w: 36px;
   --blob-arm-h: 40px;
-  --blob-squint-size: 0.95rem;
+  --blob-squint-size: 0.9rem;
   --blob-fill: var(--blob-color-0);
 }
 
 .blob[data-size="1"] {
   --blob-w: 64px;
   --blob-h: 32px;
-  --blob-eye-w: 5.5px;
-  --blob-eye-h: 6.5px;
-  --blob-eye-w-wide: 9px;
-  --blob-eye-h-wide: 11px;
+  --blob-eye-w: 4.5px;
+  --blob-eye-h: 5.5px;
+  --blob-eye-w-wide: 7.5px;
+  --blob-eye-h-wide: 9px;
   --blob-arm-w: 28px;
   --blob-arm-h: 31px;
-  --blob-squint-size: 0.8rem;
+  --blob-squint-size: 0.75rem;
   --blob-fill: var(--blob-color-1);
 }
 
 .blob[data-size="2"] {
   --blob-w: 50px;
   --blob-h: 25px;
-  --blob-eye-w: 4.5px;
-  --blob-eye-h: 5.5px;
-  --blob-eye-w-wide: 7.5px;
-  --blob-eye-h-wide: 9px;
+  --blob-eye-w: 3.75px;
+  --blob-eye-h: 4.5px;
+  --blob-eye-w-wide: 6px;
+  --blob-eye-h-wide: 7.5px;
   --blob-arm-w: 22px;
   --blob-arm-h: 24px;
-  --blob-squint-size: 0.65rem;
+  --blob-squint-size: 0.6rem;
   --blob-fill: var(--blob-color-2);
 }
 
 .blob[data-size="3"] {
   --blob-w: 38px;
   --blob-h: 19px;
-  --blob-eye-w: 3.5px;
-  --blob-eye-h: 4.5px;
-  --blob-eye-w-wide: 5.5px;
-  --blob-eye-h-wide: 7px;
+  --blob-eye-w: 3px;
+  --blob-eye-h: 3.75px;
+  --blob-eye-w-wide: 4.75px;
+  --blob-eye-h-wide: 6px;
   --blob-arm-w: 17px;
   --blob-arm-h: 19px;
-  --blob-squint-size: 0.52rem;
+  --blob-squint-size: 0.48rem;
   --blob-fill: var(--blob-color-3);
 }
 
 .blob[data-size="4"] {
   --blob-w: 26px;
   --blob-h: 13px;
-  --blob-eye-w: 2.5px;
-  --blob-eye-h: 3px;
-  --blob-eye-w-wide: 4px;
-  --blob-eye-h-wide: 5px;
+  --blob-eye-w: 2.25px;
+  --blob-eye-h: 2.75px;
+  --blob-eye-w-wide: 3.5px;
+  --blob-eye-h-wide: 4.25px;
   --blob-arm-w: 12px;
   --blob-arm-h: 13px;
-  --blob-squint-size: 0.4rem;
+  --blob-squint-size: 0.38rem;
   --blob-fill: var(--blob-color-4);
 }
 
