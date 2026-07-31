@@ -304,7 +304,7 @@ button {
 }
 
 .blob:focus-visible {
-  outline-offset: 6px;
+  outline: none;
 }
 
 .blob-stage {
@@ -344,6 +344,11 @@ button {
   stroke-linecap: round;
   paint-order: stroke fill;
   shape-rendering: geometricPrecision;
+}
+
+.blob:focus-visible .blob-svg path {
+  stroke: var(--text);
+  stroke-width: 2;
 }
 
 .blob-arm {
@@ -450,6 +455,10 @@ button {
 
 .blob[data-state="idle"]:not([data-squint="true"]) .blob-eye {
   animation: blob-blink 3.6s ease-in-out infinite;
+}
+
+.blob[data-state="idle"][data-scare="true"] .blob-eye {
+  animation: blob-eye-panic 620ms steps(1, end) infinite;
 }
 
 .blob-eye-l {
@@ -704,6 +713,24 @@ button {
   93%,
   96% {
     transform: translate(-50%, -50%) scaleY(0.08);
+  }
+}
+
+@keyframes blob-eye-panic {
+  0%, 100% {
+    transform: translate(-50%, -50%) translate(-2px, -2px);
+  }
+  20% {
+    transform: translate(-50%, -50%) translate(3px, 1px);
+  }
+  40% {
+    transform: translate(-50%, -50%) translate(-2px, 3px);
+  }
+  60% {
+    transform: translate(-50%, -50%) translate(2px, -3px);
+  }
+  80% {
+    transform: translate(-50%, -50%) translate(0, 2px);
   }
 }
 

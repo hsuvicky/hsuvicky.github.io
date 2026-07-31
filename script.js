@@ -922,6 +922,8 @@ function setupBlobColony() {
     }
 
     function startRise() {
+      // Witnesses stay wide-eyed and panicked until the replacement appears.
+      clearScare();
       frozenMorph = null;
       setState("rising");
       blob.dataset.squint = "true";
@@ -1091,7 +1093,8 @@ function setupBlobColony() {
       x: rect.left + rect.width / 2,
       y: rect.top + rect.height * 0.35,
     };
-    scareUntil = performance.now() + STARTLE_MS + POP_MS + 550;
+    // startRise clears the reaction; this is only a safety timeout.
+    scareUntil = performance.now() + STARTLE_MS + POP_MS + GONE_MS + RISE_MS;
 
     instances.forEach((inst) => {
       if (inst === victim) return;
