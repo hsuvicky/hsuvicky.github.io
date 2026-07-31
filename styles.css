@@ -269,22 +269,31 @@ button {
 
 .blob-squint {
   position: absolute;
-  top: var(--squint-y);
-  left: 0;
+  inset: 0;
   display: none;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 22%;
   color: #1a1f1c;
   font-family: var(--mono);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.06em;
-  transform: translateY(-50%);
   pointer-events: none;
   user-select: none;
+}
+
+.blob-squint-l,
+.blob-squint-r {
+  position: absolute;
+  top: var(--squint-y);
+  transform: translate(-50%, -50%);
+}
+
+.blob-squint-l {
+  left: var(--eye-l-x);
+}
+
+.blob-squint-r {
+  left: var(--eye-r-x);
 }
 
 .blob[data-squint="true"] .blob-eye {
