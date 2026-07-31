@@ -188,10 +188,10 @@ button {
   --blob-w: 54px;
   --blob-h: 27px;
   --blob-eye: 7px;
-  --eye-l-x: 34%;
-  --eye-l-y: 48%;
-  --eye-r-x: 66%;
-  --eye-r-y: 48%;
+  --eye-l-x: 31%;
+  --eye-l-y: 44%;
+  --eye-r-x: 69%;
+  --eye-r-y: 44%;
   position: relative;
   z-index: 2;
   display: grid;

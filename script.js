@@ -365,10 +365,10 @@ function setupBlob() {
   if (!blob || !body) return;
 
   const eyeSize = 7;
-  const restGap = 0.32;
-  const minGap = 0.2;
-  const maxLook = 0.16;
-  const maxLookClose = 0.28;
+  const restGap = 0.38;
+  const minGap = 0.22;
+  const maxLook = 0.17;
+  const maxLookClose = 0.3;
   let pointerX = window.innerWidth * 0.5;
   let pointerY = window.innerHeight * 0.35;
   let frame = 0;
