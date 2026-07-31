@@ -79,9 +79,17 @@
       <section class="achievements section ruled-section" id="achievements" aria-label="Career timeline">
         <div class="section-shell">
           <div class="career-timeline" data-career-timeline data-hobbies-visible="false">
-            <div class="timeline-labels" aria-hidden="true">
-              <span class="timeline-label-year">Year</span>
-              <span class="timeline-label-milestones">Milestones</span>
+            <div class="timeline-labels">
+              <span class="timeline-label-year" aria-hidden="true">Year</span>
+              <span class="timeline-label-milestones" aria-hidden="true">Milestones</span>
+              <button
+                class="timeline-hobbies-toggle"
+                type="button"
+                data-timeline-hobbies-toggle
+                aria-expanded="false"
+              >
+                Show hobbies
+              </button>
             </div>
             <div
               class="timeline-viewport"
@@ -277,26 +285,6 @@
                 </li>
               </ol>
             </div>
-          </div>
-
-          <div class="career-footer">
-            <button
-              class="text-link"
-              type="button"
-              data-timeline-hobbies-toggle
-              aria-expanded="false"
-            >
-              Show hobbies
-            </button>
-            <a
-              class="text-link"
-              href="https://www.linkedin.com/in/vickyhsu1/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Full experience on LinkedIn <span aria-hidden="true">↗</span>
-              <span class="visually-hidden">(opens in a new tab)</span>
-            </a>
           </div>
 
           <article class="case-study case-study-enterprise" aria-labelledby="enterprise-ai-heading">
