@@ -792,6 +792,27 @@ h1 {
   background: var(--accent);
 }
 
+.career-timeline[data-hobbies-visible="false"] [data-hobby-only] {
+  flex-basis: 5rem;
+  min-height: 12.5rem;
+  padding-right: 0;
+}
+
+.career-timeline[data-hobbies-visible="false"] [data-hobby-only] .progression-marker {
+  height: 0.55rem;
+  background: var(--border);
+}
+
+.career-timeline[data-hobbies-visible="false"] [data-hobby-only] .progression-period {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.career-timeline[data-hobbies-visible="false"] [data-hobby-only] .progression-description,
+.career-timeline[data-hobbies-visible="false"] .progression-personal-event {
+  display: none;
+}
+
 .progression-personal .progression-description {
   padding-top: 1.8rem;
 }
@@ -953,6 +974,23 @@ h1 {
 
 .career-footer .text-link {
   font-size: 0.72rem;
+}
+
+.career-footer button.text-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 0.22em;
+}
+
+.career-footer button.text-link:hover {
+  text-decoration-color: var(--accent);
 }
 
 .projects {
