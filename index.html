@@ -19,7 +19,7 @@
     <title>Vicky Hsu · Senior Director &amp; AI Product Manager</title>
     <link rel="canonical" href="https://hsuvicky.github.io/">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="styles.css?v=20260730-50">
+    <link rel="stylesheet" href="styles.css?v=20260731-blob">
     <script>
       (() => {
         try {
@@ -31,19 +31,40 @@
         }
       })();
     </script>
-    <script src="script.js?v=20260730-9" defer></script>
+    <script src="script.js?v=20260731-blob" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
     <header class="site-header">
       <nav class="site-nav" aria-label="Primary navigation">
-        <a class="wordmark" href="/" aria-label="Vicky Hsu, Home">
-          <svg viewBox="0 0 36 36" aria-hidden="true">
-            <path d="M7 6.5 18 29.5 29 6.5M11 6.5l7 15 7-15"/>
-          </svg>
-          <span>Vicky Hsu</span>
-        </a>
+        <div class="brand">
+          <button
+            class="blob"
+            type="button"
+            data-blob
+            data-state="idle"
+            aria-label="Friendly blob. Click to pop."
+          >
+            <span class="blob-stage">
+              <span class="blob-body" data-blob-body>
+                <span class="blob-eye blob-eye-l" data-blob-eye="l"></span>
+                <span class="blob-eye blob-eye-r" data-blob-eye="r"></span>
+                <span class="blob-squint" aria-hidden="true">
+                  <span class="blob-squint-l">&gt;</span>
+                  <span class="blob-squint-r">&lt;</span>
+                </span>
+              </span>
+              <span class="blob-pop-burst" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </span>
+            </span>
+          </button>
+          <a class="wordmark" href="/" aria-label="Vicky Hsu, Home">
+            <span class="wordmark-full">Vicky Hsu</span>
+            <span class="wordmark-short" aria-hidden="true">VH</span>
+          </a>
+        </div>
 
         <button
           class="nav-toggle"

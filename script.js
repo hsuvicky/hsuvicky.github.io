@@ -358,3 +358,166 @@ function setupCareerTimeline() {
 }
 
 setupCareerTimeline();
+
+function setupBlob() {
+  const blob = document.querySelector("[data-blob]");
+  const body = blob?.querySelector("[data-blob-body]");
+  if (!blob || !body) return;
+
+  const eyeSize = 7;
+  const restGap = 0.32;
+  const minGap = 0.2;
+  const maxLook = 0.16;
+  const maxLookClose = 0.28;
+  let pointerX = window.innerWidth * 0.5;
+  let pointerY = window.innerHeight * 0.35;
+  let frame = 0;
+  let regenerateTimer = 0;
+  let stateTimer = 0;
+
+  function setState(state) {
+    blob.dataset.state = state;
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function pointInSemicircle(nx, ny, padding) {
+    const cx = 0.5;
+    const cy = 1;
+    const radius = 0.5 - padding;
+    const dx = nx - cx;
+    const dy = ny - cy;
+    const distance = Math.hypot(dx, dy);
+    if (distance <= radius && ny <= cy - padding * 0.35) {
+      return { x: nx, y: ny };
+    }
+
+    if (distance < 0.0001) {
+      return { x: cx, y: cy - radius };
+    }
+
+    const scale = radius / distance;
+    return {
+      x: cx + dx * scale,
+      y: Math.min(cy - padding * 0.35, cy + dy * scale),
+    };
+  }
+
+  function placeEyes() {
+    if (blob.dataset.state !== "idle") return;
+
+    const rect = body.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return;
+
+    const localX = (pointerX - rect.left) / rect.width;
+    const localY = (pointerY - rect.top) / rect.height;
+    const onBlob =
+      localX >= -0.05 &&
+      localX <= 1.05 &&
+      localY >= -0.15 &&
+      localY <= 1.2 &&
+      Math.hypot(localX - 0.5, localY - 1) <= 0.62;
+
+    const restY = 0.46;
+    const lookStrength = onBlob ? maxLookClose : maxLook;
+    const lookX = (localX - 0.5) * lookStrength * 2;
+    const lookY = (localY - restY) * lookStrength * 1.35;
+    const gap = onBlob ? minGap + (restGap - minGap) * 0.35 : restGap;
+
+    const centerX = 0.5 + clamp(lookX, -lookStrength, lookStrength);
+    const centerY = restY + clamp(lookY, -lookStrength, lookStrength * 0.9);
+    const padding = eyeSize / rect.width + 0.08;
+
+    let left = pointInSemicircle(centerX - gap / 2, centerY, padding);
+    let right = pointInSemicircle(centerX + gap / 2, centerY, padding);
+
+    const currentGap = right.x - left.x;
+    if (currentGap < minGap) {
+      const mid = (left.x + right.x) / 2;
+      left = pointInSemicircle(mid - minGap / 2, left.y, padding);
+      right = pointInSemicircle(mid + minGap / 2, right.y, padding);
+    }
+
+    blob.style.setProperty("--eye-l-x", `${(left.x * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-l-y", `${(left.y * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-r-x", `${(right.x * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-r-y", `${(right.y * 100).toFixed(2)}%`);
+  }
+
+  function requestEyeUpdate() {
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      placeEyes();
+      frame = 0;
+    });
+  }
+
+  function clearTimers() {
+    window.clearTimeout(regenerateTimer);
+    window.clearTimeout(stateTimer);
+  }
+
+  function finishShake() {
+    setState("idle");
+    blob.setAttribute("aria-label", "Friendly blob. Click to pop.");
+    requestEyeUpdate();
+  }
+
+  function startShake() {
+    setState("shaking");
+    const shakeMs = reducedMotion.matches ? 80 : 560;
+    stateTimer = window.setTimeout(finishShake, shakeMs);
+  }
+
+  function startRise() {
+    setState("rising");
+    blob.setAttribute("aria-label", "Blob is coming back.");
+    const riseMs = reducedMotion.matches ? 80 : 1150;
+    stateTimer = window.setTimeout(startShake, riseMs);
+  }
+
+  function popBlob() {
+    if (blob.dataset.state !== "idle") return;
+
+    clearTimers();
+    setState("popping");
+    blob.setAttribute("aria-label", "Blob popped.");
+
+    const popMs = reducedMotion.matches ? 80 : 420;
+    stateTimer = window.setTimeout(() => {
+      setState("gone");
+      regenerateTimer = window.setTimeout(startRise, reducedMotion.matches ? 900 : 2600);
+    }, popMs);
+  }
+
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      requestEyeUpdate();
+    },
+    { passive: true },
+  );
+
+  window.addEventListener("scroll", requestEyeUpdate, { passive: true });
+  window.addEventListener("resize", requestEyeUpdate);
+
+  blob.addEventListener("click", (event) => {
+    event.preventDefault();
+    popBlob();
+  });
+
+  blob.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      popBlob();
+    }
+  });
+
+  placeEyes();
+}
+
+setupBlob();
