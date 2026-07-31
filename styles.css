@@ -858,6 +858,10 @@ h1 {
   margin-bottom: 0.5rem;
 }
 
+.progression-personal .progression-logo-form-flow {
+  height: 2.2rem;
+}
+
 .progression-personal-event {
   max-width: 15rem;
 }
