@@ -3,6 +3,8 @@ const themeToggle = document.querySelector(".theme-toggle");
 const themeColor = document.querySelector("#theme-color");
 const navToggle = document.querySelector(".nav-toggle");
 const navLinks = document.querySelector(".nav-links");
+const homeLink = document.querySelector('.nav-links a[href="/"]');
+const isHomePage = Boolean(document.querySelector("#home"));
 const sectionLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
 const sections = sectionLinks
   .map((link) => document.querySelector(link.getAttribute("href")))
@@ -73,6 +75,8 @@ window.addEventListener("resize", () => {
 });
 
 function markActiveSection(id) {
+  homeLink?.removeAttribute("aria-current");
+
   sectionLinks.forEach((link) => {
     const active = link.getAttribute("href") === `#${id}`;
     if (active) {
@@ -83,17 +87,27 @@ function markActiveSection(id) {
   });
 }
 
+function markHomeActive() {
+  if (!isHomePage) return;
+  sectionLinks.forEach((link) => link.removeAttribute("aria-current"));
+  homeLink?.setAttribute("aria-current", "page");
+}
+
 let activeSectionFrame;
 
 function updateActiveSection() {
   const marker = window.innerHeight * 0.38;
-  let current = sections[0];
+  let current;
 
   sections.forEach((section) => {
     if (section.getBoundingClientRect().top <= marker) current = section;
   });
 
-  if (current) markActiveSection(current.id);
+  if (current) {
+    markActiveSection(current.id);
+  } else {
+    markHomeActive();
+  }
 }
 
 function requestActiveSectionUpdate() {

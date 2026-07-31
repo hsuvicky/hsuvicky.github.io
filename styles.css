@@ -214,12 +214,14 @@ button {
 }
 
 .nav-links a:hover,
-.nav-links a[aria-current="location"] {
+.nav-links a[aria-current="location"],
+.nav-links a[aria-current="page"] {
   color: var(--text);
 }
 
 .nav-links a:hover::after,
-.nav-links a[aria-current="location"]::after {
+.nav-links a[aria-current="location"]::after,
+.nav-links a[aria-current="page"]::after {
   transform: scaleX(1);
 }
 
@@ -1461,6 +1463,50 @@ h1 {
   transform: rotate(27deg);
 }
 
+.about-page .hobbies {
+  min-height: calc(100vh - var(--header-height) - 5rem);
+}
+
+.hobbies-disclosure {
+  position: relative;
+  z-index: 1;
+  margin-top: 1.4rem;
+}
+
+.hobbies-disclosure > summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  min-height: 56px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  color: var(--accent-deep);
+  cursor: pointer;
+  font-family: var(--display);
+  font-size: 1.15rem;
+  list-style: none;
+}
+
+.hobbies-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+.hobbies-disclosure > summary span:last-child {
+  font-family: var(--sans);
+  font-size: 1.2rem;
+  font-weight: 400;
+  transition: transform 160ms ease;
+}
+
+.hobbies-disclosure[open] > summary span:last-child {
+  transform: rotate(45deg);
+}
+
+.hobbies-disclosure .field-notes {
+  margin-top: 1.25rem;
+}
+
 .field-notes {
   position: relative;
   z-index: 1;
@@ -2253,7 +2299,8 @@ h1 {
   }
 
   .nav-links a:hover::after,
-  .nav-links a[aria-current="location"]::after {
+  .nav-links a[aria-current="location"]::after,
+  .nav-links a[aria-current="page"]::after {
     transform: translateY(50%) scaleY(1);
   }
 
