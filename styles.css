@@ -253,8 +253,13 @@ button {
   border-radius: 50%;
   background: #1a1f1c;
   transform: translate(-50%, -50%);
+  transform-origin: 50% 50%;
   pointer-events: none;
-  will-change: left, top;
+  will-change: left, top, transform;
+}
+
+.blob[data-state="idle"]:not([data-squint="true"]) .blob-eye {
+  animation: blob-blink 2s steps(1, end) infinite;
 }
 
 .blob-eye-l {
@@ -411,6 +416,19 @@ button {
   100% {
     opacity: 0;
     transform: scale(1.35);
+  }
+}
+
+@keyframes blob-blink {
+  0%,
+  88%,
+  100% {
+    transform: translate(-50%, -50%) scaleY(1);
+  }
+
+  92%,
+  96% {
+    transform: translate(-50%, -50%) scaleY(0.08);
   }
 }
 
@@ -2889,7 +2907,8 @@ h1 {
 
   .blob[data-state="popping"] .blob-body,
   .blob[data-state="popping"] .blob-pop-burst,
-  .blob[data-state="rising"] .blob-body {
+  .blob[data-state="rising"] .blob-body,
+  .blob[data-state="idle"]:not([data-squint="true"]) .blob-eye {
     animation: none;
   }
 
