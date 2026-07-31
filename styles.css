@@ -348,7 +348,7 @@ button {
 
 .blob-arm {
   position: absolute;
-  top: 22%;
+  top: 12%;
   left: 100%;
   z-index: 0;
   width: var(--blob-arm-w);
@@ -358,8 +358,8 @@ button {
   opacity: 0;
   pointer-events: none;
   /* Tucked down behind the body when hidden. */
-  transform: translate(-8px, 6px) rotate(78deg);
-  transform-origin: 5% 50%;
+  transform: translate(-8px, 5px) rotate(74deg);
+  transform-origin: 5% 39%;
 }
 
 .blob-arm line {
@@ -377,13 +377,13 @@ button {
 }
 
 .blob-arm-wave {
-  transform-origin: 5% 50%;
+  transform-origin: 5% 39%;
 }
 
 .blob-arm-fore {
   transform-origin: 0 0;
   /* Slightly open L at the elbow in the rest pose. */
-  transform: rotate(12deg);
+  transform: rotate(10deg);
 }
 
 .blob-arm-hand {
@@ -394,7 +394,7 @@ button {
   z-index: 3;
   opacity: 1;
   /* Lower side-wave: upper arm out/down, forearm hinged up. */
-  transform: translate(0, 2px) rotate(28deg);
+  transform: translate(0, 1px) rotate(22deg);
   transition: opacity 120ms ease;
 }
 
@@ -418,7 +418,7 @@ button {
 .blob[data-arm="hidden"] .blob-arm {
   z-index: 0;
   opacity: 0;
-  transform: translate(-8px, 6px) rotate(78deg);
+  transform: translate(-8px, 5px) rotate(74deg);
 }
 
 .blob[data-state="startled"] .blob-arm,
@@ -731,23 +731,23 @@ button {
 @keyframes blob-arm-fore-wave {
   /* Elbow hinge does most of the wave. */
   0% {
-    transform: rotate(12deg);
+    transform: rotate(10deg);
   }
 
   25% {
-    transform: rotate(-18deg);
+    transform: rotate(-20deg);
   }
 
   50% {
-    transform: rotate(28deg);
+    transform: rotate(26deg);
   }
 
   75% {
-    transform: rotate(-14deg);
+    transform: rotate(-16deg);
   }
 
   100% {
-    transform: rotate(12deg);
+    transform: rotate(10deg);
   }
 }
 
@@ -776,17 +776,17 @@ button {
 @keyframes blob-arm-tuck {
   0% {
     opacity: 1;
-    transform: translate(0, 2px) rotate(28deg);
+    transform: translate(0, 1px) rotate(22deg);
   }
 
   55% {
     opacity: 1;
-    transform: translate(-6px, 4px) rotate(52deg);
+    transform: translate(-6px, 3px) rotate(48deg);
   }
 
   100% {
     opacity: 0;
-    transform: translate(-8px, 6px) rotate(78deg);
+    transform: translate(-8px, 5px) rotate(74deg);
   }
 }
 

@@ -421,14 +421,14 @@ function setupBlobColony() {
           </span>
           <svg class="blob-arm" viewBox="0 0 40 36" aria-hidden="true">
             <g class="blob-arm-wave">
-              <!-- Upper arm: out and a bit down so the elbow reads as a hinge. -->
-              <line class="blob-arm-upper" x1="2" y1="18" x2="18" y2="26"></line>
-              <circle class="blob-arm-elbow" cx="18" cy="26" r="1.35"></circle>
-              <g transform="translate(18 26)">
+              <!-- Upper arm: out and slightly down; elbow is the clear hinge. -->
+              <line class="blob-arm-upper" x1="2" y1="14" x2="17" y2="20"></line>
+              <circle class="blob-arm-elbow" cx="17" cy="20" r="1.35"></circle>
+              <g transform="translate(17 20)">
                 <g class="blob-arm-fore">
                   <!-- Forearm bent up from the elbow (~L wave). -->
-                  <line x1="0" y1="0" x2="4" y2="-13"></line>
-                  <g transform="translate(4 -13)">
+                  <line x1="0" y1="0" x2="5" y2="-12"></line>
+                  <g transform="translate(5 -12)">
                     <g class="blob-arm-hand">
                       <line x1="0" y1="0" x2="-5" y2="-4"></line>
                       <line x1="0" y1="0" x2="0" y2="-7"></line>
