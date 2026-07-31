@@ -370,8 +370,6 @@ function setupBlob() {
   const RX = 50;
   const RY = 58;
   const SEGMENTS = 36;
-  const maxLook = 0.12;
-  const maxLookClose = 0.2;
   const spring = reducedMotion.matches
     ? { stiffness: 1, damping: 1 }
     : { stiffness: 0.065, damping: 0.8 };
@@ -555,40 +553,49 @@ function setupBlob() {
       localY >= -0.2 &&
       localY <= 1.15;
 
-    // Look by sliding eye anchors along the deformed surface, then inset inward
-    // so they stay inside the body instead of floating outside dents.
-    const lookAng = clamp(
-      Math.atan2(1 - localY, localX - 0.5),
-      0.2,
-      Math.PI - 0.2,
-    );
-    const lookPull = onBlob ? maxLookClose : maxLook;
-    let leftTheta = Math.PI * 0.66;
-    let rightTheta = Math.PI * 0.34;
-    leftTheta = clamp(leftTheta + (lookAng - leftTheta) * lookPull * 1.4, 0.35, Math.PI - 0.18);
-    rightTheta = clamp(rightTheta + (lookAng - rightTheta) * lookPull * 1.4, 0.18, Math.PI - 0.35);
+    // Socket anchors follow the deformed body, then we force a shared Y so the
+    // pair never looks slanted, and keep a hard gap so > < never touch.
+    const inset = clamp(0.48 + morph.squash * 0.08 + morph.dent * 0.1, 0.46, 0.58);
+    const halfSep = 0.36;
+    const socketL = eyePoint(Math.PI / 2 + halfSep, inset);
+    const socketR = eyePoint(Math.PI / 2 - halfSep, inset);
+    const socketY = (socketL.y + socketR.y) / 2;
+    const socketMidX = (socketL.x + socketR.x) / 2;
 
-    const minThetaGap = 0.48;
-    if (leftTheta - rightTheta < minThetaGap) {
-      const mid = (leftTheta + rightTheta) / 2;
-      leftTheta = mid + minThetaGap / 2;
-      rightTheta = mid - minThetaGap / 2;
+    const lookGain = onBlob ? 9 : 5.5;
+    const lookX = clamp((localX - 0.5) * lookGain * 2, -9, 9);
+    const lookY = clamp((localY - 0.42) * lookGain * 1.35, -7, 7);
+
+    const minGap = 30;
+    let centerX = socketMidX + lookX;
+    let eyeY = socketY + lookY;
+
+    // Keep the pair inside the upper face band, away from the silhouette edge.
+    centerX = clamp(centerX, 34, 66);
+    eyeY = clamp(eyeY, VB_H - RY * 0.68, VB_H - RY * 0.3);
+
+    let leftX = centerX - minGap / 2;
+    let rightX = centerX + minGap / 2;
+
+    // Extra margin from left/right edges of the body.
+    if (leftX < 20) {
+      rightX += 20 - leftX;
+      leftX = 20;
+    }
+    if (rightX > 80) {
+      leftX -= rightX - 80;
+      rightX = 80;
+    }
+    if (rightX - leftX < minGap) {
+      leftX = VB_W / 2 - minGap / 2;
+      rightX = VB_W / 2 + minGap / 2;
     }
 
-    const inset = clamp(0.42 + morph.squash * 0.12 + morph.dent * 0.14, 0.4, 0.58);
-    const left = eyePoint(leftTheta, inset);
-    const right = eyePoint(rightTheta, inset);
-
-    const leftX = left.x / VB_W;
-    const leftY = left.y / VB_H;
-    const rightX = right.x / VB_W;
-    const rightY = right.y / VB_H;
-
-    blob.style.setProperty("--eye-l-x", `${(leftX * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-l-y", `${(leftY * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-r-x", `${(rightX * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-r-y", `${(rightY * 100).toFixed(2)}%`);
-    blob.style.setProperty("--squint-y", `${(((leftY + rightY) / 2) * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-l-x", `${((leftX / VB_W) * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-l-y", `${((eyeY / VB_H) * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-r-x", `${((rightX / VB_W) * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-r-y", `${((eyeY / VB_H) * 100).toFixed(2)}%`);
+    blob.style.setProperty("--squint-y", `${((eyeY / VB_H) * 100).toFixed(2)}%`);
 
     const facePress = morph.dent > 0.26 && Math.sin(morph.contactAng) > 0.72;
     const squished = morph.squash > 0.18 || facePress;
