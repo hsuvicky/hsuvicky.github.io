@@ -374,7 +374,7 @@ function setupBlob() {
   const maxLookClose = 0.2;
   const spring = reducedMotion.matches
     ? { stiffness: 1, damping: 1 }
-    : { stiffness: 0.12, damping: 0.72 };
+    : { stiffness: 0.065, damping: 0.8 };
 
   let pointerX = window.innerWidth * 0.5;
   let pointerY = window.innerHeight * 0.35;
