@@ -327,7 +327,7 @@ function setupCareerTimeline() {
         return;
       }
 
-      const duration = Math.min(4200, Math.max(3000, targetDistance * 1.8));
+      const duration = Math.min(3200, Math.max(2200, targetDistance * 1.35));
       let startTime;
       autoScrolling = true;
 

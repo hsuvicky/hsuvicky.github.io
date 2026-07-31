@@ -707,9 +707,9 @@ h1 {
 
 .progression-rail li {
   position: relative;
-  flex: 0 0 clamp(14.5rem, 22vw, 17.5rem);
+  flex: 0 0 clamp(10.75rem, 15vw, 12rem);
   min-height: 18rem;
-  padding: 0 2.2rem 1rem 0;
+  padding: 0 1.25rem 1rem 0;
   opacity: 0;
   transition: opacity 180ms linear;
   will-change: opacity;
@@ -2383,7 +2383,7 @@ h1 {
   }
 
   .progression-rail li {
-    flex-basis: min(72vw, 15.5rem);
+    flex-basis: min(58vw, 12rem);
   }
 
   .case-study {
