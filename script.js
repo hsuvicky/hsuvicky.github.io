@@ -368,7 +368,7 @@ function setupBlob() {
   const VB_W = 100;
   const VB_H = 64;
   const RX = 50;
-  const RY = 58;
+  const RY = 60;
   const SEGMENTS = 36;
   const spring = reducedMotion.matches
     ? { stiffness: 1, damping: 1 }
@@ -385,6 +385,8 @@ function setupBlob() {
   let armTimer = 0;
   let armPhaseTimer = 0;
   let armState = "hidden";
+  let squintOn = false;
+  const eyeSmooth = { lx: 32, ly: 38, rx: 68, ry: 38 };
 
   const morph = {
     squash: 0,
