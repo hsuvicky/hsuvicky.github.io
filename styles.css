@@ -811,13 +811,13 @@ h1 {
 }
 
 .progression-personal .progression-logo {
-  height: 1.3rem;
+  height: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 .progression-personal-event {
   max-width: 15rem;
-  margin-top: 1.35rem;
+  margin-top: 2.45rem;
 }
 
 .progression-personal-event strong,
@@ -827,8 +827,12 @@ h1 {
 }
 
 .progression-personal-event .progression-logo {
-  height: 1.1rem;
+  height: 1.4rem;
   margin-bottom: 0.45rem;
+}
+
+.progression-personal-event .progression-logo-rank {
+  height: 1.75rem;
 }
 
 .progression-personal-event strong {
@@ -857,7 +861,7 @@ h1 {
 }
 
 .progression-career-event .progression-logo {
-  height: 1.35rem;
+  height: 1.15rem;
   margin-bottom: 0.5rem;
 }
 
@@ -891,31 +895,31 @@ h1 {
   display: block;
   width: auto;
   max-width: 100%;
-  height: 1.65rem;
+  height: 1.25rem;
   margin-bottom: 0.7rem;
   object-fit: contain;
   object-position: left center;
 }
 
 .progression-logo-ey {
-  height: 1.75rem;
+  height: 1.3rem;
 }
 
 .progression-logo-parthenon {
-  height: 1.7rem;
+  height: 1.3rem;
 }
 
 .progression-logo-nyu {
-  height: 1.7rem;
+  height: 1.25rem;
   transform: translateY(2px);
 }
 
 .progression-logo-rank {
-  height: 1.8rem;
+  height: 1.5rem;
 }
 
 .progression-logo-lol {
-  height: 1.8rem;
+  height: 1.5rem;
 }
 
 .progression-rail li:hover > .progression-period,
