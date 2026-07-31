@@ -221,7 +221,8 @@ button {
   position: relative;
   width: var(--blob-w);
   height: var(--blob-h);
-  overflow: visible;
+  overflow-x: visible;
+  overflow-y: hidden;
 }
 
 .blob-body {

@@ -437,12 +437,12 @@ function setupBlob() {
 
     let { x, y } = restPoint(theta);
 
-    // Soft squat: compress toward the pinned base and bulge sideways.
+    // Soft squat: compress toward the pinned base, but only about halfway max.
     const squash = morph.squash;
     if (squash > 0.001) {
       const height = VB_H - y;
-      y = VB_H - height * (1 - squash * 0.62);
-      const bulge = 1 + squash * 0.28 * Math.sin(theta);
+      y = VB_H - height * (1 - squash * 0.48);
+      const bulge = 1 + squash * 0.22 * Math.sin(theta);
       x = VB_W / 2 + (x - VB_W / 2) * bulge;
     }
 
