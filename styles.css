@@ -187,8 +187,8 @@ button {
 }
 
 .blob {
-  --blob-w: 74px;
-  --blob-h: 50px;
+  --blob-w: 82px;
+  --blob-h: 41px;
   --blob-eye-w: 8px;
   --blob-eye-h: 10px;
   --eye-l-x: 28%;
@@ -248,6 +248,11 @@ button {
 
 .blob-svg path {
   fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  shape-rendering: geometricPrecision;
 }
 
 .blob-arm {

@@ -366,10 +366,10 @@ function setupBlob() {
   if (!blob || !body || !path) return;
 
   const VB_W = 100;
-  const VB_H = 64;
+  const VB_H = 50;
   const RX = 50;
-  const RY = 60;
-  const SEGMENTS = 36;
+  const RY = 50;
+  const SEGMENTS = 72;
   const spring = reducedMotion.matches
     ? { stiffness: 1, damping: 1 }
     : { stiffness: 0.065, damping: 0.8 };
@@ -427,11 +427,18 @@ function setupBlob() {
   }
 
   function restPoint(theta) {
+    // Circular dome in viewBox space (CSS box is 2:1, so this reads as a semicircle).
     return {
       x: VB_W / 2 + RX * Math.cos(theta),
       y: VB_H - RY * Math.sin(theta),
       theta,
     };
+  }
+
+  function softCeiling(value, limit, range) {
+    if (value <= limit) return value;
+    const excess = value - limit;
+    return limit + (excess * range) / (excess + range);
   }
 
   function deformPoint(theta) {
@@ -447,7 +454,7 @@ function setupBlob() {
     if (squash > 0.001) {
       const height = VB_H - y;
       y = VB_H - height * (1 - squash * 0.42);
-      const bulge = 1 + squash * 0.2 * upper;
+      const bulge = 1 + squash * 0.18 * upper;
       x = VB_W / 2 + (x - VB_W / 2) * bulge;
     }
 
@@ -457,23 +464,23 @@ function setupBlob() {
       let dAng = theta - morph.contactAng;
       while (dAng > Math.PI) dAng -= Math.PI * 2;
       while (dAng < -Math.PI) dAng += Math.PI * 2;
-      const falloff = Math.exp(-((dAng / 0.72) ** 2));
+      const falloff = Math.exp(-((dAng / 0.78) ** 2));
       const nx = VB_W / 2 - x;
       const ny = VB_H - y;
       const len = Math.hypot(nx, ny) || 1;
       // Less vertical bite on the crown so dent can't flatten past the max squat.
-      const depth = dent * (18 - upper * 6) * falloff;
+      const depth = dent * (15 - upper * 5) * falloff;
       x += (nx / len) * depth;
-      y += (ny / len) * depth * (0.75 - upper * 0.2);
+      y += (ny / len) * depth * (0.72 - upper * 0.18);
     }
 
     y = Math.min(y, VB_H - 0.2);
 
-    // Hard floor: crown cannot sink below ~half resting height (screenshot max).
+    // Soft floor: crown cannot sink below ~half resting height.
     const maxApexY = VB_H - RY * 0.5;
-    if (upper > 0.15) {
-      const limit = maxApexY + (1 - upper) * 14;
-      if (y > limit) y = limit;
+    if (upper > 0.12) {
+      const limit = maxApexY + (1 - upper) * 10;
+      y = softCeiling(y, limit, 5);
     }
 
     return { x, y, theta };
@@ -492,6 +499,11 @@ function setupBlob() {
   }
 
   function buildPath() {
+    // Perfect circular arc while idle — no sampled facets.
+    if (morph.squash < 0.001 && morph.dent < 0.001) {
+      return `M0 ${VB_H}A${RX} ${RY} 0 0 1 ${VB_W} ${VB_H}Z`;
+    }
+
     const pts = [];
     for (let i = 0; i <= SEGMENTS; i += 1) {
       const theta = Math.PI * (1 - i / SEGMENTS);
@@ -501,9 +513,23 @@ function setupBlob() {
     pts[0] = { x: 0, y: VB_H, theta: Math.PI };
     pts[pts.length - 1] = { x: VB_W, y: VB_H, theta: 0 };
 
+    // Catmull-Rom → cubic beziers so morphs stay smooth (no faceted edges).
     let d = `M${pts[0].x.toFixed(2)} ${pts[0].y.toFixed(2)}`;
-    for (let i = 1; i < pts.length; i += 1) {
-      d += `L${pts[i].x.toFixed(2)} ${pts[i].y.toFixed(2)}`;
+    for (let i = 0; i < pts.length - 1; i += 1) {
+      const p0 = pts[i === 0 ? 0 : i - 1];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[i + 2] || p2;
+      // Mirror tangents at the pinned base corners for a clean join.
+      const t1x = i === 0 ? p2.x - p1.x : (p2.x - p0.x) / 6;
+      const t1y = i === 0 ? (p2.y - p1.y) / 3 : (p2.y - p0.y) / 6;
+      const t2x = i >= pts.length - 2 ? p2.x - p1.x : (p3.x - p1.x) / 6;
+      const t2y = i >= pts.length - 2 ? (p2.y - p1.y) / 3 : (p3.y - p1.y) / 6;
+      const c1x = p1.x + t1x;
+      const c1y = p1.y + t1y;
+      const c2x = p2.x - t2x;
+      const c2y = p2.y - t2y;
+      d += `C${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}`;
     }
     return `${d}Z`;
   }
@@ -607,14 +633,14 @@ function setupBlob() {
     let centerX = socketMidX + lookX * (1 - morph.squash * 0.25);
     let eyeY = socketY + lookY;
 
-    // Clamp to the *current* crown; allow higher when looking up at the cursor.
-    const minEyeY = apex.y + (cursorAbove || lookY < -2 ? 1.6 : 7);
-    const maxEyeY = VB_H - 11;
+    // Clamp to the *current* crown; keep pupils inside the semicircle fill.
+    const minEyeY = apex.y + (cursorAbove || lookY < -2 ? 5.5 : 8);
+    const maxEyeY = VB_H - 9;
     centerX = clamp(centerX, 32, 68);
     eyeY = clamp(eyeY, minEyeY, maxEyeY);
     if (cursorAbove) {
       // Ease toward the crown so gaze reads as “looking up,” not just a nudge.
-      const crownTarget = apex.y + 2.4;
+      const crownTarget = apex.y + 6;
       eyeY += (crownTarget - eyeY) * clamp(0.22 - localY, 0.35, 0.85);
       eyeY = clamp(eyeY, minEyeY, maxEyeY);
     }
