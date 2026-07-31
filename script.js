@@ -441,19 +441,19 @@ function setupBlob() {
       x = VB_W / 2 + (x - VB_W / 2) * bulge;
     }
 
-    // Soft concave dent: push a local region inward along the surface normal.
+    // Soft concave dent: yield inward around the poke, like pressing into jello.
     const dent = morph.dent;
     if (dent > 0.001) {
       let dAng = theta - morph.contactAng;
       while (dAng > Math.PI) dAng -= Math.PI * 2;
       while (dAng < -Math.PI) dAng += Math.PI * 2;
-      const falloff = Math.exp(-((dAng / 0.62) ** 2));
+      const falloff = Math.exp(-((dAng / 0.72) ** 2));
       const nx = VB_W / 2 - x;
       const ny = VB_H - y;
       const len = Math.hypot(nx, ny) || 1;
-      const depth = dent * 20 * falloff;
+      const depth = dent * 24 * falloff;
       x += (nx / len) * depth;
-      y += (ny / len) * depth * 0.9;
+      y += (ny / len) * depth * 0.92;
     }
 
     y = Math.min(y, VB_H - 0.2);
