@@ -224,10 +224,23 @@ button {
 .blob-body {
   position: absolute;
   inset: 0;
-  border-radius: 999px 999px 0 0;
-  background: var(--accent);
+  color: var(--accent);
   transform-origin: 50% 100%;
-  transition: background-color 180ms ease;
+  transition: color 180ms ease;
+}
+
+.blob-svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.blob-svg path {
+  fill: currentColor;
 }
 
 .blob-eye {

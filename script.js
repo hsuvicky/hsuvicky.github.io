@@ -362,18 +362,34 @@ setupCareerTimeline();
 function setupBlob() {
   const blob = document.querySelector("[data-blob]");
   const body = blob?.querySelector("[data-blob-body]");
-  if (!blob || !body) return;
+  const path = blob?.querySelector("[data-blob-path]");
+  if (!blob || !body || !path) return;
 
   const eyePad = 0.11;
   const restGap = 0.56;
   const minGap = 0.4;
   const maxLook = 0.15;
   const maxLookClose = 0.24;
+  const spring = reducedMotion.matches
+    ? { stiffness: 1, damping: 1 }
+    : { stiffness: 0.14, damping: 0.68 };
+
   let pointerX = window.innerWidth * 0.5;
   let pointerY = window.innerHeight * 0.35;
-  let frame = 0;
   let regenerateTimer = 0;
   let stateTimer = 0;
+  let raf = 0;
+
+  const morph = {
+    dentL: 0,
+    dentR: 0,
+    squash: 0,
+    lean: 0,
+    vDentL: 0,
+    vDentR: 0,
+    vSquash: 0,
+    vLean: 0,
+  };
 
   function setState(state) {
     blob.dataset.state = state;
@@ -381,6 +397,59 @@ function setupBlob() {
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
+  }
+
+  function softTouch(outside, along) {
+    const approach = outside > 0 ? clamp(1 - outside / 0.75, 0, 1) : 1;
+    const depth = clamp(-outside, 0, 0.85);
+    return (approach * 0.42 + depth * 0.9) * along;
+  }
+
+  function buildPath(dentL, dentR, squash, lean) {
+    // Base corners stay pinned at (0,50) and (100,50).
+    const top = 1.5 + squash * 28;
+    const sideY = 26 + squash * 10;
+    const apexX = 50 + lean * 14;
+    const leftMidX = 20 + dentL * 26;
+    const rightMidX = 80 - dentR * 26;
+    const leftCtrlX = 0 + dentL * 10;
+    const rightCtrlX = 100 - dentR * 10;
+
+    return `M0 50C${leftCtrlX.toFixed(2)} ${sideY.toFixed(2)} ${leftMidX.toFixed(2)} ${top.toFixed(2)} ${apexX.toFixed(2)} ${top.toFixed(2)}C${rightMidX.toFixed(2)} ${top.toFixed(2)} ${rightCtrlX.toFixed(2)} ${sideY.toFixed(2)} 100 50Z`;
+  }
+
+  function springTo(key, target) {
+    const velocityKey = `v${key[0].toUpperCase()}${key.slice(1)}`;
+    const force = (target - morph[key]) * spring.stiffness;
+    morph[velocityKey] = (morph[velocityKey] + force) * spring.damping;
+    morph[key] += morph[velocityKey];
+
+    if (Math.abs(morph[velocityKey]) < 0.0004 && Math.abs(target - morph[key]) < 0.0008) {
+      morph[key] = target;
+      morph[velocityKey] = 0;
+    }
+  }
+
+  function morphTargets() {
+    const rect = body.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) {
+      return { dentL: 0, dentR: 0, squash: 0, lean: 0 };
+    }
+
+    const lx = (pointerX - rect.left) / rect.width;
+    const ly = (pointerY - rect.top) / rect.height;
+
+    const alongRight = clamp(1 - Math.abs(ly - 0.42) / 0.75, 0, 1);
+    const alongLeft = clamp(1 - Math.abs(ly - 0.42) / 0.75, 0, 1);
+    const alongTop = clamp(1 - Math.abs(lx - 0.5) / 0.62, 0, 1);
+
+    // outside < 0 means the cursor has crossed into / past that face.
+    const dentR = clamp(softTouch(lx - 1, alongRight), 0, 1);
+    const dentL = clamp(softTouch(-lx, alongLeft), 0, 1);
+    const squash = clamp(softTouch(-ly, alongTop) * 1.05, 0, 1);
+    const lean = clamp((dentR - dentL) * -0.85, -1, 1);
+
+    return { dentL, dentR, squash, lean };
   }
 
   function maxHalfSpanAtY(ny, padding) {
@@ -406,39 +475,54 @@ function setupBlob() {
       localY <= 1.2 &&
       Math.hypot(localX - 0.5, localY - 1) <= 0.62;
 
-    const restY = 0.48;
+    const restY = 0.48 + morph.squash * 0.18;
     const lookStrength = onBlob ? maxLookClose : maxLook;
-    const lookX = (localX - 0.5) * lookStrength * 2;
+    const lookX = (localX - 0.5) * lookStrength * 2 + morph.lean * 0.08;
     const lookY = (localY - restY) * lookStrength * 1.1;
     const desiredGap = onBlob ? minGap + (restGap - minGap) * 0.45 : restGap;
 
-    // Keep eyes in the wider band of the semicircle so spacing stays readable.
-    let centerY = clamp(restY + lookY, 0.36, 0.72);
+    let centerY = clamp(restY + lookY, 0.36 + morph.squash * 0.12, 0.78);
     let gap = desiredGap;
-    let halfSpan = maxHalfSpanAtY(centerY, eyePad);
+    let halfSpan = maxHalfSpanAtY(centerY, eyePad) * (1 - morph.dentL * 0.12 - morph.dentR * 0.12);
 
-    while (halfSpan < gap / 2 + 0.02 && centerY < 0.7) {
+    while (halfSpan < gap / 2 + 0.02 && centerY < 0.74) {
       centerY += 0.02;
-      halfSpan = maxHalfSpanAtY(centerY, eyePad);
+      halfSpan = maxHalfSpanAtY(centerY, eyePad) * (1 - morph.dentL * 0.12 - morph.dentR * 0.12);
     }
 
     gap = Math.min(desiredGap, Math.max(minGap, halfSpan * 1.7));
-    const centerX = clamp(0.5 + lookX, 0.5 - (halfSpan - gap / 2), 0.5 + (halfSpan - gap / 2));
-    const leftX = centerX - gap / 2;
-    const rightX = centerX + gap / 2;
+    const centerX = clamp(
+      0.5 + lookX - morph.dentR * 0.06 + morph.dentL * 0.06,
+      0.5 - (halfSpan - gap / 2),
+      0.5 + (halfSpan - gap / 2),
+    );
 
-    blob.style.setProperty("--eye-l-x", `${(leftX * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-l-x", `${((centerX - gap / 2) * 100).toFixed(2)}%`);
     blob.style.setProperty("--eye-l-y", `${(centerY * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-r-x", `${(rightX * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-r-x", `${((centerX + gap / 2) * 100).toFixed(2)}%`);
     blob.style.setProperty("--eye-r-y", `${(centerY * 100).toFixed(2)}%`);
   }
 
-  function requestEyeUpdate() {
-    if (frame) return;
-    frame = requestAnimationFrame(() => {
-      placeEyes();
-      frame = 0;
-    });
+  function renderMorph() {
+    path.setAttribute(
+      "d",
+      buildPath(morph.dentL, morph.dentR, morph.squash, morph.lean),
+    );
+  }
+
+  function tick() {
+    const active = blob.dataset.state === "idle";
+    const targets = active ? morphTargets() : { dentL: 0, dentR: 0, squash: 0, lean: 0 };
+
+    springTo("dentL", targets.dentL);
+    springTo("dentR", targets.dentR);
+    springTo("squash", targets.squash);
+    springTo("lean", targets.lean);
+    renderMorph();
+
+    if (active) placeEyes();
+
+    raf = requestAnimationFrame(tick);
   }
 
   function clearTimers() {
@@ -449,7 +533,6 @@ function setupBlob() {
   function finishShake() {
     setState("idle");
     blob.setAttribute("aria-label", "Friendly blob. Click to pop.");
-    requestEyeUpdate();
   }
 
   function startShake() {
@@ -461,6 +544,15 @@ function setupBlob() {
   function startRise() {
     setState("rising");
     blob.setAttribute("aria-label", "Blob is coming back.");
+    morph.dentL = 0;
+    morph.dentR = 0;
+    morph.squash = 0;
+    morph.lean = 0;
+    morph.vDentL = 0;
+    morph.vDentR = 0;
+    morph.vSquash = 0;
+    morph.vLean = 0;
+    renderMorph();
     const riseMs = reducedMotion.matches ? 80 : 1150;
     stateTimer = window.setTimeout(startShake, riseMs);
   }
@@ -482,14 +574,10 @@ function setupBlob() {
   function onPointer(event) {
     pointerX = event.clientX;
     pointerY = event.clientY;
-    requestEyeUpdate();
   }
 
   window.addEventListener("pointermove", onPointer, { passive: true });
   window.addEventListener("mousemove", onPointer, { passive: true });
-
-  window.addEventListener("scroll", requestEyeUpdate, { passive: true });
-  window.addEventListener("resize", requestEyeUpdate);
 
   blob.addEventListener("click", (event) => {
     event.preventDefault();
@@ -503,7 +591,9 @@ function setupBlob() {
     }
   });
 
+  renderMorph();
   placeEyes();
+  raf = requestAnimationFrame(tick);
 }
 
 setupBlob();
