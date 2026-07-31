@@ -365,30 +365,29 @@ function setupBlob() {
   const path = blob?.querySelector("[data-blob-path]");
   if (!blob || !body || !path) return;
 
-  const eyePad = 0.11;
-  const restGap = 0.56;
-  const minGap = 0.4;
-  const maxLook = 0.15;
-  const maxLookClose = 0.24;
+  const VB_W = 100;
+  const VB_H = 64;
+  const RX = 50;
+  const RY = 58;
+  const SEGMENTS = 36;
+  const maxLook = 0.12;
+  const maxLookClose = 0.2;
   const spring = reducedMotion.matches
     ? { stiffness: 1, damping: 1 }
-    : { stiffness: 0.14, damping: 0.68 };
+    : { stiffness: 0.12, damping: 0.72 };
 
   let pointerX = window.innerWidth * 0.5;
   let pointerY = window.innerHeight * 0.35;
   let regenerateTimer = 0;
   let stateTimer = 0;
-  let raf = 0;
 
   const morph = {
-    dentL: 0,
-    dentR: 0,
     squash: 0,
-    lean: 0,
-    vDentL: 0,
-    vDentR: 0,
+    dent: 0,
+    contactAng: Math.PI / 2,
     vSquash: 0,
-    vLean: 0,
+    vDent: 0,
+    vContactAng: 0,
   };
 
   function setState(state) {
@@ -399,25 +398,11 @@ function setupBlob() {
     return Math.min(max, Math.max(min, value));
   }
 
-  function softTouch(outside, along) {
-    // Ignore the far side of the body so a right-side poke doesn't dent the left.
-    if (outside < -0.95) return 0;
-    const approach = outside > 0 ? clamp(1 - outside / 1.05, 0, 1) : 1;
-    const depth = clamp(-outside, 0, 1);
-    return (approach * 0.55 + depth * 1.05) * along;
-  }
-
-  function buildPath(dentL, dentR, squash, lean) {
-    // Base corners stay pinned at (0,50) and (100,50).
-    const top = 1.5 + squash * 34;
-    const sideY = 26 + squash * 12;
-    const apexX = 50 + lean * 18;
-    const leftMidX = 20 + dentL * 34;
-    const rightMidX = 80 - dentR * 34;
-    const leftCtrlX = 0 + dentL * 16;
-    const rightCtrlX = 100 - dentR * 16;
-
-    return `M0 50C${leftCtrlX.toFixed(2)} ${sideY.toFixed(2)} ${leftMidX.toFixed(2)} ${top.toFixed(2)} ${apexX.toFixed(2)} ${top.toFixed(2)}C${rightMidX.toFixed(2)} ${top.toFixed(2)} ${rightCtrlX.toFixed(2)} ${sideY.toFixed(2)} 100 50Z`;
+  function lerpAngle(from, to, t) {
+    let diff = to - from;
+    while (diff > Math.PI) diff -= Math.PI * 2;
+    while (diff < -Math.PI) diff += Math.PI * 2;
+    return from + diff * t;
   }
 
   function springTo(key, target) {
@@ -426,40 +411,108 @@ function setupBlob() {
     morph[velocityKey] = (morph[velocityKey] + force) * spring.damping;
     morph[key] += morph[velocityKey];
 
-    if (Math.abs(morph[velocityKey]) < 0.0004 && Math.abs(target - morph[key]) < 0.0008) {
+    if (Math.abs(morph[velocityKey]) < 0.00035 && Math.abs(target - morph[key]) < 0.0007) {
       morph[key] = target;
       morph[velocityKey] = 0;
     }
   }
 
+  function restPoint(theta) {
+    return {
+      x: VB_W / 2 + RX * Math.cos(theta),
+      y: VB_H - RY * Math.sin(theta),
+      theta,
+    };
+  }
+
+  function deformPoint(theta) {
+    // Base corners always stay on the nav line.
+    if (theta <= 0.001) return { x: VB_W, y: VB_H, theta: 0 };
+    if (theta >= Math.PI - 0.001) return { x: 0, y: VB_H, theta: Math.PI };
+
+    let { x, y } = restPoint(theta);
+
+    // Soft squat: compress toward the pinned base and bulge sideways.
+    const squash = morph.squash;
+    if (squash > 0.001) {
+      const height = VB_H - y;
+      y = VB_H - height * (1 - squash * 0.62);
+      const bulge = 1 + squash * 0.28 * Math.sin(theta);
+      x = VB_W / 2 + (x - VB_W / 2) * bulge;
+    }
+
+    // Soft concave dent: push a local region inward along the surface normal.
+    const dent = morph.dent;
+    if (dent > 0.001) {
+      let dAng = theta - morph.contactAng;
+      while (dAng > Math.PI) dAng -= Math.PI * 2;
+      while (dAng < -Math.PI) dAng += Math.PI * 2;
+      const falloff = Math.exp(-((dAng / 0.62) ** 2));
+      const nx = VB_W / 2 - x;
+      const ny = VB_H - y;
+      const len = Math.hypot(nx, ny) || 1;
+      const depth = dent * 20 * falloff;
+      x += (nx / len) * depth;
+      y += (ny / len) * depth * 0.9;
+    }
+
+    y = Math.min(y, VB_H - 0.2);
+    return { x, y, theta };
+  }
+
+  function buildPath() {
+    const pts = [];
+    for (let i = 0; i <= SEGMENTS; i += 1) {
+      const theta = Math.PI * (1 - i / SEGMENTS);
+      pts.push(deformPoint(theta));
+    }
+
+    pts[0] = { x: 0, y: VB_H, theta: Math.PI };
+    pts[pts.length - 1] = { x: VB_W, y: VB_H, theta: 0 };
+
+    let d = `M${pts[0].x.toFixed(2)} ${pts[0].y.toFixed(2)}`;
+    for (let i = 1; i < pts.length; i += 1) {
+      d += `L${pts[i].x.toFixed(2)} ${pts[i].y.toFixed(2)}`;
+    }
+    return `${d}Z`;
+  }
+
   function morphTargets() {
     const rect = body.getBoundingClientRect();
     if (rect.width < 1 || rect.height < 1) {
-      return { dentL: 0, dentR: 0, squash: 0, lean: 0 };
+      return { squash: 0, dent: 0, contactAng: morph.contactAng };
     }
 
     const lx = (pointerX - rect.left) / rect.width;
     const ly = (pointerY - rect.top) / rect.height;
+    const px = lx * VB_W;
+    const py = ly * VB_H;
 
-    const alongRight = clamp(1 - Math.abs(ly - 0.42) / 0.75, 0, 1);
-    const alongLeft = clamp(1 - Math.abs(ly - 0.42) / 0.75, 0, 1);
-    const alongTop = clamp(1 - Math.abs(lx - 0.5) / 0.62, 0, 1);
+    let ang = Math.atan2(VB_H - py, px - VB_W / 2);
+    ang = clamp(ang, 0.08, Math.PI - 0.08);
 
-    // outside < 0 means the cursor has crossed into / past that face.
-    const dentR = clamp(softTouch(lx - 1, alongRight) * (lx > 0.42 ? 1 : 0), 0, 1.15);
-    const dentL = clamp(softTouch(-lx, alongLeft) * (lx < 0.58 ? 1 : 0), 0, 1.15);
-    const squash = clamp(softTouch(-ly, alongTop) * 1.2, 0, 1.15);
-    const lean = clamp((dentR - dentL) * -0.95, -1.1, 1.1);
+    const surface = restPoint(ang);
+    const cursorR = Math.hypot(px - VB_W / 2, py - VB_H);
+    const surfaceR = Math.hypot(surface.x - VB_W / 2, surface.y - VB_H);
+    const outside = (cursorR - surfaceR) / RX;
 
-    return { dentL, dentR, squash, lean };
-  }
+    // Nearby approach + shallow press. Far side of the body is ignored.
+    if (outside < -1.15) {
+      return { squash: 0, dent: 0, contactAng: morph.contactAng };
+    }
 
-  function maxHalfSpanAtY(ny, padding) {
-    const radius = 0.5 - padding;
-    const dy = 1 - ny;
-    const inside = radius * radius - dy * dy;
-    if (inside <= 0) return 0;
-    return Math.sqrt(inside);
+    const approach = outside > 0 ? clamp(1 - outside / 0.95, 0, 1) : 1;
+    const depth = clamp(-outside, 0, 1);
+    const pressure = clamp(approach * 0.5 + depth * 1.05, 0, 1.2);
+
+    const topness = Math.pow(Math.sin(ang), 1.55);
+    const sideness = Math.pow(Math.abs(Math.cos(ang)), 1.05);
+
+    return {
+      squash: pressure * topness,
+      dent: pressure * sideness * 1.15,
+      contactAng: ang,
+    };
   }
 
   function placeEyes() {
@@ -471,60 +524,70 @@ function setupBlob() {
     const localX = (pointerX - rect.left) / rect.width;
     const localY = (pointerY - rect.top) / rect.height;
     const onBlob =
-      localX >= -0.05 &&
-      localX <= 1.05 &&
-      localY >= -0.15 &&
-      localY <= 1.2 &&
-      Math.hypot(localX - 0.5, localY - 1) <= 0.62;
+      localX >= -0.08 &&
+      localX <= 1.08 &&
+      localY >= -0.2 &&
+      localY <= 1.15;
 
-    const restY = 0.48 + morph.squash * 0.18;
+    // Eyes live on the deformed body near the upper face.
+    const leftBase = deformPoint(Math.PI * 0.64);
+    const rightBase = deformPoint(Math.PI * 0.36);
+    const midY = (leftBase.y + rightBase.y) / 2 / VB_H;
     const lookStrength = onBlob ? maxLookClose : maxLook;
-    const lookX = (localX - 0.5) * lookStrength * 2 + morph.lean * 0.08;
-    const lookY = (localY - restY) * lookStrength * 1.1;
-    const desiredGap = onBlob ? minGap + (restGap - minGap) * 0.45 : restGap;
+    const lookX = (localX - 0.5) * lookStrength;
+    const lookY = (localY - midY) * lookStrength;
 
-    let centerY = clamp(restY + lookY, 0.36 + morph.squash * 0.12, 0.78);
-    let gap = desiredGap;
-    let halfSpan = maxHalfSpanAtY(centerY, eyePad) * (1 - morph.dentL * 0.12 - morph.dentR * 0.12);
+    let leftX = leftBase.x / VB_W + lookX;
+    let rightX = rightBase.x / VB_W + lookX;
+    let leftY = leftBase.y / VB_H + lookY;
+    let rightY = rightBase.y / VB_H + lookY;
 
-    while (halfSpan < gap / 2 + 0.02 && centerY < 0.74) {
-      centerY += 0.02;
-      halfSpan = maxHalfSpanAtY(centerY, eyePad) * (1 - morph.dentL * 0.12 - morph.dentR * 0.12);
+    // Keep a readable gap and stay above the base.
+    const minGap = 0.3;
+    if (rightX - leftX < minGap) {
+      const mid = (leftX + rightX) / 2;
+      leftX = mid - minGap / 2;
+      rightX = mid + minGap / 2;
     }
 
-    gap = Math.min(desiredGap, Math.max(minGap, halfSpan * 1.7));
-    const centerX = clamp(
-      0.5 + lookX - morph.dentR * 0.06 + morph.dentL * 0.06,
-      0.5 - (halfSpan - gap / 2),
-      0.5 + (halfSpan - gap / 2),
-    );
+    leftY = clamp(leftY, 0.22, 0.78);
+    rightY = clamp(rightY, 0.22, 0.78);
+    leftX = clamp(leftX, 0.12, 0.45);
+    rightX = clamp(rightX, 0.55, 0.88);
 
-    blob.style.setProperty("--eye-l-x", `${((centerX - gap / 2) * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-l-y", `${(centerY * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-r-x", `${((centerX + gap / 2) * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-r-y", `${(centerY * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-l-x", `${(leftX * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-l-y", `${(leftY * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-r-x", `${(rightX * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-r-y", `${(rightY * 100).toFixed(2)}%`);
+    blob.style.setProperty("--squint-y", `${(((leftY + rightY) / 2) * 100).toFixed(2)}%`);
+
+    const squished = morph.squash > 0.22;
+    blob.dataset.squint = squished ? "true" : "false";
   }
 
   function renderMorph() {
-    path.setAttribute(
-      "d",
-      buildPath(morph.dentL, morph.dentR, morph.squash, morph.lean),
-    );
+    path.setAttribute("d", buildPath());
   }
 
   function tick() {
     const active = blob.dataset.state === "idle";
-    const targets = active ? morphTargets() : { dentL: 0, dentR: 0, squash: 0, lean: 0 };
+    const targets = active
+      ? morphTargets()
+      : { squash: 0, dent: 0, contactAng: morph.contactAng };
 
-    springTo("dentL", targets.dentL);
-    springTo("dentR", targets.dentR);
     springTo("squash", targets.squash);
-    springTo("lean", targets.lean);
+    springTo("dent", targets.dent);
+
+    // Ease contact angle toward the poke point for a traveling concave.
+    if (active && targets.dent + targets.squash > 0.02) {
+      morph.contactAng = lerpAngle(morph.contactAng, targets.contactAng, 0.18);
+    }
+
     renderMorph();
-
     if (active) placeEyes();
+    else if (blob.dataset.state === "rising") blob.dataset.squint = "true";
 
-    raf = requestAnimationFrame(tick);
+    requestAnimationFrame(tick);
   }
 
   function clearTimers() {
@@ -532,31 +595,24 @@ function setupBlob() {
     window.clearTimeout(stateTimer);
   }
 
-  function finishShake() {
+  function finishRise() {
     setState("idle");
+    blob.dataset.squint = "false";
     blob.setAttribute("aria-label", "Friendly blob. Click to pop.");
-  }
-
-  function startShake() {
-    setState("shaking");
-    const shakeMs = reducedMotion.matches ? 80 : 560;
-    stateTimer = window.setTimeout(finishShake, shakeMs);
   }
 
   function startRise() {
     setState("rising");
+    blob.dataset.squint = "true";
     blob.setAttribute("aria-label", "Blob is coming back.");
-    morph.dentL = 0;
-    morph.dentR = 0;
     morph.squash = 0;
-    morph.lean = 0;
-    morph.vDentL = 0;
-    morph.vDentR = 0;
+    morph.dent = 0;
     morph.vSquash = 0;
-    morph.vLean = 0;
+    morph.vDent = 0;
+    morph.contactAng = Math.PI / 2;
     renderMorph();
-    const riseMs = reducedMotion.matches ? 80 : 1150;
-    stateTimer = window.setTimeout(startShake, riseMs);
+    const riseMs = reducedMotion.matches ? 80 : 1350;
+    stateTimer = window.setTimeout(finishRise, riseMs);
   }
 
   function popBlob() {
@@ -564,6 +620,7 @@ function setupBlob() {
 
     clearTimers();
     setState("popping");
+    blob.dataset.squint = "false";
     blob.setAttribute("aria-label", "Blob popped.");
 
     const popMs = reducedMotion.matches ? 80 : 420;
@@ -595,7 +652,7 @@ function setupBlob() {
 
   renderMorph();
   placeEyes();
-  raf = requestAnimationFrame(tick);
+  requestAnimationFrame(tick);
 }
 
 setupBlob();
