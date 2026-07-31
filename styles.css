@@ -960,7 +960,8 @@ h1 {
 }
 
 :root[data-theme="dark"] .progression-logo-lol,
-:root[data-theme="dark"] .progression-logo-rank {
+:root[data-theme="dark"] .progression-logo-rank,
+:root[data-theme="dark"] .progression-logo-nyu {
   filter: none;
 }
 
