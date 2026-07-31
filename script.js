@@ -400,6 +400,8 @@ function setupBlob() {
   }
 
   function softTouch(outside, along) {
+    // Ignore the far side of the body so a right-side poke doesn't dent the left.
+    if (outside < -0.95) return 0;
     const approach = outside > 0 ? clamp(1 - outside / 0.75, 0, 1) : 1;
     const depth = clamp(-outside, 0, 0.85);
     return (approach * 0.42 + depth * 0.9) * along;
