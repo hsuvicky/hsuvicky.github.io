@@ -572,6 +572,59 @@ function setupBlobColony() {
       };
     }
 
+    // Eye oval half-size in viewBox units (center → rim). Keep whole eye inside fill.
+    function eyeHalfSize() {
+      const size = clamp(Number(blob.dataset.size) || 0, 0, 4);
+      const blobW = [82, 64, 50, 38, 26][size];
+      const blobH = [41, 32, 25, 19, 13][size];
+      const wide = blob.dataset.scare === "true" || blob.dataset.state === "startled";
+      const eyeW = (wide
+        ? [9, 7.5, 6, 4.75, 3.5]
+        : [5.5, 4.5, 3.75, 3, 2.25])[size];
+      const eyeH = (wide
+        ? [11, 9, 7.5, 6, 4.25]
+        : [7, 5.5, 4.5, 3.75, 2.75])[size];
+      return {
+        halfW: (eyeW / blobW) * VB_W * 0.5,
+        halfH: (eyeH / blobH) * VB_H * 0.5,
+      };
+    }
+
+    /** Pull an eye center inward so its oval stays under the blob silhouette. */
+    function containEye(x, y, halfW, halfH) {
+      const cx = VB_W / 2;
+      const cy = VB_H;
+      let px = x;
+      let py = y;
+      // Iterate: radial clamp against current surface + top floor for oval height.
+      for (let i = 0; i < 3; i += 1) {
+        let ang = Math.atan2(cy - py, px - cx);
+        ang = clamp(ang, 0.06, Math.PI - 0.06);
+        const surface = deformPoint(ang);
+        const sdx = surface.x - cx;
+        const sdy = surface.y - cy;
+        const slen = Math.hypot(sdx, sdy) || 1;
+        const dx = px - cx;
+        const dy = py - cy;
+        const len = Math.hypot(dx, dy) || 1;
+        // Padding along the ray ≈ oval radius in the outward direction + cushion.
+        const ux = dx / len;
+        const uy = dy / len;
+        const rim = Math.hypot(ux * halfW, uy * halfH) + 1.8;
+        const maxLen = Math.max(slen - rim, 4);
+        if (len > maxLen) {
+          px = cx + ux * maxLen;
+          py = cy + uy * maxLen;
+        }
+        const apex = deformPoint(Math.PI / 2);
+        const minY = apex.y + halfH + 2.2;
+        if (py < minY) py = minY;
+      }
+      px = clamp(px, halfW + 4, VB_W - halfW - 4);
+      py = clamp(py, halfH + 2, VB_H - halfH - 3);
+      return { x: px, y: py };
+    }
+
     function buildPath() {
       const pts = [];
       for (let i = 0; i <= SEGMENTS; i += 1) {
@@ -691,37 +744,40 @@ function setupBlobColony() {
       const socketMidX = (socketL.x + socketR.x) / 2;
       const apex = deformPoint(Math.PI / 2);
 
+      const { halfW, halfH } = eyeHalfSize();
       const lookGain = scared || nearBlob || cursorAbove || cursorBelow ? 8.5 : 5;
       const lookX = clamp((localX - 0.5) * lookGain * 2, -7, 7);
-      const lookYGain = cursorAbove ? 2.1 : cursorBelow ? 2.0 : 1.4;
+      const lookYGain = cursorAbove ? 1.55 : cursorBelow ? 2.0 : 1.4;
       // Neutral gaze sits higher so “looking” doesn’t read as chin-level.
-      let lookY = clamp((localY - 0.32) * lookGain * lookYGain, -16, 12);
+      let lookY = clamp((localY - 0.32) * lookGain * lookYGain, -10, 12);
       if (cursorAbove) {
+        // Glance up, but never hard-yank toward/past the crown.
         const overhead = clamp(0.2 - localY, 0, 1.4);
-        lookY = Math.min(lookY, -7 - overhead * 5);
+        lookY = Math.min(lookY, -3.5 - overhead * 2.2);
       }
       if (cursorBelow) {
         const under = clamp(localY - 0.5, 0, 1.6);
         lookY = Math.max(lookY, 2 + under * 6);
       }
       if (scared) {
-        lookY = clamp(lookY, -8, 6);
+        lookY = clamp(lookY, -5, 6);
       }
       if (lookY < 0 && morph.squash > 0.08 && !cursorAbove && !scared) {
         lookY *= 1 - morph.squash * 1.2;
       }
 
-      const minGap = 42;
+      const minGap = cursorAbove ? 36 : 42;
       let centerX = socketMidX + lookX * (1 - morph.squash * 0.25);
-      let eyeY = socketY + lookY - 3.5;
+      let eyeY = socketY + lookY - 1.2;
 
-      const minEyeY = apex.y + (cursorAbove || lookY < -2 ? 4.5 : 6);
+      // Keep eye *centers* below the crown by at least the oval radius (+ pad).
+      const minEyeY = apex.y + halfH + 2.4;
       const maxEyeY = VB_H - (cursorBelow || lookY > 4 ? 14 : 16);
       centerX = clamp(centerX, 32, 68);
       eyeY = clamp(eyeY, minEyeY, maxEyeY);
       if (cursorAbove) {
-        const crownTarget = apex.y + 5.5;
-        eyeY += (crownTarget - eyeY) * clamp(0.22 - localY, 0.35, 0.85);
+        const crownTarget = apex.y + halfH + 3.6;
+        eyeY += (crownTarget - eyeY) * clamp(0.22 - localY, 0.25, 0.65);
         eyeY = clamp(eyeY, minEyeY, maxEyeY);
       }
       if (cursorBelow) {
@@ -748,11 +804,44 @@ function setupBlobColony() {
         rightX = VB_W / 2 + minGap / 2;
       }
 
+      // Hard silhouette containment — eyes must stay fully inside the blob.
+      const left = containEye(leftX, eyeY, halfW, halfH);
+      const right = containEye(rightX, eyeY, halfW, halfH);
+      leftX = left.x;
+      rightX = right.x;
+      // Keep a shared horizontal glance line so they don’t stagger.
+      eyeY = Math.max(left.y, right.y);
+      const leftC = containEye(leftX, eyeY, halfW, halfH);
+      const rightC = containEye(rightX, eyeY, halfW, halfH);
+      leftX = leftC.x;
+      rightX = rightC.x;
+      eyeY = Math.max(leftC.y, rightC.y);
+
       const ease = reducedMotion.matches ? 1 : scared ? 0.28 : 0.16;
       eyeSmooth.lx += (leftX - eyeSmooth.lx) * ease;
       eyeSmooth.ly += (eyeY - eyeSmooth.ly) * ease;
       eyeSmooth.rx += (rightX - eyeSmooth.rx) * ease;
       eyeSmooth.ry += (eyeY - eyeSmooth.ry) * ease;
+
+      // Re-contain after easing so lag can’t overshoot the silhouette.
+      const smoothL = containEye(eyeSmooth.lx, eyeSmooth.ly, halfW, halfH);
+      const smoothR = containEye(eyeSmooth.rx, eyeSmooth.ry, halfW, halfH);
+      eyeSmooth.lx = smoothL.x;
+      eyeSmooth.ly = smoothL.y;
+      eyeSmooth.rx = smoothR.x;
+      eyeSmooth.ry = smoothR.y;
+      const sharedY = Math.max(eyeSmooth.ly, eyeSmooth.ry);
+      eyeSmooth.ly = sharedY;
+      eyeSmooth.ry = sharedY;
+      const finalL = containEye(eyeSmooth.lx, eyeSmooth.ly, halfW, halfH);
+      const finalR = containEye(eyeSmooth.rx, eyeSmooth.ry, halfW, halfH);
+      eyeSmooth.lx = finalL.x;
+      eyeSmooth.ly = finalL.y;
+      eyeSmooth.rx = finalR.x;
+      eyeSmooth.ry = finalR.y;
+      const finalY = Math.max(eyeSmooth.ly, eyeSmooth.ry);
+      eyeSmooth.ly = finalY;
+      eyeSmooth.ry = finalY;
 
       blob.style.setProperty("--eye-l-x", `${((eyeSmooth.lx / VB_W) * 100).toFixed(2)}%`);
       blob.style.setProperty("--eye-l-y", `${((eyeSmooth.ly / VB_H) * 100).toFixed(2)}%`);
