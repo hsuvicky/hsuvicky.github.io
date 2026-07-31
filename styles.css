@@ -25,6 +25,13 @@
   --header-height: 72px;
   --max-width: 1220px;
   --reading-width: 720px;
+  --blob-arm: #1a1f1c;
+  /* Matryoshka colors — largest is a lighter moss in light mode. */
+  --blob-color-0: #b8c4aa;
+  --blob-color-1: var(--moss);
+  --blob-color-2: var(--accent);
+  --blob-color-3: var(--warm);
+  --blob-color-4: var(--accent-deep);
 }
 
 :root[data-theme="dark"] {
@@ -48,6 +55,12 @@
   --ink-inverse: #101b14;
   --header-bg: rgba(15, 23, 32, 0.92);
   --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+  --blob-arm: #ffffff;
+  --blob-color-0: #c5ddc2;
+  --blob-color-1: var(--accent);
+  --blob-color-2: var(--moss);
+  --blob-color-3: var(--stone);
+  --blob-color-4: var(--warm);
 }
 
 *,
@@ -147,6 +160,7 @@ button {
   top: 0;
   z-index: 50;
   height: var(--header-height);
+  overflow: visible;
   border-bottom: 1px solid var(--border-soft);
   background: var(--header-bg);
   backdrop-filter: blur(18px);
@@ -162,25 +176,650 @@ button {
   margin: 0 auto;
 }
 
-.wordmark {
+.brand {
   display: inline-flex;
   justify-self: start;
+  align-items: flex-end;
+  gap: 1.15rem;
+  min-height: 44px;
+  height: 100%;
+}
+
+.wordmark {
+  display: inline-flex;
   align-items: center;
-  gap: 0.7rem;
+  align-self: center;
   min-height: 44px;
   font-weight: 700;
   letter-spacing: -0.02em;
   text-decoration: none;
 }
 
-.wordmark svg {
-  width: 30px;
-  height: 30px;
+.wordmark-short {
+  display: none;
+}
+
+.blob-colony {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.3rem;
+  margin: 0 0 -1px 0;
+  min-height: 0;
+}
+
+.blob {
+  --blob-w: 82px;
+  --blob-h: 41px;
+  --blob-eye-w: 5.5px;
+  --blob-eye-h: 7px;
+  --blob-eye-w-wide: 9px;
+  --blob-eye-h-wide: 11px;
+  --blob-arm-w: 40px;
+  --blob-arm-h: 36px;
+  --blob-squint-size: 0.9rem;
+  --blob-fill: var(--blob-color-0);
+  --eye-l-x: 28%;
+  --eye-l-y: 30%;
+  --eye-r-x: 72%;
+  --eye-r-y: 30%;
+  --squint-y: 30%;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: end center;
+  width: var(--blob-w);
+  height: var(--blob-h);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.blob[data-size="0"] {
+  --blob-w: 82px;
+  --blob-h: 41px;
+  --blob-eye-w: 5.5px;
+  --blob-eye-h: 7px;
+  --blob-eye-w-wide: 9px;
+  --blob-eye-h-wide: 11px;
+  --blob-arm-w: 40px;
+  --blob-arm-h: 36px;
+  --blob-squint-size: 0.9rem;
+  --blob-fill: var(--blob-color-0);
+}
+
+.blob[data-size="1"] {
+  --blob-w: 64px;
+  --blob-h: 32px;
+  --blob-eye-w: 4.5px;
+  --blob-eye-h: 5.5px;
+  --blob-eye-w-wide: 7.5px;
+  --blob-eye-h-wide: 9px;
+  --blob-arm-w: 31px;
+  --blob-arm-h: 28px;
+  --blob-squint-size: 0.75rem;
+  --blob-fill: var(--blob-color-1);
+}
+
+.blob[data-size="2"] {
+  --blob-w: 50px;
+  --blob-h: 25px;
+  --blob-eye-w: 3.75px;
+  --blob-eye-h: 4.5px;
+  --blob-eye-w-wide: 6px;
+  --blob-eye-h-wide: 7.5px;
+  --blob-arm-w: 24px;
+  --blob-arm-h: 22px;
+  --blob-squint-size: 0.6rem;
+  --blob-fill: var(--blob-color-2);
+}
+
+.blob[data-size="3"] {
+  --blob-w: 38px;
+  --blob-h: 19px;
+  --blob-eye-w: 3px;
+  --blob-eye-h: 3.75px;
+  --blob-eye-w-wide: 4.75px;
+  --blob-eye-h-wide: 6px;
+  --blob-arm-w: 19px;
+  --blob-arm-h: 17px;
+  --blob-squint-size: 0.48rem;
+  --blob-fill: var(--blob-color-3);
+}
+
+.blob[data-size="4"] {
+  --blob-w: 26px;
+  --blob-h: 13px;
+  --blob-eye-w: 2.25px;
+  --blob-eye-h: 2.75px;
+  --blob-eye-w-wide: 3.5px;
+  --blob-eye-h-wide: 4.25px;
+  --blob-arm-w: 13px;
+  --blob-arm-h: 12px;
+  --blob-squint-size: 0.38rem;
+  --blob-fill: var(--blob-color-4);
+}
+
+.blob:focus-visible {
+  outline-offset: 6px;
+}
+
+.blob-stage {
+  position: relative;
+  width: var(--blob-w);
+  height: var(--blob-h);
+  overflow: visible;
+  /* Clip below the nav line, but allow the arm to stick out the sides/top. */
+  clip-path: inset(-28px -48px 0 -12px);
+}
+
+.blob-body {
+  position: absolute;
+  inset: 0;
+  color: var(--blob-fill);
+  transform-origin: 50% 100%;
+  transition: color 180ms ease;
+  isolation: isolate;
+}
+
+.blob-svg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.blob-svg path {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  paint-order: stroke fill;
+  shape-rendering: geometricPrecision;
+}
+
+.blob-arm {
+  position: absolute;
+  top: 12%;
+  /* Start beneath the body so the visible arm meets the curved silhouette. */
+  left: 90%;
+  z-index: 0;
+  width: var(--blob-arm-w);
+  height: var(--blob-arm-h);
+  margin-left: 0;
+  overflow: visible;
+  opacity: 0;
+  pointer-events: none;
+  /* Tucked down behind the body when hidden. */
+  transform: translate(-8px, 5px) rotate(74deg);
+  transform-origin: 5% 39%;
+}
+
+.blob-arm line {
   fill: none;
-  stroke: var(--accent);
+  stroke: var(--blob-arm);
+  stroke-width: 1.85;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+}
+
+.blob-arm-elbow {
+  fill: var(--blob-arm);
+  stroke: none;
+}
+
+.blob-arm-wave {
+  transform-origin: 5% 39%;
+}
+
+.blob-arm-fore {
+  transform-origin: 0 0;
+  /* Slightly open L at the elbow in the rest pose. */
+  transform: rotate(10deg);
+}
+
+.blob-arm-hand {
+  transform-origin: 0 0;
+}
+
+.blob[data-arm="waving"] .blob-arm {
+  z-index: 3;
+  opacity: 1;
+  /* Lower side-wave: upper arm out/down, forearm hinged up. */
+  transform: translate(0, 1px) rotate(22deg);
+  transition: opacity 120ms ease;
+}
+
+.blob[data-arm="waving"] .blob-arm-wave {
+  animation: blob-arm-wave 0.7s ease-in-out 2;
+}
+
+.blob[data-arm="waving"] .blob-arm-fore {
+  animation: blob-arm-fore-wave 0.7s ease-in-out 2;
+}
+
+.blob[data-arm="waving"] .blob-arm-hand {
+  animation: blob-fingers-wave 0.7s ease-in-out 2;
+}
+
+.blob[data-arm="tucking"] .blob-arm {
+  z-index: 0;
+  animation: blob-arm-tuck 0.48s ease-in forwards;
+}
+
+.blob[data-arm="hidden"] .blob-arm {
+  z-index: 0;
+  opacity: 0;
+  transform: translate(-8px, 5px) rotate(74deg);
+}
+
+.blob[data-state="startled"] .blob-arm,
+.blob[data-state="popping"] .blob-arm,
+.blob[data-state="gone"] .blob-arm,
+.blob[data-state="rising"] .blob-arm {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+.blob-eye {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: var(--blob-eye-w);
+  height: var(--blob-eye-h);
+  border-radius: 50%;
+  background: #1a1f1c;
+  transform: translate(-50%, -50%);
+  transform-origin: 50% 50%;
+  pointer-events: none;
+  will-change: left, top, transform;
+  transition:
+    width 140ms ease-out,
+    height 140ms ease-out;
+}
+
+.blob[data-state="idle"]:not([data-squint="true"]) .blob-eye {
+  animation: blob-blink 3.6s ease-in-out infinite;
+}
+
+.blob-eye-l {
+  left: var(--eye-l-x);
+  top: var(--eye-l-y);
+}
+
+.blob-eye-r {
+  left: var(--eye-r-x);
+  top: var(--eye-r-y);
+}
+
+.blob-squint {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: none;
+  color: #1a1f1c;
+  font-family: var(--mono);
+  font-size: var(--blob-squint-size);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  -webkit-text-stroke: 0.6px #1a1f1c;
+  paint-order: stroke fill;
+  pointer-events: none;
+  user-select: none;
+}
+
+.blob-squint-l,
+.blob-squint-r {
+  position: absolute;
+  top: var(--squint-y);
+  transform: translate(-50%, -50%);
+}
+
+.blob-squint-l {
+  left: var(--eye-l-x);
+}
+
+.blob-squint-r {
+  left: var(--eye-r-x);
+}
+
+.blob[data-squint="true"] .blob-eye {
+  opacity: 0;
+}
+
+.blob[data-squint="true"] .blob-squint {
+  display: flex;
+}
+
+.blob-pop-burst {
+  position: absolute;
+  right: auto;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.blob-pop-burst span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--blob-fill);
+  transform-origin: 50% 100%;
+}
+
+/* Only rays above the nav line */
+.blob-pop-burst span:nth-child(1) { transform: rotate(-66deg) translateY(-22px); }
+.blob-pop-burst span:nth-child(2) { transform: rotate(-33deg) translateY(-24px); }
+.blob-pop-burst span:nth-child(3) { transform: rotate(0deg) translateY(-26px); }
+.blob-pop-burst span:nth-child(4) { transform: rotate(33deg) translateY(-24px); }
+.blob-pop-burst span:nth-child(5) { transform: rotate(66deg) translateY(-22px); }
+
+.blob[data-state="startled"],
+.blob[data-scare="true"] {
+  --blob-eye-w: var(--blob-eye-w-wide);
+  --blob-eye-h: var(--blob-eye-h-wide);
+}
+
+.blob[data-state="startled"] {
+  pointer-events: none;
+}
+
+.blob[data-state="startled"] .blob-body {
+  animation: blob-startle-shake 520ms ease-in-out;
+}
+
+.blob[data-state="startled"] .blob-eye,
+.blob[data-scare="true"] .blob-eye {
+  animation: none;
+}
+
+.blob[data-state="startled"] .blob-squint,
+.blob[data-scare="true"] .blob-squint {
+  display: none;
+}
+
+.blob[data-scare="true"] .blob-body {
+  animation: blob-scare-tremble 420ms ease-in-out;
+}
+
+.blob[data-state="popping"] {
+  pointer-events: none;
+}
+
+.blob[data-state="popping"] .blob-body {
+  animation: blob-pop 420ms cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards;
+}
+
+.blob[data-state="popping"] .blob-pop-burst {
+  animation: blob-burst 480ms ease-out forwards;
+}
+
+.blob[data-state="popping"] .blob-eye {
+  animation: none;
+}
+
+.blob[data-state="gone"] {
+  pointer-events: none;
+}
+
+.blob[data-state="gone"] .blob-body,
+.blob[data-state="gone"] .blob-pop-burst {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.blob[data-state="rising"] {
+  pointer-events: none;
+}
+
+.blob[data-state="rising"] .blob-stage {
+  overflow: hidden;
+}
+
+.blob[data-state="rising"] .blob-body {
+  animation: blob-rise-shake 1.35s cubic-bezier(0.22, 0.82, 0.28, 1) forwards;
+}
+
+.blob[data-state="rising"] .blob-eye {
+  opacity: 0;
+}
+
+.blob[data-state="rising"] .blob-squint {
+  display: flex;
+}
+
+@keyframes blob-startle-shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+
+  16% {
+    transform: translateX(-3px) rotate(-4deg);
+  }
+
+  32% {
+    transform: translateX(3px) rotate(4deg);
+  }
+
+  48% {
+    transform: translateX(-2.5px) rotate(-3deg);
+  }
+
+  64% {
+    transform: translateX(2.5px) rotate(3deg);
+  }
+
+  80% {
+    transform: translateX(-1.5px) rotate(-2deg);
+  }
+
+  92% {
+    transform: translateX(1px) rotate(1deg);
+  }
+}
+
+@keyframes blob-scare-tremble {
+  0%,
+  100% {
+    transform: translateX(0) scale(1);
+  }
+
+  20% {
+    transform: translateX(-1.5px) scale(1.03, 0.97);
+  }
+
+  45% {
+    transform: translateX(1.5px) scale(0.98, 1.02);
+  }
+
+  70% {
+    transform: translateX(-1px) scale(1.02, 0.98);
+  }
+}
+
+@keyframes blob-pop {
+  0% {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+
+  28% {
+    opacity: 1;
+    transform: scale(1.18, 1.28);
+  }
+
+  55% {
+    opacity: 1;
+    transform: scale(1.05, 0.72);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.55, 0.08);
+  }
+}
+
+@keyframes blob-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes blob-blink {
+  0%,
+  90%,
+  100% {
+    transform: translate(-50%, -50%) scaleY(1);
+  }
+
+  93%,
+  96% {
+    transform: translate(-50%, -50%) scaleY(0.08);
+  }
+}
+
+@keyframes blob-arm-wave {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-6deg);
+  }
+
+  50% {
+    transform: rotate(8deg);
+  }
+
+  75% {
+    transform: rotate(-5deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes blob-arm-fore-wave {
+  /* Elbow hinge does most of the wave. */
+  0% {
+    transform: rotate(10deg);
+  }
+
+  25% {
+    transform: rotate(-20deg);
+  }
+
+  50% {
+    transform: rotate(26deg);
+  }
+
+  75% {
+    transform: rotate(-16deg);
+  }
+
+  100% {
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes blob-fingers-wave {
+  0% {
+    transform: rotate(-6deg);
+  }
+
+  25% {
+    transform: rotate(12deg);
+  }
+
+  50% {
+    transform: rotate(-10deg);
+  }
+
+  75% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(-4deg);
+  }
+}
+
+@keyframes blob-arm-tuck {
+  0% {
+    opacity: 1;
+    transform: translate(0, 1px) rotate(22deg);
+  }
+
+  55% {
+    opacity: 1;
+    transform: translate(-6px, 3px) rotate(48deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-8px, 5px) rotate(74deg);
+  }
+}
+
+@keyframes blob-rise-shake {
+  0% {
+    opacity: 0.85;
+    transform: translateY(110%) translateX(0) rotate(0deg);
+  }
+
+  38% {
+    opacity: 1;
+    transform: translateY(42%) translateX(-3px) rotate(-4deg);
+  }
+
+  52% {
+    transform: translateY(24%) translateX(3px) rotate(4deg);
+  }
+
+  66% {
+    transform: translateY(12%) translateX(-2.5px) rotate(-3deg);
+  }
+
+  80% {
+    transform: translateY(5%) translateX(2px) rotate(2deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
 }
 
 .nav-links {
@@ -2112,7 +2751,7 @@ h1 {
     grid-template-columns: 1fr auto auto;
   }
 
-  .wordmark span {
+  .wordmark {
     font-size: 0.9rem;
   }
 
@@ -2522,8 +3161,12 @@ h1 {
 }
 
 @media (max-width: 390px) {
-  .wordmark span {
+  .wordmark-full {
     display: none;
+  }
+
+  .wordmark-short {
+    display: inline;
   }
 
   .hero-actions {
@@ -2557,6 +3200,31 @@ h1 {
   .progression-rail li:hover .progression-career-event,
   .progression-rail li:hover .progression-personal-event {
     scale: none;
+  }
+
+  .blob[data-state="startled"] .blob-body,
+  .blob[data-scare="true"] .blob-body,
+  .blob[data-state="popping"] .blob-body,
+  .blob[data-state="popping"] .blob-pop-burst,
+  .blob[data-state="rising"] .blob-body,
+  .blob[data-state="idle"]:not([data-squint="true"]) .blob-eye,
+  .blob-arm-wave,
+  .blob-arm-fore,
+  .blob-arm-hand,
+  .blob[data-arm="tucking"] .blob-arm {
+    animation: none;
+  }
+
+  .blob[data-state="popping"] .blob-body,
+  .blob[data-state="gone"] .blob-body {
+    opacity: 0;
+  }
+
+  .blob[data-state="startled"] .blob-body,
+  .blob[data-state="rising"] .blob-body,
+  .blob[data-state="idle"] .blob-body {
+    opacity: 1;
+    transform: none;
   }
 }
 
