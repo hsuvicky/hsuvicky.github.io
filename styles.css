@@ -535,6 +535,28 @@ button {
   }
 }
 
+@keyframes blob-arm-fore-wave {
+  0% {
+    transform: rotate(14deg);
+  }
+
+  25% {
+    transform: rotate(28deg);
+  }
+
+  50% {
+    transform: rotate(10deg);
+  }
+
+  75% {
+    transform: rotate(26deg);
+  }
+
+  100% {
+    transform: rotate(16deg);
+  }
+}
+
 @keyframes blob-fingers-wave {
   0% {
     transform: rotate(-16deg);
@@ -3052,6 +3074,7 @@ h1 {
   .blob[data-state="rising"] .blob-body,
   .blob[data-state="idle"]:not([data-squint="true"]) .blob-eye,
   .blob-arm-wave,
+  .blob-arm-fore,
   .blob-arm-hand,
   .blob[data-arm="tucking"] .blob-arm {
     animation: none;
