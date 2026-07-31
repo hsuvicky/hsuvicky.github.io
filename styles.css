@@ -782,13 +782,17 @@ h1 {
   height: 0.7rem;
   margin-left: -0.5px;
   background: var(--stone);
+  transition: height 300ms ease, background-color 300ms ease;
 }
 
+/* Hover uses the standalone scale property rather than transform, so the hobby
+   reveal below can translate the same elements without the two overwriting
+   each other. */
 .progression-description,
 .progression-career-event,
 .progression-personal-event {
   transform-origin: top center;
-  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: scale 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .progression-description {
@@ -855,17 +859,29 @@ h1 {
   font-weight: 600;
 }
 
+/* Arriving is slower than leaving, and carries a small rise, so the hobby entries
+   read as fading in rather than blinking on. */
 [data-hobby-content] {
   visibility: visible;
   opacity: 1;
-  transition: opacity 180ms ease, visibility 0s linear;
+  translate: none;
+  transition:
+    opacity 420ms ease,
+    translate 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    scale 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear;
 }
 
 .career-timeline[data-hobbies-visible="false"] [data-hobby-content] {
   visibility: hidden;
   opacity: 0;
+  translate: 0 0.55rem;
   pointer-events: none;
-  transition: opacity 180ms ease, visibility 0s linear 180ms;
+  transition:
+    opacity 180ms ease,
+    translate 180ms ease,
+    scale 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 180ms;
 }
 
 .progression-personal .progression-description .progression-role,
@@ -944,7 +960,7 @@ h1 {
   .progression-rail li:hover .progression-description,
   .progression-rail li:hover .progression-career-event,
   .progression-rail li:hover .progression-personal-event {
-    transform: scale(1.05);
+    scale: 1.05;
   }
 }
 
@@ -2621,7 +2637,7 @@ h1 {
   .progression-rail li:hover .progression-description,
   .progression-rail li:hover .progression-career-event,
   .progression-rail li:hover .progression-personal-event {
-    transform: none;
+    scale: none;
   }
 }
 
