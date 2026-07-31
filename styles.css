@@ -221,8 +221,9 @@ button {
   position: relative;
   width: var(--blob-w);
   height: var(--blob-h);
-  overflow-x: visible;
-  overflow-y: hidden;
+  overflow: visible;
+  /* Clip below the nav line, but allow the arm to stick out the sides/top. */
+  clip-path: inset(-28px -48px 0 -12px);
 }
 
 .blob-body {
@@ -251,28 +252,29 @@ button {
 
 .blob-arm {
   position: absolute;
-  top: 34%;
-  left: 96%;
+  top: 38%;
+  left: 100%;
   z-index: 0;
-  width: 38px;
-  height: 30px;
+  width: 40px;
+  height: 32px;
+  margin-left: -3px;
   overflow: visible;
   opacity: 0;
   pointer-events: none;
-  transform: translate(-8px, -2px) rotate(58deg);
-  transform-origin: 3px 20px;
+  transform: translate(-10px, -4px) rotate(50deg);
+  transform-origin: 2px 18px;
 }
 
 .blob-arm line {
   fill: none;
   stroke: #1a1f1c;
-  stroke-width: 1.7;
+  stroke-width: 1.85;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .blob-arm-wave {
-  transform-origin: 3px 20px;
+  transform-origin: 2px 18px;
 }
 
 .blob-arm-fore {
@@ -285,9 +287,9 @@ button {
 }
 
 .blob[data-arm="waving"] .blob-arm {
-  z-index: 2;
+  z-index: 3;
   opacity: 1;
-  transform: translate(0, 0) rotate(0deg);
+  transform: translate(0, 0) rotate(-6deg);
   transition: opacity 120ms ease;
 }
 
@@ -311,7 +313,7 @@ button {
 .blob[data-arm="hidden"] .blob-arm {
   z-index: 0;
   opacity: 0;
-  transform: translate(-8px, -2px) rotate(58deg);
+  transform: translate(-10px, -4px) rotate(50deg);
 }
 
 .blob[data-state="popping"] .blob-arm,
@@ -582,17 +584,17 @@ button {
 @keyframes blob-arm-tuck {
   0% {
     opacity: 1;
-    transform: translate(0, 0) rotate(8deg);
+    transform: translate(0, 0) rotate(-6deg);
   }
 
   55% {
     opacity: 1;
-    transform: translate(-5px, -2px) rotate(38deg);
+    transform: translate(-6px, -4px) rotate(28deg);
   }
 
   100% {
     opacity: 0;
-    transform: translate(-8px, -2px) rotate(58deg);
+    transform: translate(-10px, -4px) rotate(50deg);
   }
 }
 

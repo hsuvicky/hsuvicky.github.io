@@ -770,7 +770,7 @@ function setupBlob() {
   setArmState("hidden");
   // First wave soon after load, then every 30s after each tuck.
   if (!reducedMotion.matches) {
-    armTimer = window.setTimeout(startArmWave, 2500);
+    armTimer = window.setTimeout(startArmWave, 1200);
   }
   requestAnimationFrame(tick);
 }
