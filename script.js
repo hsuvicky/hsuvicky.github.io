@@ -198,13 +198,17 @@ function setupCareerTimeline() {
 
   function updateCardFades() {
     const viewportRect = viewport.getBoundingClientRect();
+    const labelsRect = timeline.querySelector(".timeline-labels")?.getBoundingClientRect();
     const fadeWidth = Math.min(210, Math.max(90, viewportRect.width * 0.18));
+    const leftEdge = labelsRect ? labelsRect.right + 12 : viewportRect.left;
     const rightEdge = viewportRect.right - Math.min(40, viewportRect.width * 0.04);
+    const atStart = viewport.scrollLeft <= 1;
+    const atEnd = viewport.scrollLeft >= viewport.scrollWidth - viewport.clientWidth - 1;
 
     cards.forEach((card) => {
       const cardRect = card.getBoundingClientRect();
-      const leftOpacity = (cardRect.left - viewportRect.left) / fadeWidth;
-      const rightOpacity = (rightEdge - cardRect.left) / fadeWidth;
+      const leftOpacity = atStart ? 1 : (cardRect.left - leftEdge) / fadeWidth;
+      const rightOpacity = atEnd ? 1 : (rightEdge - cardRect.left) / fadeWidth;
       const opacity = Math.max(0, Math.min(1, leftOpacity, rightOpacity));
       card.style.opacity = reducedMotion.matches ? "1" : opacity.toFixed(3);
     });
