@@ -187,8 +187,8 @@ button {
 .blob {
   --blob-w: 74px;
   --blob-h: 46px;
-  --blob-eye-w: 6.5px;
-  --blob-eye-h: 9.5px;
+  --blob-eye-w: 8px;
+  --blob-eye-h: 11.5px;
   --eye-l-x: 28%;
   --eye-l-y: 48%;
   --eye-r-x: 72%;
