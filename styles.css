@@ -225,18 +225,9 @@ button {
   position: absolute;
   inset: 0;
   border-radius: 999px 999px 0 0;
-  background:
-    radial-gradient(120% 140% at 32% 18%, color-mix(in srgb, var(--stone) 55%, transparent), transparent 46%),
-    linear-gradient(
-      165deg,
-      color-mix(in srgb, var(--accent) 88%, var(--moss)),
-      var(--accent-deep)
-    );
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--surface-strong) 28%, transparent),
-    0 0 0 1px color-mix(in srgb, var(--accent-deep) 35%, transparent);
+  background: var(--accent);
   transform-origin: 50% 100%;
-  transition: background 180ms ease;
+  transition: background-color 180ms ease;
 }
 
 .blob-eye {
@@ -247,7 +238,6 @@ button {
   height: var(--blob-eye-h);
   border-radius: 50%;
   background: #1a1f1c;
-  box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.12);
   transform: translate(-50%, -50%);
   pointer-events: none;
   will-change: left, top;
@@ -296,7 +286,7 @@ button {
   width: 2px;
   height: 14px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 70%, var(--warm));
+  background: var(--accent);
   transform-origin: 50% 100%;
 }
 
