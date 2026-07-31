@@ -505,12 +505,12 @@ function setupBlobColony() {
     function restPoint(theta) {
       const c = Math.cos(theta);
       const s = Math.sin(theta);
-      // Pull the lower sides inward so feet curve into the line (no tombstone walls).
-      const base = Math.pow(Math.max(s, 0), 0.45);
-      const xPull = 0.36 * (1 - base);
+      // A true half-ellipse gives the resting blob one continuous round contour.
+      // The previous lower-side pull did not meet the forced endpoints smoothly,
+      // which left a subtle kink near each foot.
       return {
-        x: VB_W / 2 + RX * c * (1 - xPull),
-        y: VB_H - RY * Math.pow(Math.max(s, 0), 0.88),
+        x: VB_W / 2 + RX * c,
+        y: VB_H - RY * Math.max(s, 0),
         theta,
       };
     }
@@ -545,12 +545,16 @@ function setupBlobColony() {
         const nx = VB_W / 2 - x;
         const ny = VB_H - y;
         const len = Math.hypot(nx, ny) || 1;
-        const depth = dent * (15 - upper * 5) * falloff;
+        // Fade deformation into the baseline so the feet retain their smooth
+        // horizontal tangents instead of being flattened by a hard y clamp.
+        const footFade = clamp((upper - 0.04) / 0.24, 0, 1);
+        const smoothFootFade = footFade * footFade * (3 - 2 * footFade);
+        const depth = dent * (15 - upper * 5) * falloff * smoothFootFade;
         x += (nx / len) * depth;
         y += (ny / len) * depth * (0.72 - upper * 0.18);
       }
 
-      y = Math.min(y, VB_H - 0.2);
+      y = Math.min(y, VB_H);
 
       const maxApexY = VB_H - RY * 0.5;
       if (upper > 0.12) {
@@ -637,32 +641,23 @@ function setupBlobColony() {
 
       let d = `M${pts[0].x.toFixed(2)} ${pts[0].y.toFixed(2)}`;
       for (let i = 0; i < pts.length - 1; i += 1) {
-        const p0 = pts[i === 0 ? 0 : i - 1];
         const p1 = pts[i];
         const p2 = pts[i + 1];
-        const p3 = pts[i + 2] || p2;
-        let c1x;
-        let c1y;
-        let c2x;
-        let c2y;
-        if (i === 0) {
-          // Horizontal leave from the base — soft left foot, no knife corner.
-          c1x = p1.x + 16;
-          c1y = p1.y;
-          c2x = p2.x - (p3.x - p1.x) / 5;
-          c2y = p2.y - (p3.y - p1.y) / 5;
-        } else if (i >= pts.length - 2) {
-          // Horizontal arrive into the base — soft right foot.
-          c1x = p1.x + (p2.x - p0.x) / 5;
-          c1y = p1.y + (p2.y - p0.y) / 5;
-          c2x = p2.x - 16;
-          c2y = p2.y;
-        } else {
-          c1x = p1.x + (p2.x - p0.x) / 6;
-          c1y = p1.y + (p2.y - p0.y) / 6;
-          c2x = p2.x - (p3.x - p1.x) / 6;
-          c2y = p2.y - (p3.y - p1.y) / 6;
-        }
+        // Reflect the adjacent sample at each endpoint. This gives the first
+        // and last cubic horizontal tangents whose lengths match the nearby
+        // segments, while the Catmull-Rom conversion keeps every join smooth.
+        const p0 = pts[i - 1] || {
+          x: 2 * p1.x - p2.x,
+          y: p2.y,
+        };
+        const p3 = pts[i + 2] || {
+          x: 2 * p2.x - p1.x,
+          y: p1.y,
+        };
+        const c1x = p1.x + (p2.x - p0.x) / 6;
+        const c1y = p1.y + (p2.y - p0.y) / 6;
+        const c2x = p2.x - (p3.x - p1.x) / 6;
+        const c2y = p2.y - (p3.y - p1.y) / 6;
         d += `C${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}`;
       }
       return `${d}Z`;
