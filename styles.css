@@ -249,9 +249,10 @@ button {
 .blob-svg path {
   fill: currentColor;
   stroke: currentColor;
-  stroke-width: 0.7;
+  stroke-width: 1;
   stroke-linejoin: round;
   stroke-linecap: round;
+  paint-order: stroke fill;
   shape-rendering: geometricPrecision;
 }
 
