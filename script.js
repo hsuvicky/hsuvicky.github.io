@@ -438,13 +438,14 @@ function setupBlob() {
     if (theta >= Math.PI - 0.001) return { x: 0, y: VB_H, theta: Math.PI };
 
     let { x, y } = restPoint(theta);
+    const upper = Math.sin(theta);
 
-    // Soft squat: compress toward the pinned base, but only about halfway max.
+    // Soft squat: compress toward the pinned base, capped near half height.
     const squash = morph.squash;
     if (squash > 0.001) {
       const height = VB_H - y;
-      y = VB_H - height * (1 - squash * 0.48);
-      const bulge = 1 + squash * 0.22 * Math.sin(theta);
+      y = VB_H - height * (1 - squash * 0.42);
+      const bulge = 1 + squash * 0.2 * upper;
       x = VB_W / 2 + (x - VB_W / 2) * bulge;
     }
 
@@ -458,12 +459,21 @@ function setupBlob() {
       const nx = VB_W / 2 - x;
       const ny = VB_H - y;
       const len = Math.hypot(nx, ny) || 1;
-      const depth = dent * 24 * falloff;
+      // Less vertical bite on the crown so dent can't flatten past the max squat.
+      const depth = dent * (18 - upper * 6) * falloff;
       x += (nx / len) * depth;
-      y += (ny / len) * depth * 0.92;
+      y += (ny / len) * depth * (0.75 - upper * 0.2);
     }
 
     y = Math.min(y, VB_H - 0.2);
+
+    // Hard floor: crown cannot sink below ~half resting height (screenshot max).
+    const maxApexY = VB_H - RY * 0.5;
+    if (upper > 0.15) {
+      const limit = maxApexY + (1 - upper) * 14;
+      if (y > limit) y = limit;
+    }
+
     return { x, y, theta };
   }
 
