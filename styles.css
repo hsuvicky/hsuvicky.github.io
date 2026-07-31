@@ -787,10 +787,15 @@ h1 {
   height: 2.35rem;
 }
 
+.progression-logo-lol {
+  height: 2.35rem;
+}
+
 :root[data-theme="dark"] .progression-logo {
   filter: grayscale(1) brightness(0) invert(1);
 }
 
+:root[data-theme="dark"] .progression-logo-lol,
 :root[data-theme="dark"] .progression-logo-rank {
   filter: none;
 }
