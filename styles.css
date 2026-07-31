@@ -228,11 +228,13 @@ button {
   color: var(--accent);
   transform-origin: 50% 100%;
   transition: color 180ms ease;
+  isolation: isolate;
 }
 
 .blob-svg {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
@@ -246,13 +248,16 @@ button {
 
 .blob-arm {
   position: absolute;
-  top: 28%;
-  left: 88%;
-  z-index: 3;
-  width: 34px;
-  height: 26px;
+  top: 30%;
+  left: 78%;
+  z-index: 0;
+  width: 38px;
+  height: 30px;
   overflow: visible;
+  opacity: 0;
   pointer-events: none;
+  transform: translate(-14px, 8px) rotate(78deg);
+  transform-origin: 3px 20px;
 }
 
 .blob-arm line {
@@ -264,29 +269,51 @@ button {
 }
 
 .blob-arm-wave {
-  transform-origin: 2px 18px;
-  animation: blob-arm-wave 1.35s ease-in-out infinite;
+  transform-origin: 3px 20px;
 }
 
 .blob-arm-hand {
   transform-origin: 0 0;
-  animation: blob-fingers-wave 1.35s ease-in-out infinite;
+}
+
+.blob[data-arm="waving"] .blob-arm {
+  z-index: 2;
+  opacity: 1;
+  transform: translate(0, 0) rotate(0deg);
+  transition: opacity 120ms ease;
+}
+
+.blob[data-arm="waving"] .blob-arm-wave {
+  animation: blob-arm-wave 0.7s ease-in-out 2;
+}
+
+.blob[data-arm="waving"] .blob-arm-hand {
+  animation: blob-fingers-wave 0.7s ease-in-out 2;
+}
+
+.blob[data-arm="tucking"] .blob-arm {
+  z-index: 0;
+  animation: blob-arm-tuck 0.48s ease-in forwards;
+}
+
+.blob[data-arm="hidden"] .blob-arm {
+  z-index: 0;
+  opacity: 0;
+  transform: translate(-14px, 8px) rotate(78deg);
 }
 
 .blob[data-state="popping"] .blob-arm,
-.blob[data-state="gone"] .blob-arm {
-  opacity: 0;
-}
-
-.blob[data-state="rising"] .blob-arm-wave,
-.blob[data-state="rising"] .blob-arm-hand {
-  animation: none;
+.blob[data-state="gone"] .blob-arm,
+.blob[data-state="rising"] .blob-arm {
+  opacity: 0 !important;
+  animation: none !important;
 }
 
 .blob-eye {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 2;
   width: var(--blob-eye-w);
   height: var(--blob-eye-h);
   border-radius: 50%;
@@ -314,6 +341,7 @@ button {
 .blob-squint {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: none;
   color: #1a1f1c;
   font-family: var(--mono);
@@ -474,24 +502,63 @@ button {
 }
 
 @keyframes blob-arm-wave {
-  0%,
-  100% {
-    transform: rotate(-8deg);
+  0% {
+    transform: rotate(-6deg);
+  }
+
+  25% {
+    transform: rotate(34deg);
   }
 
   50% {
-    transform: rotate(28deg);
+    transform: rotate(-10deg);
+  }
+
+  75% {
+    transform: rotate(30deg);
+  }
+
+  100% {
+    transform: rotate(4deg);
   }
 }
 
 @keyframes blob-fingers-wave {
-  0%,
-  100% {
-    transform: rotate(-12deg);
+  0% {
+    transform: rotate(-16deg);
+  }
+
+  25% {
+    transform: rotate(22deg);
   }
 
   50% {
-    transform: rotate(18deg);
+    transform: rotate(-18deg);
+  }
+
+  75% {
+    transform: rotate(20deg);
+  }
+
+  100% {
+    transform: rotate(-4deg);
+  }
+}
+
+@keyframes blob-arm-tuck {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(8deg);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate(-8px, 5px) rotate(52deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-14px, 8px) rotate(78deg);
   }
 }
 
@@ -2973,7 +3040,8 @@ h1 {
   .blob[data-state="rising"] .blob-body,
   .blob[data-state="idle"]:not([data-squint="true"]) .blob-eye,
   .blob-arm-wave,
-  .blob-arm-hand {
+  .blob-arm-hand,
+  .blob[data-arm="tucking"] .blob-arm {
     animation: none;
   }
 

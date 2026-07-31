@@ -376,10 +376,17 @@ function setupBlob() {
     ? { stiffness: 1, damping: 1 }
     : { stiffness: 0.065, damping: 0.8 };
 
+  const ARM_INTERVAL_MS = 30000;
+  const ARM_WAVE_MS = reducedMotion.matches ? 80 : 1400;
+  const ARM_TUCK_MS = reducedMotion.matches ? 80 : 480;
+
   let pointerX = window.innerWidth * 0.5;
   let pointerY = window.innerHeight * 0.35;
   let regenerateTimer = 0;
   let stateTimer = 0;
+  let armTimer = 0;
+  let armPhaseTimer = 0;
+  let armState = "hidden";
 
   const morph = {
     squash: 0,
@@ -592,6 +599,45 @@ function setupBlob() {
     path.setAttribute("d", buildPath());
   }
 
+  function setArmState(state) {
+    armState = state;
+    blob.dataset.arm = state;
+  }
+
+  function clearArmPhase() {
+    window.clearTimeout(armPhaseTimer);
+    armPhaseTimer = 0;
+  }
+
+  function scheduleArmWave() {
+    window.clearTimeout(armTimer);
+    if (reducedMotion.matches) return;
+    armTimer = window.setTimeout(startArmWave, ARM_INTERVAL_MS);
+  }
+
+  function finishArmHide() {
+    setArmState("hidden");
+    scheduleArmWave();
+  }
+
+  function tuckArm() {
+    if (armState === "hidden" || armState === "tucking") return;
+    clearArmPhase();
+    setArmState("tucking");
+    armPhaseTimer = window.setTimeout(finishArmHide, ARM_TUCK_MS);
+  }
+
+  function startArmWave() {
+    if (blob.dataset.state !== "idle") {
+      scheduleArmWave();
+      return;
+    }
+
+    clearArmPhase();
+    setArmState("waving");
+    armPhaseTimer = window.setTimeout(tuckArm, ARM_WAVE_MS);
+  }
+
   function tick() {
     const active = blob.dataset.state === "idle";
     const targets = active
@@ -606,6 +652,11 @@ function setupBlob() {
       morph.contactAng = lerpAngle(morph.contactAng, targets.contactAng, 0.1);
     }
 
+    // If poked while waving, stash the arm behind the body.
+    if (active && armState === "waving" && (morph.dent > 0.12 || morph.squash > 0.12)) {
+      tuckArm();
+    }
+
     renderMorph();
     if (active) placeEyes();
     else if (blob.dataset.state === "rising") blob.dataset.squint = "true";
@@ -616,12 +667,14 @@ function setupBlob() {
   function clearTimers() {
     window.clearTimeout(regenerateTimer);
     window.clearTimeout(stateTimer);
+    clearArmPhase();
   }
 
   function finishRise() {
     setState("idle");
     blob.dataset.squint = "false";
     blob.setAttribute("aria-label", "Friendly blob. Click to pop.");
+    scheduleArmWave();
   }
 
   function startRise() {
@@ -642,6 +695,8 @@ function setupBlob() {
     if (blob.dataset.state !== "idle") return;
 
     clearTimers();
+    window.clearTimeout(armTimer);
+    setArmState("hidden");
     setState("popping");
     blob.dataset.squint = "false";
     blob.setAttribute("aria-label", "Blob popped.");
@@ -675,6 +730,11 @@ function setupBlob() {
 
   renderMorph();
   placeEyes();
+  setArmState("hidden");
+  // First wave soon after load, then every 30s after each tuck.
+  if (!reducedMotion.matches) {
+    armTimer = window.setTimeout(startArmWave, 2500);
+  }
   requestAnimationFrame(tick);
 }
 

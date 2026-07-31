@@ -19,7 +19,7 @@
     <title>About · Vicky Hsu</title>
     <link rel="canonical" href="https://hsuvicky.github.io/about/">
     <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="../styles.css?v=20260731-blob11">
+    <link rel="stylesheet" href="../styles.css?v=20260731-blob15">
     <script>
       (() => {
         try {
@@ -31,7 +31,7 @@
         }
       })();
     </script>
-    <script src="../script.js?v=20260731-blob14" defer></script>
+    <script src="../script.js?v=20260731-blob15" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -48,10 +48,23 @@
             type="button"
             data-blob
             data-state="idle"
+            data-arm="hidden"
             aria-label="Friendly blob. Click to pop."
           >
             <span class="blob-stage">
               <span class="blob-body" data-blob-body>
+                <svg class="blob-arm" viewBox="0 0 40 32" aria-hidden="true">
+                  <g class="blob-arm-wave">
+                    <line class="blob-arm-limb" x1="3" y1="20" x2="22" y2="10" />
+                    <g transform="translate(22 10)">
+                      <g class="blob-arm-hand">
+                        <line x1="0" y1="0" x2="8" y2="-6" />
+                        <line x1="0" y1="0" x2="10" y2="0" />
+                        <line x1="0" y1="0" x2="8" y2="6" />
+                      </g>
+                    </g>
+                  </g>
+                </svg>
                 <svg class="blob-svg" viewBox="0 0 100 64" preserveAspectRatio="none" aria-hidden="true">
                   <path
                     data-blob-path
@@ -64,16 +77,6 @@
                   <span class="blob-squint-l">&gt;</span>
                   <span class="blob-squint-r">&lt;</span>
                 </span>
-                <svg class="blob-arm" viewBox="0 0 36 28" aria-hidden="true">
-                  <g class="blob-arm-wave">
-                    <line class="blob-arm-limb" x1="2" y1="18" x2="20" y2="8" />
-                    <g class="blob-arm-hand" transform="translate(20 8)">
-                      <line x1="0" y1="0" x2="9" y2="-7" />
-                      <line x1="0" y1="0" x2="11" y2="0" />
-                      <line x1="0" y1="0" x2="9" y2="7" />
-                    </g>
-                  </g>
-                </svg>
               </span>
               <span class="blob-pop-burst" aria-hidden="true">
                 <span></span><span></span><span></span><span></span><span></span>
