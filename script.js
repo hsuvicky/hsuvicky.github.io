@@ -559,54 +559,67 @@ function setupBlob() {
     // Socket anchors follow the deformed body (including squash). Shared Y keeps
     // the pair level; gap keeps > < from touching.
     const inset = clamp(0.4 + morph.squash * 0.06 + morph.dent * 0.08, 0.38, 0.52);
-    const halfSep = 0.36;
+    const halfSep = 0.42;
     const socketL = eyePoint(Math.PI / 2 + halfSep, inset);
     const socketR = eyePoint(Math.PI / 2 - halfSep, inset);
     const socketY = (socketL.y + socketR.y) / 2;
     const socketMidX = (socketL.x + socketR.x) / 2;
     const apex = deformPoint(Math.PI / 2);
 
-    const lookGain = onBlob ? 9 : 5.5;
-    const lookX = clamp((localX - 0.5) * lookGain * 2, -9, 9);
+    const lookGain = onBlob ? 7 : 4.5;
+    const lookX = clamp((localX - 0.5) * lookGain * 2, -7, 7);
     // When squashed, don't let upward look fight the compressed body (floating eyes).
     const lookY =
-      clamp((localY - 0.42) * lookGain * 1.35, -7, 7) * (1 - morph.squash * 1.35);
+      clamp((localY - 0.42) * lookGain * 1.2, -5.5, 5.5) * (1 - morph.squash * 1.35);
 
-    const minGap = 30;
+    const minGap = 36;
     let centerX = socketMidX + lookX * (1 - morph.squash * 0.35);
     let eyeY = socketY + lookY;
 
     // Clamp to the *current* squashed crown, not the resting silhouette.
     const minEyeY = apex.y + 7;
     const maxEyeY = VB_H - 11;
-    centerX = clamp(centerX, 34, 66);
+    centerX = clamp(centerX, 32, 68);
     eyeY = clamp(eyeY, minEyeY, maxEyeY);
 
     let leftX = centerX - minGap / 2;
     let rightX = centerX + minGap / 2;
 
-    if (leftX < 20) {
-      rightX += 20 - leftX;
-      leftX = 20;
+    if (leftX < 16) {
+      const shift = 16 - leftX;
+      leftX += shift;
+      rightX += shift;
     }
-    if (rightX > 80) {
-      leftX -= rightX - 80;
-      rightX = 80;
+    if (rightX > 84) {
+      const shift = rightX - 84;
+      leftX -= shift;
+      rightX -= shift;
     }
     if (rightX - leftX < minGap) {
       leftX = VB_W / 2 - minGap / 2;
       rightX = VB_W / 2 + minGap / 2;
     }
 
-    blob.style.setProperty("--eye-l-x", `${((leftX / VB_W) * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-l-y", `${((eyeY / VB_H) * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-r-x", `${((rightX / VB_W) * 100).toFixed(2)}%`);
-    blob.style.setProperty("--eye-r-y", `${((eyeY / VB_H) * 100).toFixed(2)}%`);
-    blob.style.setProperty("--squint-y", `${((eyeY / VB_H) * 100).toFixed(2)}%`);
+    // Ease eye motion so small morph/look jitter doesn't spazz the pupils.
+    const ease = reducedMotion.matches ? 1 : 0.16;
+    eyeSmooth.lx += (leftX - eyeSmooth.lx) * ease;
+    eyeSmooth.ly += (eyeY - eyeSmooth.ly) * ease;
+    eyeSmooth.rx += (rightX - eyeSmooth.rx) * ease;
+    eyeSmooth.ry += (eyeY - eyeSmooth.ry) * ease;
 
-    const facePress = morph.dent > 0.26 && Math.sin(morph.contactAng) > 0.72;
-    const squished = morph.squash > 0.18 || facePress;
-    blob.dataset.squint = squished ? "true" : "false";
+    blob.style.setProperty("--eye-l-x", `${((eyeSmooth.lx / VB_W) * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-l-y", `${((eyeSmooth.ly / VB_H) * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-r-x", `${((eyeSmooth.rx / VB_W) * 100).toFixed(2)}%`);
+    blob.style.setProperty("--eye-r-y", `${((eyeSmooth.ry / VB_H) * 100).toFixed(2)}%`);
+    blob.style.setProperty(
+      "--squint-y",
+      `${((((eyeSmooth.ly + eyeSmooth.ry) / 2) / VB_H) * 100).toFixed(2)}%`,
+    );
+
+    const facePress = morph.dent > (squintOn ? 0.18 : 0.3) && Math.sin(morph.contactAng) > 0.72;
+    const wantSquint = morph.squash > (squintOn ? 0.12 : 0.22) || facePress;
+    squintOn = wantSquint;
+    blob.dataset.squint = squintOn ? "true" : "false";
   }
 
   function renderMorph() {

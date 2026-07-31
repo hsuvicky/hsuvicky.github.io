@@ -337,7 +337,7 @@ button {
 }
 
 .blob[data-state="idle"]:not([data-squint="true"]) .blob-eye {
-  animation: blob-blink 2s steps(1, end) infinite;
+  animation: blob-blink 3.6s ease-in-out infinite;
 }
 
 .blob-eye-l {
@@ -502,12 +502,12 @@ button {
 
 @keyframes blob-blink {
   0%,
-  88%,
+  90%,
   100% {
     transform: translate(-50%, -50%) scaleY(1);
   }
 
-  92%,
+  93%,
   96% {
     transform: translate(-50%, -50%) scaleY(0.08);
   }
