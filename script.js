@@ -531,9 +531,10 @@ function setupBlob() {
     const topness = Math.pow(Math.sin(ang), 1.25);
 
     // Primary response: local concave dent wherever you poke (including eye center).
-    // Extra squash when the poke is on/near the crown.
+    // Extra squash when the poke is on/near the crown — capped so it never
+    // flattens all the way down to the nav line.
     return {
-      squash: pressure * topness * 0.9,
+      squash: clamp(pressure * topness * 0.55, 0, 0.5),
       dent: pressure * 1.1,
       contactAng: ang,
     };
