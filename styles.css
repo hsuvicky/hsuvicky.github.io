@@ -4,6 +4,7 @@
   --surface: #f8f7f4;
   --surface-strong: #ffffff;
   --text: #2a2a2a;
+  --text-strong: #101010;
   --text-soft: #565a56;
   --muted: #666a66;
   --accent: #4b6e48;
@@ -32,6 +33,7 @@
   --surface: #16212b;
   --surface-strong: #1c2933;
   --text: #e6f0e8;
+  --text-strong: #f6fcf7;
   --text-soft: #c0cdc4;
   --muted: #9aa8a0;
   --accent: #8bbf87;
@@ -782,6 +784,13 @@ h1 {
   background: var(--stone);
 }
 
+.progression-description,
+.progression-career-event,
+.progression-personal-event {
+  transform-origin: top center;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .progression-description {
   width: 100%;
   padding-top: 1.25rem;
@@ -919,14 +928,24 @@ h1 {
   padding-block: 0;
 }
 
-.progression-rail li:hover > .progression-period,
-.progression-rail li:hover .progression-role,
-.progression-rail li:hover .progression-domain {
-  color: var(--text);
-}
+/* Only where a pointer can rest. On touch the state sticks after a tap or after a
+   drag of the rail, leaving a milestone stranded at hover size. */
+@media (hover: hover) {
+  .progression-rail li:hover > .progression-period,
+  .progression-rail li:hover .progression-role,
+  .progression-rail li:hover .progression-domain {
+    color: var(--text-strong);
+  }
 
-.progression-rail li:hover .progression-grade {
-  color: var(--accent);
+  .progression-rail li:hover .progression-grade {
+    color: var(--accent-deep);
+  }
+
+  .progression-rail li:hover .progression-description,
+  .progression-rail li:hover .progression-career-event,
+  .progression-rail li:hover .progression-personal-event {
+    transform: scale(1.05);
+  }
 }
 
 :root[data-theme="dark"] .progression-logo {
@@ -2596,6 +2615,12 @@ h1 {
 
   .reveal-ready .reveal-item {
     opacity: 1;
+    transform: none;
+  }
+
+  .progression-rail li:hover .progression-description,
+  .progression-rail li:hover .progression-career-event,
+  .progression-rail li:hover .progression-personal-event {
     transform: none;
   }
 }
