@@ -428,8 +428,8 @@ button {
 
 .blob[data-state="startled"] {
   pointer-events: none;
-  --blob-eye-w: 13px;
-  --blob-eye-h: 16px;
+  --blob-eye-w: 14px;
+  --blob-eye-h: 17px;
 }
 
 .blob[data-state="startled"] .blob-body {
