@@ -1397,33 +1397,30 @@ h1 {
 }
 
 .enterprise-folio {
-  display: grid;
-  grid-template-columns: 1.2fr repeat(3, 1fr);
   margin-top: clamp(1.75rem, 3vw, 2.5rem);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.enterprise-folio > * {
-  padding: clamp(1.1rem, 1.7vw, 1.4rem);
-}
-
-.enterprise-folio > * + * {
-  border-left: 1px solid var(--border);
 }
 
 .folio-intro {
-  background: var(--accent);
-  color: var(--ink-inverse);
+  margin-bottom: 0.8rem;
 }
 
 .folio-intro .annotation {
-  color: color-mix(in srgb, var(--ink-inverse) 72%, transparent);
+  color: var(--accent);
 }
 
-.enterprise-folio article {
+.enterprise-folio-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  background: var(--border);
+}
+
+.enterprise-folio-grid article {
   position: relative;
-  padding-top: 3.25rem;
+  min-width: 0;
+  padding: 3.25rem clamp(1rem, 1.5vw, 1.3rem) clamp(1.1rem, 1.7vw, 1.4rem);
+  background: var(--surface-strong);
 }
 
 .folio-number {
@@ -1435,14 +1432,14 @@ h1 {
   font-weight: 700;
 }
 
-.enterprise-folio h4 {
+.enterprise-folio-grid h4 {
   margin: 0;
   color: var(--accent-deep);
   font-size: 1rem;
   line-height: 1.35;
 }
 
-.enterprise-folio article p {
+.enterprise-folio-grid article p {
   margin: 0.85rem 0 0;
   color: var(--text-soft);
   font-size: 0.8rem;
@@ -2153,15 +2150,11 @@ h1 {
   }
 
   .enterprise-folio {
-    grid-template-columns: repeat(3, 1fr);
+    margin-top: 2rem;
   }
 
-  .folio-intro {
-    grid-column: 1 / -1;
-  }
-
-  .enterprise-folio article:first-of-type {
-    border-left: 0;
+  .enterprise-folio-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .field-notes {
@@ -2462,19 +2455,15 @@ h1 {
   }
 
   .enterprise-folio {
+    margin-top: 1.5rem;
+  }
+
+  .enterprise-folio-grid {
     grid-template-columns: 1fr;
   }
 
-  .folio-intro {
-    grid-column: auto;
-  }
-
-  .enterprise-folio > * + * {
-    border-top: 1px solid var(--border);
-    border-left: 0;
-  }
-
-  .enterprise-folio article {
+  .enterprise-folio-grid article {
+    min-height: 0;
     padding-top: 3rem;
   }
 
@@ -2707,7 +2696,7 @@ h1 {
   }
 
   .field-notes,
-  .enterprise-folio {
+  .enterprise-folio-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
