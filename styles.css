@@ -587,7 +587,9 @@ h1 {
   font-size: 1.05rem;
 }
 
-.achievements-label {
+.section-label {
+  position: relative;
+  z-index: 1;
   margin-bottom: clamp(1.4rem, 2.2vw, 1.9rem);
 }
 
@@ -807,10 +809,6 @@ h1 {
 
 .projects {
   background: var(--bg);
-}
-
-.projects-heading {
-  margin-bottom: 1.25rem;
 }
 
 .case-study {
@@ -1248,18 +1246,6 @@ h1 {
   color: color-mix(in srgb, var(--ink-inverse) 72%, transparent);
 }
 
-.folio-intro h3 {
-  margin: 1rem 0 0;
-  font-size: 1.65rem;
-  line-height: 1.05;
-}
-
-.folio-intro p:last-child {
-  margin: 1rem 0 0;
-  font-size: 0.85rem;
-  opacity: 0.76;
-}
-
 .enterprise-folio article {
   position: relative;
   padding-top: 3.25rem;
@@ -1305,11 +1291,6 @@ h1 {
   content: "";
   opacity: 0.14;
   transform: rotate(27deg);
-}
-
-.hobbies-heading {
-  position: relative;
-  z-index: 1;
 }
 
 .field-notes {
