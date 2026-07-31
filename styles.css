@@ -708,15 +708,11 @@ h1 {
 .progression-rail li {
   position: relative;
   flex: 0 0 clamp(10.75rem, 15vw, 12rem);
-  min-height: 18rem;
+  min-height: 14rem;
   padding: 0 1.25rem 1rem 0;
   opacity: 0;
   transition: opacity 180ms linear;
   will-change: opacity;
-}
-
-.progression-rail .progression-empty {
-  min-height: 18rem;
 }
 
 .progression-empty .progression-period {
