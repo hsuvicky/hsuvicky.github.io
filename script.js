@@ -204,6 +204,7 @@ function setupCareerTimeline() {
   const hobbiesToggle = document.querySelector("[data-timeline-hobbies-toggle]");
   const hobbyContents = timeline ? [...timeline.querySelectorAll("[data-hobby-content]")] : [];
   const cards = viewport ? [...viewport.querySelectorAll(".progression-rail > li")] : [];
+  const onwards = viewport?.querySelector("[data-timeline-onwards]");
 
   if (!viewport || !cards.length) return;
 
@@ -214,10 +215,17 @@ function setupCareerTimeline() {
   let dragStartX = 0;
   let dragStartScroll = 0;
 
+  // The closing note lands once the rail settles at the present, or as soon as the
+  // visitor takes over, so it never stays hidden behind an interrupted intro.
+  function revealOnwards() {
+    onwards?.setAttribute("data-revealed", "true");
+  }
+
   function stopAutoScroll() {
     autoScrolling = false;
     if (autoScrollFrame) cancelAnimationFrame(autoScrollFrame);
     autoScrollFrame = null;
+    revealOnwards();
   }
 
   function updateCardFades() {
@@ -325,6 +333,7 @@ function setupCareerTimeline() {
       if (reducedMotion.matches || targetDistance <= 1) {
         viewport.scrollLeft = targetDistance;
         updateCardFades();
+        revealOnwards();
         return;
       }
 
@@ -348,6 +357,7 @@ function setupCareerTimeline() {
           autoScrolling = false;
           autoScrollFrame = null;
           updateCardFades();
+          revealOnwards();
         }
       }
 
