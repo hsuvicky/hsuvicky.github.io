@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 64">
+  <g stroke="#111" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
+    <path
+      d="M12 43 30 23c6-7 16-7 22 0l6 7-17 17c-6 6-15 6-21 0l-2-2-6 6Z"
+      fill="#22bfe6"
+    />
+    <path d="m7 48 10-10 10 10-10 10Z" fill="#edf1f9"/>
+    <path
+      d="M84 43 66 23c-6-7-16-7-22 0l-6 7 17 17c6 6 15 6 21 0l2-2 6 6Z"
+      fill="#ff4058"
+    />
+    <path d="m89 48-10-10-10 10 10 10Z" fill="#edf1f9"/>
+    <path d="m35 31 26 26m0-26L35 57" fill="none"/>
+  </g>
+</svg>
