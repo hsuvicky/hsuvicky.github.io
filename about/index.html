@@ -21,19 +21,24 @@
     <link rel="icon" href="../assets/favicon-32.png?v=20260731-face" type="image/png" sizes="32x32">
     <link rel="icon" href="../assets/favicon-16.png?v=20260731-face" type="image/png" sizes="16x16">
     <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png?v=20260731-face" sizes="180x180">
-    <link rel="stylesheet" href="../styles.css?v=20260731-blob49">
+    <link rel="stylesheet" href="../styles.css?v=20260731-blob70">
     <script>
       (() => {
         try {
           const saved = localStorage.getItem("theme");
           const theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
           document.documentElement.dataset.theme = theme;
+          const pageEnter = sessionStorage.getItem("page-transition");
+          if (pageEnter) {
+            document.documentElement.dataset.pageEnter = pageEnter;
+            sessionStorage.removeItem("page-transition");
+          }
         } catch {
           document.documentElement.dataset.theme = "light";
         }
       })();
     </script>
-    <script src="../script.js?v=20260731-blob49" defer></script>
+    <script src="../script.js?v=20260731-blob62" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -42,7 +47,7 @@
       <nav class="site-nav" aria-label="Primary navigation">
         <div class="brand">
           <a class="wordmark" href="/" aria-label="Vicky Hsu, Home">
-            <span class="wordmark-full">Vicky Hsu</span>
+            <span class="wordmark-full wordmark-pointillism" data-text="Vicky&#10;Hsu">Vicky<br>Hsu</span>
             <span class="wordmark-short" aria-hidden="true">VH</span>
           </a>
           <div class="blob-colony" data-blob-colony aria-label="Friendly blobs"></div>
@@ -53,27 +58,16 @@
           type="button"
           aria-expanded="false"
           aria-controls="primary-links"
+          aria-label="Open menu"
         >
-          <span class="nav-toggle-label">Menu</span>
           <span class="nav-toggle-lines" aria-hidden="true"></span>
         </button>
 
         <div class="nav-links" id="primary-links">
           <a href="/">Home</a>
           <a href="/about/" aria-current="page">About</a>
-          <a href="../resume.html">Resume</a>
         </div>
 
-        <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
-          <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="3.5"/>
-            <path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6m11 11 1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6m11-11 1.6-1.6"/>
-          </svg>
-          <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M20.2 15.1A8.6 8.6 0 0 1 8.9 3.8 8.6 8.6 0 1 0 20.2 15Z"/>
-          </svg>
-          <span class="visually-hidden">Change color theme</span>
-        </button>
       </nav>
     </header>
 
@@ -81,42 +75,12 @@
       <section class="about section" id="about" aria-labelledby="about-heading">
         <div class="section-shell hero-grid">
           <div class="hero-copy">
-            <p class="identity">Vicky Hsu · Senior Director &amp; AI Product Manager</p>
             <h1 id="about-heading">I turn complex AI into products people actually use.</h1>
             <p class="hero-lede">
               I build and commercialize 0-to-1 AI products in complex, regulated industries.
               I currently lead a <strong>neurosymbolic AI platform</strong> from roadmap and
               product design through pilots, scale, and commercialization.
             </p>
-            <div class="hero-support" aria-label="Core product capabilities">
-              <span>Product strategy</span>
-              <span>Technical systems</span>
-              <span>User experience</span>
-              <span>Delivery</span>
-            </div>
-            <div class="hero-actions" aria-label="Portfolio links">
-              <a class="text-link text-link-strong" href="/#enterprise-work">
-                Explore my work <span aria-hidden="true">↓</span>
-              </a>
-              <a
-                class="text-link"
-                href="https://www.linkedin.com/in/vickyhsu1/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                LinkedIn <span class="external-mark" aria-hidden="true">↗</span>
-                <span class="visually-hidden">(opens in a new tab)</span>
-              </a>
-              <a
-                class="text-link"
-                href="https://github.com/hsuvicky"
-                target="_blank"
-                rel="noreferrer"
-              >
-                GitHub <span class="external-mark" aria-hidden="true">↗</span>
-                <span class="visually-hidden">(opens in a new tab)</span>
-              </a>
-            </div>
           </div>
 
           <figure class="portrait-frame">
@@ -172,11 +136,6 @@
               <p class="case-purpose">
                 A workout-refresh product for self-directed recreational lifters who
                 drift into repetitive routines.
-              </p>
-
-              <p class="not-this">
-                <span>Deliberately not</span>
-                a workout logger, black-box AI workout generator, or exercise encyclopedia.
               </p>
 
               <details class="case-disclosure">
@@ -412,7 +371,7 @@
 
     <footer class="site-footer">
       <div class="section-shell">
-        <div class="footer-actions" aria-label="Professional links">
+        <div class="footer-actions" aria-label="Footer actions">
           <a
             class="footer-linkedin"
             href="https://www.linkedin.com/in/vickyhsu1/"
@@ -423,6 +382,16 @@
             <img src="../assets/linkedin-icon.png" alt="" width="512" height="512" loading="lazy">
             <span class="visually-hidden">(opens in a new tab)</span>
           </a>
+          <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+            <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="3.5"/>
+              <path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6m11 11 1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6m11-11 1.6-1.6"/>
+            </svg>
+            <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.2 15.1A8.6 8.6 0 0 1 8.9 3.8 8.6 8.6 0 1 0 20.2 15Z"/>
+            </svg>
+            <span class="visually-hidden">Change color theme</span>
+          </button>
         </div>
       </div>
     </footer>

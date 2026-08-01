@@ -11,6 +11,91 @@ const sections = sectionLinks
   .filter(Boolean);
 const colorScheme = window.matchMedia("(prefers-color-scheme: dark)");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const pageLinks = [...document.querySelectorAll('a[href="/"], a[href="/about/"]')];
+const pageTransitionSurface = document.querySelector("main");
+
+function pagePosition(pathname) {
+  if (pathname === "/" || pathname === "/index.html") return 0;
+  if (pathname === "/about/" || pathname === "/about/index.html") return 1;
+  return null;
+}
+
+function finishPageEntrance() {
+  delete root.dataset.pageEnter;
+}
+
+if (root.dataset.pageEnter) {
+  const onPageEnterEnd = (event) => {
+    if (event.target !== pageTransitionSurface) return;
+    pageTransitionSurface?.removeEventListener("animationend", onPageEnterEnd);
+    finishPageEntrance();
+  };
+  pageTransitionSurface?.addEventListener("animationend", onPageEnterEnd);
+  window.setTimeout(finishPageEntrance, 520);
+}
+
+function navigateWithSlide(event) {
+  const link = event.currentTarget;
+  const destination = new URL(link.href, window.location.href);
+  const currentPosition = pagePosition(window.location.pathname);
+  const destinationPosition = pagePosition(destination.pathname);
+
+  if (
+    event.defaultPrevented ||
+    event.button !== 0 ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey ||
+    link.target ||
+    destination.origin !== window.location.origin ||
+    currentPosition === null ||
+    destinationPosition === null ||
+    currentPosition === destinationPosition
+  ) {
+    return;
+  }
+
+  event.preventDefault();
+  setMenu(false);
+
+  if (reducedMotion.matches) {
+    window.location.assign(destination.href);
+    return;
+  }
+
+  const movingForward = destinationPosition > currentPosition;
+  const exitDirection = movingForward ? "left" : "right";
+  const enterDirection = movingForward ? "from-right" : "from-left";
+
+  try {
+    sessionStorage.setItem("page-transition", enterDirection);
+  } catch {
+    // The outgoing animation still works if session storage is unavailable.
+  }
+
+  root.dataset.pageExit = exitDirection;
+  let navigationStarted = false;
+  const completeNavigation = () => {
+    if (navigationStarted) return;
+    navigationStarted = true;
+    window.location.assign(destination.href);
+  };
+
+  const onPageExitEnd = (animationEvent) => {
+    if (animationEvent.target !== pageTransitionSurface) return;
+    pageTransitionSurface?.removeEventListener("animationend", onPageExitEnd);
+    completeNavigation();
+  };
+  pageTransitionSurface?.addEventListener("animationend", onPageExitEnd);
+  window.setTimeout(completeNavigation, 460);
+}
+
+pageLinks.forEach((link) => link.addEventListener("click", navigateWithSlide));
+
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) delete root.dataset.pageExit;
+});
 
 function getSavedTheme() {
   try {
@@ -51,8 +136,8 @@ colorScheme.addEventListener("change", (event) => {
 function setMenu(open) {
   if (!navToggle || !navLinks) return;
   navToggle.setAttribute("aria-expanded", String(open));
+  navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
   navLinks.dataset.open = String(open);
-  navToggle.querySelector(".nav-toggle-label").textContent = open ? "Close" : "Menu";
 }
 
 navToggle?.addEventListener("click", () => {
@@ -1127,8 +1212,20 @@ function setupBlobColony() {
     instances.forEach((inst) => {
       if (inst === victim) return;
       if (inst.state !== "idle") return;
+      inst.blob.dataset.shiver = "false";
       inst.blob.dataset.scare = "true";
       inst.blob.dataset.squint = "false";
+    });
+  }
+
+  function beginWitnessShiver() {
+    scareFocus = null;
+    scareStartedAt = 0;
+    scareUntil = 0;
+    instances.forEach((inst) => {
+      if (inst.blob.dataset.scare !== "true") return;
+      inst.blob.dataset.scare = "false";
+      inst.blob.dataset.shiver = "true";
     });
   }
 
@@ -1139,6 +1236,9 @@ function setupBlobColony() {
     instances.forEach((inst) => {
       if (inst.blob.dataset.scare === "true") {
         inst.blob.dataset.scare = "false";
+      }
+      if (inst.blob.dataset.shiver === "true") {
+        inst.blob.dataset.shiver = "false";
       }
     });
   }
@@ -1197,7 +1297,7 @@ function setupBlobColony() {
 
   function frame() {
     if (scareFocus && performance.now() > scareUntil) {
-      clearScare();
+      beginWitnessShiver();
     }
     for (let i = 0; i < instances.length; i += 1) {
       instances[i].tick();
