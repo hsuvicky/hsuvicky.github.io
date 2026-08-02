@@ -158,6 +158,7 @@ let wenchangCloseTimer;
 function completeWenchangIntroduction() {
   if (root.dataset.wenchangSeen === "true") return;
   root.dataset.wenchangSeen = "true";
+  root.dataset.wenchangNavSeen = "true";
   try {
     localStorage.setItem("wenchang-introduced", "true");
   } catch {
@@ -175,7 +176,7 @@ if (wenchangRider && root.dataset.wenchangSeen !== "true") {
       completeWenchangIntroduction();
     };
     wenchangRider.addEventListener("animationend", onWenchangAnimationEnd);
-    window.setTimeout(completeWenchangIntroduction, 8200);
+    window.setTimeout(completeWenchangIntroduction, 9000);
   }
 }
 
@@ -358,6 +359,155 @@ function setupScrollReveals() {
 
 setupScrollReveals();
 
+function setupPerspectiveGallery() {
+  const gallery = document.querySelector("[data-perspective-gallery]");
+  const stage = gallery?.querySelector(".gallery-stage");
+  const cards = stage ? [...stage.querySelectorAll("[data-gallery-card]")] : [];
+  const previous = gallery?.querySelector("[data-gallery-previous]");
+  const next = gallery?.querySelector("[data-gallery-next]");
+  if (!gallery || !stage || !cards.length || !previous || !next) return;
+
+  let activeIndex = 0;
+  let expandedCard = null;
+  let focusTimer;
+
+  root.classList.add("gallery-ready");
+
+  function render() {
+    cards.forEach((card, index) => {
+      const offset = (index - activeIndex + cards.length) % cards.length;
+      const isActive = offset === 0;
+      const stackDepth = Math.min(offset, 5);
+
+      card.dataset.stackDepth = String(stackDepth);
+      card.style.zIndex = String(isActive ? 60 : 30 - stackDepth);
+      card.dataset.position = isActive ? "active" : "future";
+      card.toggleAttribute("aria-current", isActive);
+      const hiddenByExpansion = Boolean(expandedCard && card !== expandedCard);
+      card.setAttribute("aria-hidden", String(hiddenByExpansion));
+      card.inert = hiddenByExpansion;
+
+      if (card.hasAttribute("data-expandable")) {
+        const select = card.querySelector(".gallery-card-select");
+        if (select) select.tabIndex = hiddenByExpansion ? -1 : 0;
+        card.setAttribute("aria-expanded", String(card === expandedCard));
+      }
+    });
+
+    previous.disabled = false;
+    next.disabled = false;
+  }
+
+  function move(direction) {
+    if (expandedCard) return;
+    activeIndex = (activeIndex + direction + cards.length) % cards.length;
+    render();
+  }
+
+  function expand(card) {
+    if (expandedCard || !card.hasAttribute("data-expandable")) return;
+
+    expandedCard = card;
+    gallery.dataset.expanded = "true";
+    card.classList.add("is-expanded");
+    card.removeAttribute("aria-hidden");
+    card.inert = false;
+    card.setAttribute("aria-expanded", "true");
+    render();
+
+    const close = card.querySelector(".gallery-close");
+    if (close) {
+      close.hidden = false;
+      window.clearTimeout(focusTimer);
+      focusTimer = window.setTimeout(() => close.focus(), reducedMotion.matches ? 0 : 420);
+    }
+  }
+
+  function collapse({ restoreFocus = true } = {}) {
+    if (!expandedCard) return;
+    const card = expandedCard;
+    const close = card.querySelector(".gallery-close");
+
+    window.clearTimeout(focusTimer);
+    card.classList.remove("is-expanded");
+    card.setAttribute("aria-expanded", "false");
+    delete gallery.dataset.expanded;
+    expandedCard = null;
+    if (close) close.hidden = true;
+    render();
+
+    if (restoreFocus) {
+      focusTimer = window.setTimeout(
+        () => card.querySelector(".gallery-card-select")?.focus(),
+        reducedMotion.matches ? 0 : 420,
+      );
+    }
+  }
+
+  previous.addEventListener("click", () => move(-1));
+  next.addEventListener("click", () => move(1));
+
+  stage.addEventListener(
+    "click",
+    (event) => {
+      const close = event.target.closest(".gallery-close");
+      if (close && expandedCard) {
+        event.preventDefault();
+        event.stopPropagation();
+        collapse();
+        return;
+      }
+
+      const select = event.target.closest(".gallery-card-select");
+      if (!select || expandedCard) return;
+
+      const card = select.closest("[data-gallery-card]");
+      const index = cards.indexOf(card);
+      if (index < 0) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      expand(card);
+    },
+    true,
+  );
+
+  cards.forEach((card) => {
+    card.addEventListener("click", (event) => {
+      const interactiveTarget = event.target.closest("a, button, summary, details");
+      if (expandedCard) {
+        if (interactiveTarget) return;
+        return;
+      }
+
+      if (!card.hasAttribute("data-expandable")) return;
+      if (interactiveTarget) event.preventDefault();
+
+      expand(card);
+    });
+
+    card.querySelector(".gallery-close")?.addEventListener("click", () => collapse());
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && expandedCard) {
+      event.preventDefault();
+      collapse();
+      return;
+    }
+
+    if (!gallery.contains(event.target)) return;
+    if (expandedCard || event.target.closest("details, a, button:not([data-gallery-previous]):not([data-gallery-next])")) return;
+    if (event.key === "ArrowLeft") move(-1);
+    if (event.key === "ArrowRight") move(1);
+  });
+
+  render();
+}
+
+setupPerspectiveGallery();
+
 function setupCareerTimeline() {
   const timeline = document.querySelector("[data-career-timeline]");
   const viewport = timeline?.querySelector("[data-timeline-viewport]");
@@ -534,6 +684,7 @@ function setupBlobColony() {
   if (!colony) return;
 
   const MAX_BLOBS = 5;
+  const BLOB_COUNT_STORAGE_KEY = "blob-colony-count";
   const VB_W = 100;
   const VB_H = 50;
   const RX = 50;
@@ -567,6 +718,23 @@ function setupBlobColony() {
   let scareStartedAt = 0;
   let scareUntil = 0;
   const instances = [];
+
+  function readSavedBlobCount() {
+    try {
+      const savedCount = Number.parseInt(localStorage.getItem(BLOB_COUNT_STORAGE_KEY) || "1", 10);
+      return Math.min(MAX_BLOBS, Math.max(1, Number.isFinite(savedCount) ? savedCount : 1));
+    } catch {
+      return 1;
+    }
+  }
+
+  function saveBlobCount() {
+    try {
+      localStorage.setItem(BLOB_COUNT_STORAGE_KEY, String(Math.max(1, instances.length)));
+    } catch {
+      // The colony still works for this page if persistent storage is unavailable.
+    }
+  }
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -1272,6 +1440,7 @@ function setupBlobColony() {
     if (sizeIndex < 0) return;
     const inst = createInstance(sizeIndex, { rising: true });
     instances.push(inst);
+    saveBlobCount();
   }
 
   function scareSiblings(victim) {
@@ -1361,6 +1530,7 @@ function setupBlobColony() {
       instances.splice(0).forEach((inst) => inst.destroy());
       const big = createInstance(0, { rising: true });
       instances.push(big);
+      saveBlobCount();
       resetting = false;
     }, totalDelay);
   }
@@ -1383,7 +1553,12 @@ function setupBlobColony() {
   window.addEventListener("pointermove", onPointer, { passive: true });
   window.addEventListener("mousemove", onPointer, { passive: true });
 
-  instances.push(createInstance(0, { rising: false }));
+  const savedBlobCount = readSavedBlobCount();
+  for (let sizeIndex = 0; sizeIndex < savedBlobCount; sizeIndex += 1) {
+    instances.push(createInstance(sizeIndex, { rising: false }));
+  }
+  saveBlobCount();
+  window.addEventListener("pagehide", saveBlobCount);
   requestAnimationFrame(frame);
 }
 

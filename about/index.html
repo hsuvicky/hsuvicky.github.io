@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="gallery-ready">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,7 +21,7 @@
     <link rel="icon" href="../assets/favicon-32.png?v=20260731-face" type="image/png" sizes="32x32">
     <link rel="icon" href="../assets/favicon-16.png?v=20260731-face" type="image/png" sizes="16x16">
     <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png?v=20260731-face" sizes="180x180">
-    <link rel="stylesheet" href="../styles.css?v=20260801-wenchang10">
+    <link rel="stylesheet" href="../styles.css?v=20260802-arrows6">
     <script>
       (() => {
         try {
@@ -29,7 +29,7 @@
           const theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
           document.documentElement.dataset.theme = theme;
           if (localStorage.getItem("wenchang-introduced") === "true") {
-            document.documentElement.dataset.wenchangSeen = "true";
+            document.documentElement.dataset.wenchangNavSeen = "true";
           }
           const pageEnter = sessionStorage.getItem("page-transition");
           if (pageEnter) {
@@ -41,7 +41,7 @@
         }
       })();
     </script>
-    <script src="../script.js?v=20260801-wenchang2" defer></script>
+    <script src="../script.js?v=20260802-blobpersist2" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -50,7 +50,7 @@
       <nav class="site-nav" aria-label="Primary navigation">
         <div class="brand">
           <a class="wordmark" href="/" aria-label="Vicky Hsu, Home">
-            <span class="wordmark-full wordmark-pointillism" data-text="Vicky&#10;Hsu">Vicky<br>Hsu</span>
+            <span class="wordmark-full wordmark-pointillism" data-text="VICKY&#160;HSU">VICKY&nbsp;HSU</span>
             <span class="wordmark-short" aria-hidden="true">VH</span>
           </a>
           <div class="blob-colony" data-blob-colony aria-label="Friendly blobs"></div>
@@ -121,261 +121,169 @@
         </div>
       </section>
 
-      <section class="projects section ruled-section" id="projects" aria-label="Projects">
+      <section class="gallery-section section ruled-section" id="projects" aria-label="Projects and hobbies">
         <div class="section-shell">
-          <article class="case-study case-study-mooscles" aria-labelledby="mooscles-heading">
-            <div class="mooscles-visual" aria-hidden="true">
-              <span class="orbit orbit-one"></span>
-              <span class="orbit orbit-two"></span>
-              <span class="orbit orbit-three"></span>
-              <div class="rotation-note">
-                <span>Keep</span>
-                <strong>Anchor movement</strong>
-              </div>
-              <div class="rotation-note rotation-note-shift">
-                <span>Rotate</span>
-                <strong>Repetitive pattern</strong>
-              </div>
-              <div class="rotation-note rotation-note-cover">
-                <span>Cover</span>
-                <strong>Neglected muscle</strong>
-              </div>
-            </div>
-
-            <div class="case-copy">
-              <h3 id="mooscles-heading">Mooscles</h3>
-              <p class="case-purpose">
-                A workout-refresh product for self-directed recreational lifters who
-                drift into repetitive routines.
-              </p>
-
-              <details class="case-disclosure">
-                <summary>
-                  <span>Product notes</span>
-                  <span aria-hidden="true">+</span>
-                </summary>
-                <dl class="case-details">
-                  <div>
-                    <dt>Problem</dt>
-                    <dd>
-                      Familiar movements get repeated until coverage narrows and the routine
-                      goes stale.
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Judgment</dt>
-                    <dd>
-                      Show what is over-repeated, what is neglected, which anchor stays, and
-                      what rotates.
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Core ideas</dt>
-                    <dd>
-                      Smart Refresh, Muscle Roulette, Coverage Visualization, and explainable
-                      rotation—starting with curated lower-body and glute-led data.
-                    </dd>
-                  </div>
-                </dl>
-              </details>
-            </div>
-          </article>
-
-          <article class="case-study case-study-blackjack" aria-labelledby="blackjack-heading">
-            <div class="blackjack-mark" aria-hidden="true">
-              <span>A</span>
-              <img
-                src="../assets/monkev-app-icon.png"
-                alt=""
-                width="400"
-                height="400"
-                loading="lazy"
-              >
-              <span>♠</span>
-            </div>
-            <div class="case-copy">
-              <h3 id="blackjack-heading">MonkEV blackjack trainer</h3>
-              <p class="case-purpose">
-                A training product built to make correct blackjack decisions faster,
-                more consistent, and easier to understand.
-              </p>
-
-              <details class="case-disclosure">
-                <summary>
-                  <span>Product notes</span>
-                  <span aria-hidden="true">+</span>
-                </summary>
-                <dl class="case-details">
-                  <div>
-                    <dt>Problem</dt>
-                    <dd>
-                      Static strategy charts do not build fast recall. Players need
-                      repetition, targeted practice, and useful feedback on mistakes.
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Product</dt>
-                    <dd>
-                      Hand drills that target weak spots, an adaptive strategy chart,
-                      and card-counting practice from speed drills to table simulations.
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Training systems</dt>
-                    <dd>
-                      Casino-specific rules, Hi-Lo and Knockout counting, bet-spread
-                      practice, and advanced counter deviations.
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Shipped state</dt>
-                    <dd>
-                      Released for iPhone in May 2026 and available on the App Store.
-                    </dd>
-                  </div>
-                </dl>
-              </details>
-
-              <a
-                class="app-store-link"
-                href="https://apps.apple.com/bt/app/monkev-blackjack-trainer/id6761668929"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Download MonkEV Blackjack Trainer on the App Store"
-              >
-                <img
-                  class="app-store-badge"
-                  src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83"
-                  alt="Download on the App Store"
-                  width="150"
-                  height="50"
-                  loading="lazy"
-                >
-                <span class="visually-hidden">(opens in a new tab)</span>
-              </a>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="hobbies section ruled-section" aria-label="Hobbies">
-        <div class="section-shell">
-          <details class="hobbies-disclosure">
-            <summary>
-              <span>Hobbies</span>
-              <span aria-hidden="true">+</span>
-            </summary>
-
-            <div class="field-notes">
-              <article class="field-note field-note-league">
-                <div class="league-copy">
-                  <p class="note-label">Long-running system</p>
-                  <h3>League of Legends</h3>
-                  <p>
-                    Playing since 2011. This account has outlasted several technology stacks.
-                  </p>
+          <div class="perspective-gallery" data-perspective-gallery>
+            <div class="gallery-stage" aria-live="polite">
+              <article class="gallery-card gallery-title-card" data-gallery-card data-title-card aria-label="Project section">
+                <div class="gallery-title-inner">
+                  <span>01</span>
+                  <h2>PROJECT</h2>
+                  <p>Things I build, test, and keep improving.</p>
                 </div>
-                <div class="league-rank" aria-label="League of Legends peak rank">
-                  <img
-                    src="../assets/league-diamond-rank.png"
-                    alt=""
-                    width="144"
-                    height="144"
-                    loading="lazy"
-                  >
-                  <p>
-                    <strong>Diamond II</strong>
-                    <span>Peak · 73 LP</span>
-                  </p>
-                  <dl>
-                    <div>
-                      <dt>Top 2%</dt>
-                      <dd>of NA players</dd>
+              </article>
+
+              <article class="gallery-card gallery-content-card gallery-mooscles" data-gallery-card data-expandable aria-labelledby="gallery-mooscles-heading">
+                <button class="gallery-card-select" type="button" aria-label="Select Mooscles card"></button>
+                <button class="gallery-close" type="button" aria-label="Close Mooscles project" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5M4 12h10a6 6 0 0 1 6 6v2"/></svg></button>
+                <div class="gallery-card-layout">
+                  <div class="mooscles-visual gallery-card-visual" aria-hidden="true">
+                    <span class="orbit orbit-one"></span>
+                    <span class="orbit orbit-two"></span>
+                    <span class="orbit orbit-three"></span>
+                    <div class="rotation-note">
+                      <span>Keep</span>
+                      <strong>Anchor movement</strong>
                     </div>
-                    <div>
-                      <dt>2011</dt>
-                      <dd>account age</dd>
+                    <div class="rotation-note rotation-note-shift">
+                      <span>Rotate</span>
+                      <strong>Repetitive pattern</strong>
                     </div>
-                  </dl>
-                </div>
-                <figure class="league-graphs">
-                  <img
-                    src="../assets/league-of-graphs-stats.png"
-                    alt="League of Graphs profile statistics showing North American rank and playstyle tags"
-                    width="542"
-                    height="710"
-                    loading="lazy"
-                  >
-                  <figcaption><cite>Source: League of Graphs</cite></figcaption>
-                </figure>
-              </article>
-
-              <article class="field-note field-note-rabbits">
-                <p class="note-label">Household organization</p>
-                <h3>Peepo, Clemmy &amp; Goomy</h3>
-                <p>Three rabbits. The management structure remains unclear.</p>
-                <div class="rabbit-marks" aria-hidden="true">
-                  <span><i></i></span>
-                  <span><i></i></span>
-                  <span><i></i></span>
-                </div>
-              </article>
-
-              <article class="field-note field-note-objects">
-                <p class="note-label">People studies</p>
-                <h3>Poker faces &amp; handmade things</h3>
-                <p>
-                  I dabble in poker—the fun is reading the room, testing a hunch, and trying
-                  not to give away my own hand. Away from the table, I’d love to get back to
-                  bead-making and learn silversmithing.
-                </p>
-              </article>
-
-              <article class="field-note field-note-cooking">
-                <p class="note-label">Constraint-driven creativity</p>
-                <h3>Experimental cooking</h3>
-                <p>
-                  I rarely shop with a recipe in mind. I grab the vegetables and proteins
-                  that look good—or are on sale—and figure out the meal from there.
-                  Resourcefulness is the recipe.
-                </p>
-              </article>
-
-              <article class="field-note field-note-beli">
-                <div class="beli-copy">
-                  <p class="note-label">Field notes, but edible</p>
-                  <h3>@vickzhsu</h3>
-                  <a
-                    class="beli-link"
-                    href="https://beliapp.com/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Open Beli profile <span aria-hidden="true">↗</span>
-                    <span class="visually-hidden">(opens in a new tab)</span>
-                  </a>
-                </div>
-                <figure class="beli-profile">
-                  <div class="beli-profile-crop">
-                    <img
-                      src="../assets/beli-vickzhsu-profile.png"
-                      alt="The top of Vicky Hsu's Beli profile showing the @vickzhsu handle and Top 1% in New York badge"
-                      width="946"
-                      height="2049"
-                      loading="lazy"
-                    >
+                    <div class="rotation-note rotation-note-cover">
+                      <span>Cover</span>
+                      <strong>Neglected muscle</strong>
+                    </div>
                   </div>
-                  <figcaption>Profile preview · @vickzhsu</figcaption>
-                </figure>
+                  <div class="gallery-card-copy">
+                    <p class="note-label">Product · Workout rotation</p>
+                    <h3 id="gallery-mooscles-heading">Mooscles</h3>
+                    <p class="case-purpose">A workout-refresh product for self-directed recreational lifters who drift into repetitive routines.</p>
+                    <details class="case-disclosure">
+                      <summary><span>Product notes</span><span aria-hidden="true">+</span></summary>
+                      <dl class="case-details">
+                        <div><dt>Problem</dt><dd>Familiar movements get repeated until coverage narrows and the routine goes stale.</dd></div>
+                        <div><dt>Judgment</dt><dd>Show what is over-repeated, what is neglected, which anchor stays, and what rotates.</dd></div>
+                        <div><dt>Core ideas</dt><dd>Smart Refresh, Muscle Roulette, Coverage Visualization, and explainable rotation—starting with curated lower-body and glute-led data.</dd></div>
+                      </dl>
+                    </details>
+                  </div>
+                </div>
               </article>
 
-              <article class="field-note field-note-movement">
-                <p class="note-label">Movement rotation</p>
-                <h3>Yoga · Boxing · Pilates</h3>
-                <p>Different forms of attention, depending on the day.</p>
+              <article class="gallery-card gallery-content-card gallery-monkev" data-gallery-card data-expandable aria-labelledby="gallery-monkev-heading">
+                <button class="gallery-card-select" type="button" aria-label="Select MonkEV card"></button>
+                <button class="gallery-close" type="button" aria-label="Close MonkEV project" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5M4 12h10a6 6 0 0 1 6 6v2"/></svg></button>
+                <div class="gallery-card-layout">
+                  <div class="blackjack-mark gallery-card-visual" aria-hidden="true">
+                    <span>A</span>
+                    <img src="../assets/monkev-app-icon.png" alt="" width="400" height="400" loading="lazy">
+                    <span>♠</span>
+                  </div>
+                  <div class="gallery-card-copy">
+                    <p class="note-label">Product · Training system</p>
+                    <h3 id="gallery-monkev-heading">MonkEV blackjack trainer</h3>
+                    <p class="case-purpose">A training product built to make correct blackjack decisions faster, more consistent, and easier to understand.</p>
+                    <details class="case-disclosure">
+                      <summary><span>Product notes</span><span aria-hidden="true">+</span></summary>
+                      <dl class="case-details">
+                        <div><dt>Problem</dt><dd>Static strategy charts do not build fast recall. Players need repetition, targeted practice, and useful feedback on mistakes.</dd></div>
+                        <div><dt>Product</dt><dd>Hand drills that target weak spots, an adaptive strategy chart, and card-counting practice from speed drills to table simulations.</dd></div>
+                        <div><dt>Training systems</dt><dd>Casino-specific rules, Hi-Lo and Knockout counting, bet-spread practice, and advanced counter deviations.</dd></div>
+                        <div><dt>Shipped state</dt><dd>Released for iPhone in May 2026 and available on the App Store.</dd></div>
+                      </dl>
+                    </details>
+                    <a class="app-store-link" href="https://apps.apple.com/bt/app/monkev-blackjack-trainer/id6761668929" target="_blank" rel="noreferrer" aria-label="Download MonkEV Blackjack Trainer on the App Store">
+                      <img class="app-store-badge" src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" width="150" height="50" loading="lazy">
+                      <span class="visually-hidden">(opens in a new tab)</span>
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <article class="gallery-card gallery-title-card gallery-hobbies-title" data-gallery-card data-title-card aria-label="Hobbies section">
+                <div class="gallery-title-inner">
+                  <span>02</span>
+                  <h2>HOBBIES</h2>
+                  <p>The systems, rituals, and side quests I return to.</p>
+                </div>
+              </article>
+
+              <article class="gallery-card gallery-content-card gallery-league" data-gallery-card data-expandable aria-labelledby="gallery-league-heading">
+                <button class="gallery-card-select" type="button" aria-label="Select League of Legends card"></button>
+                <button class="gallery-close" type="button" aria-label="Close League of Legends card" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5M4 12h10a6 6 0 0 1 6 6v2"/></svg></button>
+                <div class="gallery-card-layout">
+                  <div class="league-card-visual gallery-card-visual">
+                    <img class="league-rank-image" src="../assets/league-diamond-rank.png" alt="League of Legends Diamond rank crest" width="144" height="144" loading="lazy">
+                    <p><strong>Diamond II</strong><span>Peak · 73 LP · Top 2% NA</span></p>
+                    <img class="league-stats-image" src="../assets/league-of-graphs-stats.png" alt="League of Graphs profile statistics showing North American rank and playstyle tags" width="542" height="710" loading="lazy">
+                  </div>
+                  <div class="gallery-card-copy">
+                    <p class="note-label">Long-running system · Since 2011</p>
+                    <h3 id="gallery-league-heading">League of Legends</h3>
+                    <p class="case-purpose">Playing since 2011. This account has outlasted several technology stacks.</p>
+                    <div class="gallery-expanded-details"><p>I return for the same reason I like product systems: every match is a new combination of constraints, people, timing, and imperfect information.</p></div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="gallery-card gallery-content-card gallery-beli" data-gallery-card data-expandable aria-labelledby="gallery-beli-heading">
+                <button class="gallery-card-select" type="button" aria-label="Select Beli card"></button>
+                <button class="gallery-close" type="button" aria-label="Close Beli card" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5M4 12h10a6 6 0 0 1 6 6v2"/></svg></button>
+                <div class="gallery-card-layout">
+                  <figure class="beli-card-visual gallery-card-visual">
+                    <img src="../assets/beli-vickzhsu-profile.png" alt="The top of Vicky Hsu's Beli profile showing the @vickzhsu handle and Top 1% in New York badge" width="946" height="2049" loading="lazy">
+                  </figure>
+                  <div class="gallery-card-copy">
+                    <p class="note-label">Field notes, but edible</p>
+                    <h3 id="gallery-beli-heading">Beli · @vickzhsu</h3>
+                    <p class="case-purpose">A running record of meals, places, and what is worth returning for.</p>
+                    <div class="gallery-expanded-details"><p>Food is another way I track patterns: taste, atmosphere, value, company, and the context that makes a place memorable.</p></div>
+                    <a class="beli-link" href="https://beliapp.com/" target="_blank" rel="noreferrer">Open Beli profile <span aria-hidden="true">↗</span><span class="visually-hidden">(opens in a new tab)</span></a>
+                  </div>
+                </div>
+              </article>
+
+              <article class="gallery-card gallery-content-card gallery-poker" data-gallery-card data-expandable aria-labelledby="gallery-poker-heading">
+                <button class="gallery-card-select" type="button" aria-label="Select Poker card"></button>
+                <button class="gallery-close" type="button" aria-label="Close Poker card" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5M4 12h10a6 6 0 0 1 6 6v2"/></svg></button>
+                <div class="gallery-card-layout">
+                  <div class="poker-card-visual gallery-card-visual" aria-hidden="true">
+                    <span class="playing-card playing-card-one">A<i>♠</i></span>
+                    <span class="playing-card playing-card-two">K<i>♥</i></span>
+                    <span class="poker-chip"></span>
+                  </div>
+                  <div class="gallery-card-copy">
+                    <p class="note-label">People studies · Imperfect information</p>
+                    <h3 id="gallery-poker-heading">Poker</h3>
+                    <p class="case-purpose">I dabble in poker—the fun is reading the room, testing a hunch, and trying not to give away my own hand.</p>
+                    <div class="gallery-expanded-details"><p>The interesting part is not the cards alone. It is managing risk while watching how confidence, hesitation, and incentives change the table.</p></div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="gallery-card gallery-content-card gallery-movement" data-gallery-card data-expandable aria-labelledby="gallery-movement-heading">
+                <button class="gallery-card-select" type="button" aria-label="Select Movement and Fitness card"></button>
+                <button class="gallery-close" type="button" aria-label="Close Movement and Fitness card" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5M4 12h10a6 6 0 0 1 6 6v2"/></svg></button>
+                <div class="gallery-card-layout">
+                  <div class="movement-card-visual gallery-card-visual" aria-hidden="true">
+                    <span>Yoga</span><span>Boxing</span><span>Pilates</span>
+                    <img src="../assets/boxing-gloves-icon.svg" alt="" width="120" height="120" loading="lazy">
+                  </div>
+                  <div class="gallery-card-copy">
+                    <p class="note-label">Movement rotation</p>
+                    <h3 id="gallery-movement-heading">Movement &amp; Fitness</h3>
+                    <p class="case-purpose">Yoga, boxing, and Pilates—different forms of attention, depending on the day.</p>
+                    <div class="gallery-expanded-details"><p>I rotate between control, impact, mobility, and recovery. The variety keeps movement useful, interesting, and sustainable.</p></div>
+                  </div>
+                </div>
               </article>
             </div>
-          </details>
+
+            <div class="gallery-controls" aria-label="Gallery controls">
+              <button type="button" data-gallery-previous aria-label="Previous card">←</button>
+              <button type="button" data-gallery-next aria-label="Next card">→</button>
+            </div>
+          </div>
         </div>
       </section>
     </main>
