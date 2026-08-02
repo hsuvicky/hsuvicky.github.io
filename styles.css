@@ -3087,13 +3087,13 @@ h1 {
   }
 
   .gallery-card {
-    --back-stack-x: 3.5rem;
-    --back-stack-y: 1rem;
+    --back-stack-x: 4.75rem;
+    --back-stack-y: 1.5rem;
     top: 48%;
-    left: 0.75rem;
-    width: 88vw;
-    height: min(73%, 32rem);
-    min-height: 24rem;
+    left: 1rem;
+    width: 78vw;
+    height: min(58%, 27rem);
+    min-height: 22rem;
     transform: translate3d(0, -50%, 0) rotateY(-6deg);
   }
 
@@ -3110,23 +3110,23 @@ h1 {
   }
 
   .gallery-card[data-position="future"][data-stack-depth="1"] {
-    transform: translate3d(var(--back-stack-x), calc(-50% - var(--back-stack-y)), -180px) rotateY(-6deg);
+    transform: translate3d(var(--back-stack-x), calc(-50% - var(--back-stack-y)), -220px) rotateY(-6deg);
   }
 
   .gallery-card[data-position="future"][data-stack-depth="2"] {
-    transform: translate3d(calc(var(--back-stack-x) + 25px), calc(-50% - var(--back-stack-y) - 8px), -198px) rotateY(-6deg);
+    transform: translate3d(calc(var(--back-stack-x) + 25px), calc(-50% - var(--back-stack-y) - 8px), -240px) rotateY(-6deg);
   }
 
   .gallery-card[data-position="future"][data-stack-depth="3"] {
-    transform: translate3d(calc(var(--back-stack-x) + 50px), calc(-50% - var(--back-stack-y) - 16px), -215px) rotateY(-6deg);
+    transform: translate3d(calc(var(--back-stack-x) + 50px), calc(-50% - var(--back-stack-y) - 16px), -260px) rotateY(-6deg);
   }
 
   .gallery-card[data-position="future"][data-stack-depth="4"] {
-    transform: translate3d(calc(var(--back-stack-x) + 75px), calc(-50% - var(--back-stack-y) - 24px), -233px) rotateY(-6deg);
+    transform: translate3d(calc(var(--back-stack-x) + 75px), calc(-50% - var(--back-stack-y) - 24px), -280px) rotateY(-6deg);
   }
 
   .gallery-card[data-position="future"][data-stack-depth="5"] {
-    transform: translate3d(calc(var(--back-stack-x) + 100px), calc(-50% - var(--back-stack-y) - 32px), -250px) rotateY(-6deg);
+    transform: translate3d(calc(var(--back-stack-x) + 100px), calc(-50% - var(--back-stack-y) - 32px), -300px) rotateY(-6deg);
   }
 
   .gallery-card[data-expandable]:not(.is-expanded):hover,
@@ -3135,7 +3135,7 @@ h1 {
   }
 
   .gallery-title-inner h2 {
-    font-size: clamp(3.2rem, 17vw, 5rem);
+    font-size: clamp(2.75rem, 12vw, 4.5rem);
   }
 
   .gallery-card-layout,
@@ -3157,8 +3157,8 @@ h1 {
   .gallery-card-visual,
   .gallery-card.is-expanded .gallery-card-visual {
     width: 100%;
-    max-height: 14rem;
-    min-height: 11rem;
+    max-height: 11rem;
+    min-height: 9rem;
   }
 
   .gallery-mooscles .mooscles-visual {
@@ -3212,7 +3212,8 @@ h1 {
   }
 
   .gallery-controls {
-    bottom: 3.5rem;
+    right: clamp(3.5rem, 16vw, 6rem);
+    bottom: 8rem;
   }
 
 }
