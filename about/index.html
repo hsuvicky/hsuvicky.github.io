@@ -21,13 +21,16 @@
     <link rel="icon" href="../assets/favicon-32.png?v=20260731-face" type="image/png" sizes="32x32">
     <link rel="icon" href="../assets/favicon-16.png?v=20260731-face" type="image/png" sizes="16x16">
     <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png?v=20260731-face" sizes="180x180">
-    <link rel="stylesheet" href="../styles.css?v=20260731-blob70">
+    <link rel="stylesheet" href="../styles.css?v=20260801-wenchang10">
     <script>
       (() => {
         try {
           const saved = localStorage.getItem("theme");
           const theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
           document.documentElement.dataset.theme = theme;
+          if (localStorage.getItem("wenchang-introduced") === "true") {
+            document.documentElement.dataset.wenchangSeen = "true";
+          }
           const pageEnter = sessionStorage.getItem("page-transition");
           if (pageEnter) {
             document.documentElement.dataset.pageEnter = pageEnter;
@@ -38,7 +41,7 @@
         }
       })();
     </script>
-    <script src="../script.js?v=20260731-blob62" defer></script>
+    <script src="../script.js?v=20260801-wenchang2" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -64,6 +67,34 @@
         </button>
 
         <div class="nav-links" id="primary-links">
+          <div class="wenchang-nav" data-wenchang-nav>
+            <button
+              class="wenchang-nav-trigger"
+              type="button"
+              aria-expanded="false"
+              aria-controls="wenchang-tooltip"
+              aria-label="Learn about Wenchang Dijun"
+            >
+              <img
+                src="../assets/wenchang-rider-transparent.png"
+                alt=""
+                width="757"
+                height="900"
+              >
+            </button>
+            <div class="wenchang-tooltip" id="wenchang-tooltip" hidden>
+              <p>
+                This is
+                <a
+                  href="https://commons.wikimedia.org/wiki/File:The_dragon%2C_image%2C_and_demon%3B_or%2C_The_three_religions_of_China-_Confucianism%2C_Buddhism%2C_and_Taoism%2C_giving_an_account_of_the_mythology%2C_idolatry%2C_and_demonolatry_of_the_Chinese_%281887%29_%2814597250540%29.jpg"
+                  target="_blank"
+                  rel="noreferrer"
+                >Wenchang Dijun (文昌帝君)</a>, a deity widely worshipped in Taiwan folk
+                religion. Students and professionals seek his guidance for academic success,
+                qualifications, and knowledge-based career advancement.
+              </p>
+            </div>
+          </div>
           <a href="/">Home</a>
           <a href="/about/" aria-current="page">About</a>
         </div>
@@ -72,41 +103,21 @@
     </header>
 
     <main id="main-content" class="about-page">
-      <section class="about section" id="about" aria-labelledby="about-heading">
+      <section class="about section" id="about" aria-label="About">
         <div class="section-shell hero-grid">
-          <div class="hero-copy">
-            <h1 id="about-heading">I turn complex AI into products people actually use.</h1>
-            <p class="hero-lede">
-              I build and commercialize 0-to-1 AI products in complex, regulated industries.
-              I currently lead a <strong>neurosymbolic AI platform</strong> from roadmap and
-              product design through pilots, scale, and commercialization.
-            </p>
-          </div>
-
-          <figure class="portrait-frame">
-            <div class="portrait-art" role="img" aria-label="Abstract portrait treatment for Vicky Hsu">
-              <svg viewBox="0 0 520 680" aria-hidden="true">
-                <path class="portrait-stem" d="M48 624C132 500 143 340 274 236 353 173 425 116 474 42"/>
-                <path class="portrait-stem portrait-stem-fine" d="M107 666c66-111 182-188 209-326 16-81 5-154 65-266"/>
-                <g class="portrait-leaves">
-                  <ellipse cx="137" cy="500" rx="43" ry="16" transform="rotate(-42 137 500)"/>
-                  <ellipse cx="185" cy="430" rx="48" ry="17" transform="rotate(28 185 430)"/>
-                  <ellipse cx="218" cy="350" rx="48" ry="17" transform="rotate(-38 218 350)"/>
-                  <ellipse cx="290" cy="273" rx="46" ry="16" transform="rotate(25 290 273)"/>
-                  <ellipse cx="362" cy="192" rx="42" ry="15" transform="rotate(-34 362 192)"/>
-                  <ellipse cx="423" cy="112" rx="37" ry="14" transform="rotate(24 423 112)"/>
-                  <ellipse cx="235" cy="523" rx="42" ry="15" transform="rotate(32 235 523)"/>
-                  <ellipse cx="282" cy="438" rx="44" ry="16" transform="rotate(-30 282 438)"/>
-                </g>
-                <circle cx="86" cy="82" r="34"/>
-                <circle cx="452" cy="590" r="72"/>
-              </svg>
-              <span class="portrait-monogram" aria-hidden="true">VH</span>
-              <span class="portrait-tag portrait-tag-one">AI + data</span>
-              <span class="portrait-tag portrait-tag-two">Product + design</span>
-              <span class="portrait-tag portrait-tag-three">Close to the work</span>
+          <div class="about-rider-stage" aria-hidden="true">
+            <div class="about-rider-fade">
+              <div class="about-rider-track">
+                <img
+                  class="about-rider"
+                  src="../assets/wenchang-rider-transparent.png"
+                  alt=""
+                  width="757"
+                  height="900"
+                >
+              </div>
             </div>
-          </figure>
+          </div>
         </div>
       </section>
 

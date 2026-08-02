@@ -1039,7 +1039,121 @@ button {
   align-items: center;
 }
 
-.nav-links a {
+.wenchang-nav {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 44px;
+  opacity: 0;
+  visibility: hidden;
+  margin-right: -0.85rem;
+  transform: translateY(-5px);
+  transition: opacity 520ms ease, transform 520ms ease, visibility 0s linear 520ms;
+}
+
+:root[data-wenchang-seen="true"] .wenchang-nav {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+:root[data-wenchang-seen="true"] .about-rider-stage {
+  visibility: hidden;
+}
+
+:root[data-wenchang-seen="true"] .about-rider {
+  animation: none;
+}
+
+.wenchang-nav-trigger {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.wenchang-nav-trigger img {
+  width: 30px;
+  height: 36px;
+  object-fit: contain;
+  filter: grayscale(1) contrast(1.08);
+  opacity: 0.72;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+[data-theme="dark"] .wenchang-nav-trigger img {
+  filter: grayscale(1) invert(1) contrast(1.08);
+}
+
+.wenchang-nav-trigger:hover img,
+.wenchang-nav-trigger[aria-expanded="true"] img {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.wenchang-tooltip {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  z-index: 70;
+  width: min(23rem, calc(100vw - 2rem));
+  padding: 0.85rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--border) 76%, transparent);
+  background: color-mix(in srgb, var(--surface-strong) 88%, transparent);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: opacity 180ms ease, transform 180ms ease;
+  backdrop-filter: blur(14px);
+}
+
+.wenchang-tooltip[data-open="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wenchang-tooltip p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.wenchang-tooltip a {
+  position: relative;
+  display: inline;
+  color: var(--accent-deep);
+  font-weight: 750;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.wenchang-tooltip a::after {
+  position: absolute;
+  right: 0;
+  bottom: -0.08em;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  content: "";
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 180ms ease;
+}
+
+.wenchang-tooltip a:hover::after,
+.wenchang-tooltip a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.nav-links > a {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -1052,7 +1166,7 @@ button {
   text-transform: uppercase;
 }
 
-.nav-links a::after {
+.nav-links > a::after {
   position: absolute;
   right: 0;
   bottom: 4px;
@@ -1065,15 +1179,15 @@ button {
   transition: transform 160ms ease;
 }
 
-.nav-links a:hover,
-.nav-links a[aria-current="location"],
-.nav-links a[aria-current="page"] {
+.nav-links > a:hover,
+.nav-links > a[aria-current="location"],
+.nav-links > a[aria-current="page"] {
   color: var(--text);
 }
 
-.nav-links a:hover::after,
-.nav-links a[aria-current="location"]::after,
-.nav-links a[aria-current="page"]::after {
+.nav-links > a:hover::after,
+.nav-links > a[aria-current="location"]::after,
+.nav-links > a[aria-current="page"]::after {
   transform: scaleX(1);
 }
 
@@ -1144,13 +1258,15 @@ button {
 }
 
 .about {
+  overflow: visible;
   padding: clamp(2rem, 3vw, 3rem) 0 clamp(2.5rem, 3.5vw, 3.5rem);
 }
 
 .hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.62fr);
-  gap: clamp(2rem, 4vw, 4rem);
+  column-gap: clamp(2rem, 4vw, 4rem);
+  row-gap: 0.5rem;
   align-items: center;
 }
 
@@ -1203,6 +1319,121 @@ h1 {
 .hero-lede strong {
   color: var(--accent-deep);
   font-weight: 750;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  grid-column: 1;
+  grid-row: 2;
+  align-self: center;
+}
+
+.about-rider-stage {
+  position: relative;
+  z-index: 60;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  align-self: stretch;
+  min-height: clamp(5.5rem, 8vw, 7rem);
+  pointer-events: none;
+}
+
+.about-rider-fade {
+  position: absolute;
+  inset: -3rem 0;
+  opacity: 0.7;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0 6%,
+    black 24% 76%,
+    transparent 94% 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0 6%,
+    black 24% 76%,
+    transparent 94% 100%
+  );
+}
+
+.about-rider-track {
+  position: absolute;
+  inset: 3rem 0;
+}
+
+.about-rider {
+  position: absolute;
+  top: 30%;
+  left: 110%;
+  width: clamp(3.75rem, 6.25vw, 5.5rem);
+  height: auto;
+  filter: grayscale(1) contrast(1.08);
+  transform: translate3d(-50%, -55%, 0) rotate(16deg);
+  transform-origin: 52% 78%;
+  animation: rider-hop 7.5s steps(1, end) 400ms both;
+  will-change: left, transform;
+}
+
+[data-theme="dark"] .about-rider {
+  filter: grayscale(1) invert(1) contrast(1.08);
+}
+
+@keyframes rider-hop {
+  0% {
+    left: 110%;
+    transform: translate3d(-50%, -55%, 0) rotate(16deg);
+  }
+
+  10% {
+    left: 98%;
+    transform: translate3d(-50%, -42%, 0) rotate(-16deg);
+  }
+
+  20% {
+    left: 86%;
+    transform: translate3d(-50%, -55%, 0) rotate(14deg);
+  }
+
+  30% {
+    left: 74%;
+    transform: translate3d(-50%, -42%, 0) rotate(-14deg);
+  }
+
+  40% {
+    left: 62%;
+    transform: translate3d(-50%, -55%, 0) rotate(12deg);
+  }
+
+  50% {
+    left: 50%;
+    transform: translate3d(-50%, -42%, 0) rotate(-12deg);
+  }
+
+  60% {
+    left: 38%;
+    transform: translate3d(-50%, -55%, 0) rotate(10deg);
+  }
+
+  70% {
+    left: 28%;
+    transform: translate3d(-50%, -42%, 0) rotate(-10deg);
+  }
+
+  80% {
+    left: 18%;
+    transform: translate3d(-50%, -55%, 0) rotate(8deg);
+  }
+
+  90% {
+    left: 9%;
+    transform: translate3d(-50%, -42%, 0) rotate(-8deg);
+  }
+
+  100% {
+    left: 5%;
+    transform: translate3d(-50%, -42%, 0) rotate(-8deg);
+  }
 }
 
 .portrait-frame {
@@ -3041,6 +3272,7 @@ h1 {
     right: 0;
     left: 0;
     display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
     gap: 0;
     padding: 0.75rem 1rem 1rem;
     border-bottom: 1px solid var(--border);
@@ -3052,22 +3284,47 @@ h1 {
     transition: opacity 150ms ease, transform 150ms ease;
   }
 
+  .wenchang-nav {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center;
+    width: 44px;
+  }
+
+  .nav-links > a[href="/"] {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .nav-links > a[href="/about/"] {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .wenchang-tooltip {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: auto;
+    left: 0;
+    width: calc(100vw - 2rem);
+  }
+
   .nav-links[data-open="true"] {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
   }
 
-  .nav-links a {
+  .nav-links > a {
     padding: 0.35rem 0.75rem;
     border-bottom: 1px solid var(--border-soft);
   }
 
-  .nav-links a:last-child {
+  .nav-links > a:last-child {
     border-bottom: 0;
   }
 
-  .nav-links a::after {
+  .nav-links > a::after {
     right: auto;
     bottom: 50%;
     left: 0;
@@ -3076,9 +3333,9 @@ h1 {
     transform: translateY(50%) scaleY(0);
   }
 
-  .nav-links a:hover::after,
-  .nav-links a[aria-current="location"]::after,
-  .nav-links a[aria-current="page"]::after {
+  .nav-links > a:hover::after,
+  .nav-links > a[aria-current="location"]::after,
+  .nav-links > a[aria-current="page"]::after {
     transform: translateY(50%) scaleY(1);
   }
 
@@ -3098,8 +3355,25 @@ h1 {
     gap: 1.2rem;
   }
 
+  .hero-grid {
+    row-gap: 0.6rem;
+  }
+
   .hero-copy {
     display: contents;
+  }
+
+  .about-rider-stage {
+    order: 1;
+    grid-column: 1;
+    grid-row: auto;
+    min-height: clamp(4rem, 20vw, 5rem);
+    margin: 0;
+  }
+
+  .about-rider {
+    top: 30%;
+    width: clamp(2.75rem, 12.5vw, 4rem);
   }
 
   h1 {
@@ -3404,6 +3678,18 @@ h1 {
     transform: none;
   }
 
+  .about-rider-fade {
+    opacity: 0.58;
+  }
+
+  .about-rider {
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0) rotate(-4deg);
+    animation: none;
+    will-change: auto;
+  }
+
   .progression-rail li:hover .progression-description,
   .progression-rail li:hover .progression-career-event,
   .progression-rail li:hover .progression-personal-event {
@@ -3460,7 +3746,8 @@ h1 {
   .resume-preview-toolbar,
   .resume-placeholder-note,
   .mooscles-visual,
-  .blackjack-mark {
+  .blackjack-mark,
+  .about-rider-stage {
     display: none;
   }
 

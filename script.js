@@ -4,6 +4,10 @@ const themeColor = document.querySelector("#theme-color");
 const navToggle = document.querySelector(".nav-toggle");
 const navLinks = document.querySelector(".nav-links");
 const homeLink = document.querySelector('.nav-links a[href="/"]');
+const wenchangNav = document.querySelector("[data-wenchang-nav]");
+const wenchangTrigger = wenchangNav?.querySelector(".wenchang-nav-trigger");
+const wenchangTooltip = wenchangNav?.querySelector(".wenchang-tooltip");
+const wenchangRider = document.querySelector(".about-rider");
 const isHomePage = Boolean(document.querySelector("[data-career-timeline]"));
 const sectionLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
 const sections = sectionLinks
@@ -148,7 +152,78 @@ navLinks?.addEventListener("click", (event) => {
   if (event.target.closest("a")) setMenu(false);
 });
 
+let wenchangDismissTimer;
+let wenchangCloseTimer;
+
+function completeWenchangIntroduction() {
+  if (root.dataset.wenchangSeen === "true") return;
+  root.dataset.wenchangSeen = "true";
+  try {
+    localStorage.setItem("wenchang-introduced", "true");
+  } catch {
+    // The icon still persists for this page if local storage is unavailable.
+  }
+}
+
+if (wenchangRider && root.dataset.wenchangSeen !== "true") {
+  if (reducedMotion.matches) {
+    completeWenchangIntroduction();
+  } else {
+    const onWenchangAnimationEnd = (event) => {
+      if (event.animationName !== "rider-hop") return;
+      wenchangRider.removeEventListener("animationend", onWenchangAnimationEnd);
+      completeWenchangIntroduction();
+    };
+    wenchangRider.addEventListener("animationend", onWenchangAnimationEnd);
+    window.setTimeout(completeWenchangIntroduction, 8200);
+  }
+}
+
+function setWenchangTooltip(open, { restoreFocus = false } = {}) {
+  if (!wenchangTrigger || !wenchangTooltip) return;
+
+  window.clearTimeout(wenchangDismissTimer);
+  window.clearTimeout(wenchangCloseTimer);
+  wenchangTrigger.setAttribute("aria-expanded", String(open));
+
+  if (open) {
+    wenchangTooltip.hidden = false;
+    requestAnimationFrame(() => {
+      wenchangTooltip.dataset.open = "true";
+    });
+    wenchangDismissTimer = window.setTimeout(() => {
+      setWenchangTooltip(false);
+    }, 12000);
+    return;
+  }
+
+  delete wenchangTooltip.dataset.open;
+  const closeDelay = reducedMotion.matches ? 0 : 180;
+  wenchangCloseTimer = window.setTimeout(() => {
+    wenchangTooltip.hidden = true;
+    if (restoreFocus) wenchangTrigger.focus();
+  }, closeDelay);
+}
+
+wenchangTrigger?.addEventListener("click", () => {
+  setWenchangTooltip(wenchangTrigger.getAttribute("aria-expanded") !== "true");
+});
+
+document.addEventListener("pointerdown", (event) => {
+  if (
+    wenchangTrigger?.getAttribute("aria-expanded") === "true" &&
+    !wenchangNav?.contains(event.target)
+  ) {
+    setWenchangTooltip(false);
+  }
+});
+
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && wenchangTrigger?.getAttribute("aria-expanded") === "true") {
+    setWenchangTooltip(false, { restoreFocus: true });
+    return;
+  }
+
   if (event.key === "Escape" && navToggle?.getAttribute("aria-expanded") === "true") {
     setMenu(false);
     navToggle.focus();

@@ -21,13 +21,16 @@
     <link rel="icon" href="assets/favicon-32.png?v=20260731-face" type="image/png" sizes="32x32">
     <link rel="icon" href="assets/favicon-16.png?v=20260731-face" type="image/png" sizes="16x16">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20260731-face" sizes="180x180">
-    <link rel="stylesheet" href="styles.css?v=20260731-blob70">
+    <link rel="stylesheet" href="styles.css?v=20260801-wenchang10">
     <script>
       (() => {
         try {
           const saved = localStorage.getItem("theme");
           const theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
           document.documentElement.dataset.theme = theme;
+          if (localStorage.getItem("wenchang-introduced") === "true") {
+            document.documentElement.dataset.wenchangSeen = "true";
+          }
           const pageEnter = sessionStorage.getItem("page-transition");
           if (pageEnter) {
             document.documentElement.dataset.pageEnter = pageEnter;
@@ -38,7 +41,7 @@
         }
       })();
     </script>
-    <script src="script.js?v=20260731-blob62" defer></script>
+    <script src="script.js?v=20260801-wenchang2" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -64,6 +67,34 @@
         </button>
 
         <div class="nav-links" id="primary-links">
+          <div class="wenchang-nav" data-wenchang-nav>
+            <button
+              class="wenchang-nav-trigger"
+              type="button"
+              aria-expanded="false"
+              aria-controls="wenchang-tooltip"
+              aria-label="Learn about Wenchang Dijun"
+            >
+              <img
+                src="assets/wenchang-rider-transparent.png"
+                alt=""
+                width="757"
+                height="900"
+              >
+            </button>
+            <div class="wenchang-tooltip" id="wenchang-tooltip" hidden>
+              <p>
+                This is
+                <a
+                  href="https://commons.wikimedia.org/wiki/File:The_dragon%2C_image%2C_and_demon%3B_or%2C_The_three_religions_of_China-_Confucianism%2C_Buddhism%2C_and_Taoism%2C_giving_an_account_of_the_mythology%2C_idolatry%2C_and_demonolatry_of_the_Chinese_%281887%29_%2814597250540%29.jpg"
+                  target="_blank"
+                  rel="noreferrer"
+                >Wenchang Dijun (文昌帝君)</a>, a deity widely worshipped in Taiwan folk
+                religion. Students and professionals seek his guidance for academic success,
+                qualifications, and knowledge-based career advancement.
+              </p>
+            </div>
+          </div>
           <a href="/" aria-current="page">Home</a>
           <a href="/about/">About</a>
         </div>
