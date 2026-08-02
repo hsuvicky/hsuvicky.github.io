@@ -4052,6 +4052,18 @@ h1 {
     grid-row: 1;
     justify-self: center;
     width: 44px;
+    margin-right: 0;
+  }
+
+  .wenchang-nav-trigger img {
+    width: 24px;
+    height: 30px;
+    transform: translateY(-1px);
+  }
+
+  .wenchang-nav-trigger:hover img,
+  .wenchang-nav-trigger[aria-expanded="true"] img {
+    transform: translateY(-2px);
   }
 
   .nav-links > a[href="/"] {
