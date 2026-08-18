@@ -1385,6 +1385,7 @@ function setupBlobColony() {
       clearTimers();
       blob.removeEventListener("click", onClick);
       blob.removeEventListener("keydown", onKeydown);
+      blob.removeEventListener("pointerenter", onPointerEnter);
       blob.remove();
     }
 
@@ -1400,8 +1401,14 @@ function setupBlobColony() {
       }
     }
 
+    function onPointerEnter(event) {
+      if (event.pointerType === "touch") return;
+      if (armState === "waving") tuckArm();
+    }
+
     blob.addEventListener("click", onClick);
     blob.addEventListener("keydown", onKeydown);
+    blob.addEventListener("pointerenter", onPointerEnter);
 
     inst.tick = tick;
     inst.destroy = destroy;
