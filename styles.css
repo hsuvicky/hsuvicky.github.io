@@ -24,6 +24,7 @@
   --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --header-height: 72px;
   --max-width: 1220px;
+  --page-edge: clamp(1.25rem, 1.5vw, 1.75rem);
   --reading-width: 720px;
   --blob-arm: #1a1f1c;
   /* Matryoshka colors — largest is a lighter moss in light mode. */
@@ -258,7 +259,7 @@ button {
   grid-template-columns: minmax(11rem, 1fr) auto;
   column-gap: 1.25rem;
   align-items: center;
-  width: min(calc(100% - 3rem), var(--max-width));
+  width: calc(100% - (var(--page-edge) * 2));
   height: 100%;
   margin: 0 auto;
 }
@@ -269,7 +270,7 @@ button {
   justify-self: start;
   align-items: flex-end;
   gap: 0;
-  margin-left: -1.25rem;
+  margin-left: 0;
   min-height: 44px;
   height: 100%;
 }
@@ -1676,9 +1677,9 @@ h1 {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: calc((100vw - min(calc(100vw - 3rem), var(--max-width))) / -2);
+  left: calc(var(--timeline-gutter) * -1);
   z-index: 1;
-  width: max(13.5rem, calc((100vw - var(--max-width)) / 2 + 11.5rem));
+  width: calc(var(--timeline-gutter) + 12rem);
   background: linear-gradient(
     to right,
     var(--timeline-backdrop) 0 calc(100% - 3rem),
@@ -1691,7 +1692,7 @@ h1 {
 .timeline-labels {
   position: absolute;
   top: 0;
-  left: 0;
+  left: calc((var(--timeline-gutter) * -1) + var(--page-edge) + 0.5rem);
   z-index: 2;
   width: 7.5rem;
   height: 100%;
@@ -1799,7 +1800,7 @@ h1 {
 .progression-rail .progression-onwards {
   position: absolute;
   top: 0;
-  right: 0.75rem;
+  right: 0;
   min-height: 0;
   padding: 0;
 }
