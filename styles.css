@@ -2053,7 +2053,7 @@ h1 {
 .case-study-enterprise {
   position: relative;
   isolation: isolate;
-  grid-template-columns: minmax(0, 0.95fr) minmax(25rem, 1.05fr);
+  grid-template-columns: minmax(0, 0.78fr) minmax(30rem, 1.22fr);
   gap: clamp(2rem, 4vw, 3.5rem);
   padding: clamp(1.15rem, 2.5vw, 2rem);
   border: 1px solid color-mix(in srgb, var(--surface-strong) 64%, var(--border));
@@ -2125,7 +2125,32 @@ h1 {
 }
 
 :root[data-theme="dark"] .case-study-enterprise::after {
-  opacity: 0.58;
+  opacity: 0.22;
+}
+
+:root[data-theme="dark"] .case-study-enterprise {
+  border-color: color-mix(in srgb, var(--glass-neon-cyan) 18%, var(--border));
+  background:
+    radial-gradient(circle at 8% 10%, color-mix(in srgb, var(--glass-neon-cyan) 10%, transparent), transparent 38%),
+    radial-gradient(circle at 92% 88%, color-mix(in srgb, var(--glass-neon-violet) 9%, transparent), transparent 42%),
+    color-mix(in srgb, var(--surface-strong) 92%, black);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 14%, transparent),
+    0 24px 64px color-mix(in srgb, black 42%, transparent);
+}
+
+:root[data-theme="dark"] .case-study-enterprise::before {
+  opacity: 0.28;
+}
+
+:root[data-theme="dark"] .case-study-enterprise .case-purpose,
+:root[data-theme="dark"] .case-study-enterprise .case-details dd {
+  color: color-mix(in srgb, var(--text) 84%, white);
+}
+
+:root[data-theme="dark"] .case-study-enterprise .system-map {
+  border-color: color-mix(in srgb, var(--glass-neon-cyan) 16%, var(--border));
+  background: color-mix(in srgb, var(--surface-strong) 94%, black);
 }
 
 .case-study-enterprise > * {
@@ -2239,7 +2264,8 @@ h1 {
   background: var(--surface-strong);
   box-shadow: var(--shadow);
   justify-self: end;
-  max-width: 520px;
+  width: 100%;
+  max-width: 640px;
 }
 
 .system-map figcaption {
@@ -3254,8 +3280,9 @@ h1 {
   grid-row: 1;
   color: var(--warm);
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 1rem;
   font-weight: 700;
+  line-height: 1;
 }
 
 .enterprise-folio-grid h4 {
