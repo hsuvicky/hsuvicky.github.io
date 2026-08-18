@@ -24,6 +24,7 @@
   --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --header-height: 72px;
   --max-width: 1220px;
+  --page-edge: clamp(1.25rem, 1.5vw, 1.75rem);
   --reading-width: 720px;
   --blob-arm: #1a1f1c;
   /* Matryoshka colors — largest is a lighter moss in light mode. */
@@ -99,6 +100,22 @@ body {
   line-height: 1.65;
   text-rendering: optimizeLegibility;
   transition: background-color 180ms ease, color 180ms ease;
+}
+
+body.about-site {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+body.about-site .about-page {
+  flex: 1 0 auto;
+}
+
+body.about-site .site-footer {
+  flex: 0 0 auto;
+  margin-top: auto;
+  border-top: 0;
 }
 
 :root[data-page-enter] main,
@@ -258,7 +275,7 @@ button {
   grid-template-columns: minmax(11rem, 1fr) auto;
   column-gap: 1.25rem;
   align-items: center;
-  width: min(calc(100% - 3rem), var(--max-width));
+  width: calc(100% - (var(--page-edge) * 2));
   height: 100%;
   margin: 0 auto;
 }
@@ -269,7 +286,7 @@ button {
   justify-self: start;
   align-items: flex-end;
   gap: 0;
-  margin-left: -1.25rem;
+  margin-left: 0;
   min-height: 44px;
   height: 100%;
 }
@@ -1373,6 +1390,18 @@ h1 {
   pointer-events: none;
 }
 
+.about-page .about {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.about-page .about-rider-stage {
+  left: 50%;
+  width: 100vw;
+  min-height: clamp(2.5rem, 3.5vw, 3.25rem);
+  margin-left: -50vw;
+}
+
 .about-rider-fade {
   position: absolute;
   inset: -3rem 0;
@@ -1393,14 +1422,14 @@ h1 {
 
 .about-rider-track {
   position: absolute;
-  inset: 3rem 0;
+  inset: 2.35rem 0;
 }
 
 .about-rider {
   position: absolute;
-  top: 30%;
-  left: 110%;
-  width: clamp(3.75rem, 6.25vw, 5.5rem);
+  top: 44%;
+  left: calc(100% - var(--page-edge) - 1.5rem);
+  width: clamp(1.75rem, 2.2vw, 2.25rem);
   height: auto;
   filter: grayscale(1) contrast(1.08);
   transform: translate3d(-50%, -55%, 0) rotate(16deg);
@@ -1415,12 +1444,12 @@ h1 {
 
 @keyframes rider-hop {
   0% {
-    left: 110%;
+    left: calc(100% - var(--page-edge) - 1.5rem);
     transform: translate3d(-50%, -55%, 0) rotate(16deg);
   }
 
   9.0909% {
-    left: 98%;
+    left: 91%;
     transform: translate3d(-50%, -42%, 0) rotate(-16deg);
   }
 
@@ -1667,9 +1696,9 @@ h1 {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: calc((100vw - min(calc(100vw - 3rem), var(--max-width))) / -2);
+  left: calc(var(--timeline-gutter) * -1);
   z-index: 1;
-  width: max(13.5rem, calc((100vw - var(--max-width)) / 2 + 11.5rem));
+  width: calc(var(--timeline-gutter) + 12rem);
   background: linear-gradient(
     to right,
     var(--timeline-backdrop) 0 calc(100% - 3rem),
@@ -1682,7 +1711,7 @@ h1 {
 .timeline-labels {
   position: absolute;
   top: 0;
-  left: 0;
+  left: calc((var(--timeline-gutter) * -1) + var(--page-edge) + 0.5rem);
   z-index: 2;
   width: 7.5rem;
   height: 100%;
@@ -1790,7 +1819,7 @@ h1 {
 .progression-rail .progression-onwards {
   position: absolute;
   top: 0;
-  right: 0.75rem;
+  right: 0;
   min-height: 0;
   padding: 0;
 }
@@ -2012,19 +2041,24 @@ h1 {
 /* Only where a pointer can rest. On touch the state sticks after a tap or after a
    drag of the rail, leaving a milestone stranded at hover size. */
 @media (hover: hover) {
-  .progression-rail li:hover > .progression-period,
-  .progression-rail li:hover .progression-role,
-  .progression-rail li:hover .progression-domain {
+  .progression-description:hover .progression-role,
+  .progression-description:hover .progression-domain,
+  .progression-career-event:hover .progression-role,
+  .progression-career-event:hover .progression-domain,
+  .progression-personal-event:hover .progression-role,
+  .progression-personal-event:hover .progression-domain {
     color: var(--text-strong);
   }
 
-  .progression-rail li:hover .progression-grade {
+  .progression-description:hover .progression-grade,
+  .progression-career-event:hover .progression-grade,
+  .progression-personal-event:hover .progression-grade {
     color: var(--accent-deep);
   }
 
-  .progression-rail li:hover .progression-description,
-  .progression-rail li:hover .progression-career-event,
-  .progression-rail li:hover .progression-personal-event {
+  .progression-description:hover,
+  .progression-career-event:hover,
+  .progression-personal-event:hover {
     scale: 1.05;
   }
 }
@@ -2050,12 +2084,23 @@ h1 {
   border-top: 1px solid var(--border);
 }
 
+.enterprise-showcase {
+  display: grid;
+  grid-template-columns: minmax(0, 1.72fr) minmax(20rem, 0.88fr);
+  gap: clamp(0.85rem, 1.5vw, 1.25rem);
+  align-items: start;
+  margin-top: clamp(1.1rem, 2vw, 1.6rem);
+}
+
 .case-study-enterprise {
   position: relative;
   isolation: isolate;
-  grid-template-columns: minmax(0, 0.95fr) minmax(25rem, 1.05fr);
-  gap: clamp(2rem, 4vw, 3.5rem);
-  padding: clamp(1.15rem, 2.5vw, 2rem);
+  grid-template-columns: minmax(13rem, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(0.85rem, 1.4vw, 1.25rem);
+  align-items: start;
+  min-height: 0;
+  margin-top: 0;
+  padding: clamp(1rem, 1.6vw, 1.35rem);
   border: 1px solid color-mix(in srgb, var(--surface-strong) 64%, var(--border));
   border-radius: 1.35rem;
   background:
@@ -2125,7 +2170,32 @@ h1 {
 }
 
 :root[data-theme="dark"] .case-study-enterprise::after {
-  opacity: 0.58;
+  opacity: 0.22;
+}
+
+:root[data-theme="dark"] .case-study-enterprise {
+  border-color: color-mix(in srgb, var(--glass-neon-cyan) 18%, var(--border));
+  background:
+    radial-gradient(circle at 8% 10%, color-mix(in srgb, var(--glass-neon-cyan) 10%, transparent), transparent 38%),
+    radial-gradient(circle at 92% 88%, color-mix(in srgb, var(--glass-neon-violet) 9%, transparent), transparent 42%),
+    color-mix(in srgb, var(--surface-strong) 92%, black);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 14%, transparent),
+    0 24px 64px color-mix(in srgb, black 42%, transparent);
+}
+
+:root[data-theme="dark"] .case-study-enterprise::before {
+  opacity: 0.28;
+}
+
+:root[data-theme="dark"] .case-study-enterprise .case-purpose,
+:root[data-theme="dark"] .case-study-enterprise .case-details dd {
+  color: color-mix(in srgb, var(--text) 84%, white);
+}
+
+:root[data-theme="dark"] .case-study-enterprise .system-map {
+  border-color: color-mix(in srgb, var(--glass-neon-cyan) 16%, var(--border));
+  background: color-mix(in srgb, var(--surface-strong) 94%, black);
 }
 
 .case-study-enterprise > * {
@@ -2134,6 +2204,9 @@ h1 {
 }
 
 .case-study-enterprise .system-map {
+  align-self: start;
+  max-width: 25rem;
+  padding: 0.7rem;
   border-color: color-mix(in srgb, var(--surface-strong) 54%, var(--border));
   border-radius: 0.9rem;
   background:
@@ -2145,6 +2218,10 @@ h1 {
     0 16px 38px color-mix(in srgb, var(--text) 10%, transparent);
   backdrop-filter: blur(18px) saturate(1.14);
   -webkit-backdrop-filter: blur(18px) saturate(1.14);
+}
+
+.case-study-enterprise .system-map figcaption {
+  padding: 0.25rem 0.25rem 0.65rem;
 }
 
 .case-study h3 {
@@ -2239,7 +2316,8 @@ h1 {
   background: var(--surface-strong);
   box-shadow: var(--shadow);
   justify-self: end;
-  max-width: 520px;
+  width: 100%;
+  max-width: 640px;
 }
 
 .system-map figcaption {
@@ -2512,16 +2590,21 @@ h1 {
 .gallery-section {
   overflow: clip;
   min-height: 0;
-  padding: clamp(1.5rem, 3vw, 2.5rem) 0;
+  padding: 0.5rem 0 0;
   background:
     radial-gradient(circle at 87% 9%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 25rem),
     linear-gradient(145deg, var(--bg), color-mix(in srgb, var(--surface) 72%, var(--bg)));
 }
 
+.about-page .gallery-section .section-shell {
+  width: calc(100% - (var(--page-edge) * 2));
+  max-width: none;
+}
+
 .perspective-gallery {
   position: relative;
-  min-height: clamp(54rem, calc(115svh - var(--header-height)), 62rem);
-  margin-bottom: -6rem;
+  min-height: clamp(35rem, calc(100svh - var(--header-height) - 4rem), 42rem);
+  margin-bottom: -9.5rem;
 }
 
 .gallery-stage {
@@ -2717,6 +2800,16 @@ h1 {
   min-height: min(23rem, 100%);
 }
 
+.mooscles-flex {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  z-index: 2;
+  font-size: clamp(6rem, 13vw, 10rem);
+  line-height: 1;
+  filter: drop-shadow(0 1.5rem 1.5rem color-mix(in srgb, var(--text) 22%, transparent));
+  transform: translate(-50%, -50%) rotate(-8deg);
+}
+
 .gallery-monkev .blackjack-mark {
   order: initial;
   justify-self: center;
@@ -2734,22 +2827,44 @@ h1 {
 .league-card-visual {
   position: relative;
   display: grid;
-  grid-template-columns: 7.5rem 1fr;
-  gap: 1rem;
+  grid-template-columns: 4.75rem minmax(0, 1fr);
+  gap: 0.5rem;
   align-items: center;
-  min-height: 20rem;
+  min-height: 13rem;
   overflow: hidden;
   padding: 1.1rem;
   background: var(--accent);
   color: var(--ink-inverse);
 }
 
+.gallery-league .gallery-card-layout {
+  grid-template-columns: minmax(9rem, 0.84fr) minmax(12rem, 1.16fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: clamp(0.75rem, 1.4vw, 1.15rem);
+}
+
+.gallery-league .league-card-visual {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  align-self: center;
+  width: 100%;
+  height: min(100%, 15rem);
+}
+
+.gallery-league .gallery-card-copy {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+}
+
 .league-rank-image {
+  grid-column: 1;
   width: 100%;
   height: auto;
 }
 
 .league-card-visual p {
+  grid-column: 2;
   margin: 0;
 }
 
@@ -2760,25 +2875,35 @@ h1 {
 
 .league-card-visual strong {
   font-family: var(--display);
-  font-size: 2rem;
+  font-size: 1.15rem;
   font-weight: 400;
+  line-height: 1;
+}
+
+.gallery-card.is-expanded .league-card-visual strong {
+  font-size: 1.8rem;
 }
 
 .league-card-visual span {
   font-family: var(--mono);
-  font-size: 0.65rem;
+  font-size: 0.58rem;
   letter-spacing: 0.06em;
 }
 
 .league-stats-image {
-  position: absolute;
-  right: -8%;
-  bottom: -50%;
-  width: 58%;
-  height: auto;
-  border: 1px solid color-mix(in srgb, white 55%, transparent);
+  position: static;
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: start;
+  align-self: start;
+  width: 7rem;
+  height: 9rem;
+  margin-top: 0;
+  object-fit: contain;
+  object-position: top;
+  border: 1px solid var(--border);
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.24);
-  transform: rotate(5deg);
+  transform: none;
 }
 
 .beli-card-visual {
@@ -2791,9 +2916,10 @@ h1 {
 
 .beli-card-visual img {
   display: block;
-  width: 100%;
+  width: 76%;
   height: auto;
-  transform: translateY(-2%);
+  margin: 0 auto;
+  transform: translateY(-1%);
 }
 
 .poker-card-visual {
@@ -2827,8 +2953,8 @@ h1 {
 }
 
 .playing-card-two {
-  top: 26%;
-  left: 45%;
+  top: 22%;
+  left: 38%;
   color: #8d2332;
   transform: rotate(10deg);
 }
@@ -2872,10 +2998,44 @@ h1 {
   opacity: 0.7;
 }
 
+.horticulture-card-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 2vw, 1.5rem);
+  min-height: 21rem;
+  overflow: hidden;
+  padding: 1.5rem;
+  background: #dce8d5;
+  color: #31583a;
+}
+
+.botanical-leaf {
+  width: 44%;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.botanical-monstera {
+  transform: rotate(-7deg);
+}
+
+.botanical-fern {
+  color: #648866;
+  transform: rotate(7deg);
+}
+
 .gallery-controls {
   position: absolute;
-  right: 2rem;
-  bottom: 15.5rem;
+  right: auto;
+  bottom: 9.5rem;
+  left: min(77vw, 61rem);
   z-index: 100;
   display: flex;
   gap: 0.55rem;
@@ -2909,13 +3069,13 @@ h1 {
 
 .gallery-close {
   position: absolute;
-  top: 1.1rem;
-  right: 1.1rem;
+  top: 0.7rem;
+  right: 0.7rem;
   z-index: 5;
   display: grid;
   place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2rem;
+  height: 2rem;
   padding: 0;
   border: 0;
   background: transparent;
@@ -2937,13 +3097,13 @@ h1 {
 
 .gallery-close svg {
   display: block;
-  width: 2.35rem;
-  height: 2.35rem;
+  width: 1.45rem;
+  height: 1.45rem;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 1.7;
+  stroke-width: 1.8;
 }
 
 .gallery-close[hidden] {
@@ -2984,28 +3144,53 @@ h1 {
 }
 
 .perspective-gallery .gallery-card.is-expanded {
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
   z-index: 200;
-  width: 100%;
-  height: 100%;
+  width: min(calc(100% - 2rem), 74rem);
+  height: min(78%, 42rem);
   min-height: 0;
   overflow: auto;
   cursor: default;
   opacity: 1;
   pointer-events: auto;
-  transform: none;
+  transform: translate(-50%, -50%);
   translate: 0 0;
   will-change: auto;
 }
 
 .gallery-card.is-expanded .gallery-card-layout {
-  grid-template-columns: minmax(20rem, 0.9fr) minmax(22rem, 1.1fr);
-  padding: clamp(2rem, 5vw, 5rem);
+  grid-template-columns: minmax(16rem, 0.82fr) minmax(20rem, 1.18fr);
+  gap: clamp(0.9rem, 2vw, 1.5rem);
+  padding: clamp(1rem, 2vw, 1.75rem);
+}
+
+.gallery-card.gallery-league.is-expanded .gallery-card-layout {
+  grid-template-columns: minmax(14rem, 0.8fr) minmax(20rem, 1.2fr) minmax(10rem, 0.52fr);
+  gap: clamp(0.75rem, 1.4vw, 1.15rem);
+}
+
+.gallery-card.gallery-league.is-expanded .league-stats-image {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: stretch;
+  align-self: center;
+  width: 100%;
+  height: min(100%, 19rem);
+  object-fit: contain;
+  background: #fff;
+}
+
+.gallery-card.gallery-league.is-expanded .league-card-visual {
+  grid-row: 1;
+}
+
+.gallery-card.gallery-league.is-expanded .gallery-card-copy {
+  align-self: center;
 }
 
 .gallery-card.is-expanded .gallery-card-visual {
-  max-height: 30rem;
+  max-height: 19rem;
 }
 
 .gallery-card.is-expanded .case-purpose {
@@ -3018,8 +3203,14 @@ h1 {
   overflow: visible;
 }
 
+.gallery-card.is-expanded .case-details > div {
+  padding: 0.65rem 0;
+}
+
 .gallery-card.is-expanded .gallery-expanded-details {
   display: block;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
 }
 
 :root:not(.gallery-ready) .perspective-gallery {
@@ -3066,18 +3257,27 @@ h1 {
   }
 
   .gallery-card.is-expanded .gallery-card-layout {
-    grid-template-columns: minmax(15rem, 0.8fr) minmax(18rem, 1.2fr);
-    padding: 3rem 2rem;
+    grid-template-columns: minmax(14rem, 0.8fr) minmax(17rem, 1.2fr);
+    padding: 1.5rem;
   }
 }
 
 @media (max-width: 760px) {
   .gallery-section {
-    padding-top: 1.25rem;
+    padding-top: 0.35rem;
+  }
+
+  .about-page .about {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .about-page .about-rider-stage {
+    min-height: 2.75rem;
   }
 
   .perspective-gallery {
-    min-height: calc(100svh - var(--header-height) - 1rem);
+    min-height: clamp(32rem, calc(100svh - var(--header-height) - 3rem), 38rem);
   }
 
   .gallery-stage {
@@ -3175,26 +3375,46 @@ h1 {
   }
 
   .gallery-card.is-expanded {
-    width: 100%;
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    width: calc(100% - 1rem);
+    height: calc(100% - 1rem);
   }
 
   .gallery-card.is-expanded .gallery-card-layout {
-    padding-top: 4.5rem;
+    gap: 0.75rem;
+    padding: 2.75rem 1rem 1rem;
   }
 
   .league-card-visual {
-    grid-template-columns: 5.5rem 1fr;
+    grid-template-columns: 4.75rem minmax(0, 1fr);
   }
 
   .league-stats-image {
-    right: -2%;
-    bottom: -85%;
-    width: 45%;
+    grid-column: 1;
+    grid-row: 3;
+    width: min(68%, 9rem);
+    height: 5.5rem;
+  }
+
+  .gallery-league .gallery-card-layout,
+  .gallery-card.gallery-league.is-expanded .gallery-card-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .gallery-league .league-card-visual,
+  .gallery-league .gallery-card-copy {
+    grid-column: 1;
+    grid-row: auto;
   }
 
   .beli-card-visual {
     height: 13rem;
+  }
+
+  .beli-card-visual img {
+    width: 84%;
   }
 
   .playing-card {
@@ -3212,18 +3432,22 @@ h1 {
   }
 
   .gallery-controls {
-    right: clamp(3.5rem, 16vw, 6rem);
-    bottom: 8rem;
+    left: auto;
+    right: 0.25rem;
+    bottom: 9.5rem;
   }
 
 }
 
 .enterprise-folio {
-  margin-top: clamp(1.1rem, 2vw, 1.6rem);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin-top: 0;
 }
 
 .folio-intro {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.45rem;
 }
 
 .folio-intro .annotation {
@@ -3232,10 +3456,11 @@ h1 {
 
 .enterprise-folio-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1px;
-  border: 1px solid var(--border);
-  background: var(--border);
+  grid-template-columns: 1fr;
+  gap: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: transparent;
 }
 
 .enterprise-folio-grid article {
@@ -3245,8 +3470,13 @@ h1 {
   column-gap: 0.45rem;
   align-items: baseline;
   min-width: 0;
-  padding: 1rem clamp(1rem, 1.5vw, 1.3rem);
-  background: var(--surface-strong);
+  padding: 0.72rem 0.2rem;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+}
+
+.enterprise-folio-grid article:last-child {
+  border-bottom: 0;
 }
 
 .folio-number {
@@ -3254,8 +3484,9 @@ h1 {
   grid-row: 1;
   color: var(--warm);
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 1rem;
   font-weight: 700;
+  line-height: 1;
 }
 
 .enterprise-folio-grid h4 {
@@ -3270,10 +3501,10 @@ h1 {
 .enterprise-folio-grid article p {
   grid-column: 1 / -1;
   grid-row: 2;
-  margin: 0.6rem 0 0;
+  margin: 0.35rem 0 0;
   color: var(--text-soft);
   font-size: 0.8rem;
-  line-height: 1.55;
+  line-height: 1.42;
 }
 
 .hobbies {
@@ -3620,7 +3851,7 @@ h1 {
 }
 
 .site-footer {
-  padding: 1rem 0;
+  padding: 0.6rem 0;
   border-top: 1px solid var(--border-soft);
   background: var(--bg);
 }
@@ -3629,6 +3860,8 @@ h1 {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  width: calc(100% - (var(--page-edge) * 2));
+  max-width: none;
 }
 
 .footer-actions {
@@ -3898,6 +4131,10 @@ h1 {
     gap: 3rem;
   }
 
+  .enterprise-showcase {
+    grid-template-columns: 1fr;
+  }
+
   .case-study-enterprise,
   .case-study-mooscles {
     grid-template-columns: 1fr;
@@ -3918,7 +4155,7 @@ h1 {
   }
 
   .enterprise-folio {
-    margin-top: 2rem;
+    margin-top: 0;
   }
 
   .enterprise-folio-grid {
@@ -4147,8 +4384,8 @@ h1 {
   }
 
   .about-rider {
-    top: 30%;
-    width: clamp(2.75rem, 12.5vw, 4rem);
+    top: 44%;
+    width: clamp(1.7rem, 6vw, 2rem);
   }
 
   h1 {
@@ -4242,6 +4479,7 @@ h1 {
 
   .case-study-enterprise {
     gap: 1rem;
+    margin-top: 0;
   }
 
   .case-details > div {
@@ -4454,9 +4692,9 @@ h1 {
     will-change: auto;
   }
 
-  .progression-rail li:hover .progression-description,
-  .progression-rail li:hover .progression-career-event,
-  .progression-rail li:hover .progression-personal-event {
+  .progression-description:hover,
+  .progression-career-event:hover,
+  .progression-personal-event:hover {
     scale: none;
   }
 
