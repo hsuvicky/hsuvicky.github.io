@@ -2021,19 +2021,24 @@ h1 {
 /* Only where a pointer can rest. On touch the state sticks after a tap or after a
    drag of the rail, leaving a milestone stranded at hover size. */
 @media (hover: hover) {
-  .progression-rail li:hover > .progression-period,
-  .progression-rail li:hover .progression-role,
-  .progression-rail li:hover .progression-domain {
+  .progression-description:hover .progression-role,
+  .progression-description:hover .progression-domain,
+  .progression-career-event:hover .progression-role,
+  .progression-career-event:hover .progression-domain,
+  .progression-personal-event:hover .progression-role,
+  .progression-personal-event:hover .progression-domain {
     color: var(--text-strong);
   }
 
-  .progression-rail li:hover .progression-grade {
+  .progression-description:hover .progression-grade,
+  .progression-career-event:hover .progression-grade,
+  .progression-personal-event:hover .progression-grade {
     color: var(--accent-deep);
   }
 
-  .progression-rail li:hover .progression-description,
-  .progression-rail li:hover .progression-career-event,
-  .progression-rail li:hover .progression-personal-event {
+  .progression-description:hover,
+  .progression-career-event:hover,
+  .progression-personal-event:hover {
     scale: 1.05;
   }
 }
@@ -4524,9 +4529,9 @@ h1 {
     will-change: auto;
   }
 
-  .progression-rail li:hover .progression-description,
-  .progression-rail li:hover .progression-career-event,
-  .progression-rail li:hover .progression-personal-event {
+  .progression-description:hover,
+  .progression-career-event:hover,
+  .progression-personal-event:hover {
     scale: none;
   }
 
