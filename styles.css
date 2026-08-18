@@ -1373,6 +1373,15 @@ h1 {
   pointer-events: none;
 }
 
+.about-page .about {
+  padding-top: 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
+.about-page .about-rider-stage {
+  min-height: clamp(3.25rem, 5vw, 4.25rem);
+}
+
 .about-rider-fade {
   position: absolute;
   inset: -3rem 0;
@@ -2546,8 +2555,8 @@ h1 {
 
 .perspective-gallery {
   position: relative;
-  min-height: clamp(54rem, calc(115svh - var(--header-height)), 62rem);
-  margin-bottom: -6rem;
+  min-height: clamp(46rem, calc(100svh - var(--header-height)), 54rem);
+  margin-bottom: -7.5rem;
 }
 
 .gallery-stage {
@@ -2743,6 +2752,16 @@ h1 {
   min-height: min(23rem, 100%);
 }
 
+.mooscles-flex {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  z-index: 2;
+  font-size: clamp(6rem, 13vw, 10rem);
+  line-height: 1;
+  filter: drop-shadow(0 1.5rem 1.5rem color-mix(in srgb, var(--text) 22%, transparent));
+  transform: translate(-50%, -50%) rotate(-8deg);
+}
+
 .gallery-monkev .blackjack-mark {
   order: initial;
   justify-self: center;
@@ -2760,7 +2779,7 @@ h1 {
 .league-card-visual {
   position: relative;
   display: grid;
-  grid-template-columns: 7.5rem 1fr;
+  grid-template-columns: 8.5rem minmax(8rem, 1fr);
   gap: 1rem;
   align-items: center;
   min-height: 20rem;
@@ -2798,13 +2817,13 @@ h1 {
 
 .league-stats-image {
   position: absolute;
-  right: -8%;
-  bottom: -50%;
-  width: 58%;
+  right: 4%;
+  bottom: -18%;
+  width: 44%;
   height: auto;
   border: 1px solid color-mix(in srgb, white 55%, transparent);
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.24);
-  transform: rotate(5deg);
+  transform: rotate(2deg);
 }
 
 .beli-card-visual {
@@ -2817,9 +2836,10 @@ h1 {
 
 .beli-card-visual img {
   display: block;
-  width: 100%;
+  width: 76%;
   height: auto;
-  transform: translateY(-2%);
+  margin: 0 auto;
+  transform: translateY(-1%);
 }
 
 .poker-card-visual {
@@ -2853,8 +2873,8 @@ h1 {
 }
 
 .playing-card-two {
-  top: 26%;
-  left: 45%;
+  top: 22%;
+  left: 38%;
   color: #8d2332;
   transform: rotate(10deg);
 }
@@ -3102,6 +3122,15 @@ h1 {
     padding-top: 1.25rem;
   }
 
+  .about-page .about {
+    padding-top: 0.5rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .about-page .about-rider-stage {
+    min-height: 3.25rem;
+  }
+
   .perspective-gallery {
     min-height: calc(100svh - var(--header-height) - 1rem);
   }
@@ -3214,13 +3243,17 @@ h1 {
   }
 
   .league-stats-image {
-    right: -2%;
-    bottom: -85%;
-    width: 45%;
+    right: 3%;
+    bottom: -24%;
+    width: 42%;
   }
 
   .beli-card-visual {
     height: 13rem;
+  }
+
+  .beli-card-visual img {
+    width: 84%;
   }
 
   .playing-card {
