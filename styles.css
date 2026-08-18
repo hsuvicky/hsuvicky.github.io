@@ -2589,7 +2589,7 @@ h1 {
 .perspective-gallery {
   position: relative;
   min-height: clamp(35rem, calc(100svh - var(--header-height) - 4rem), 42rem);
-  margin-bottom: -7.5rem;
+  margin-bottom: -9.5rem;
 }
 
 .gallery-stage {
@@ -2954,7 +2954,7 @@ h1 {
 .gallery-controls {
   position: absolute;
   right: 2rem;
-  bottom: 7.5rem;
+  bottom: 9.5rem;
   z-index: 100;
   display: flex;
   gap: 0.55rem;
@@ -3315,7 +3315,7 @@ h1 {
 
   .gallery-controls {
     right: 0.25rem;
-    bottom: 4rem;
+    bottom: 9.5rem;
   }
 
 }
