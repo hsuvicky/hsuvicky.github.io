@@ -3874,7 +3874,7 @@ h1 {
 }
 
 body.about-site .footer-actions {
-  transform: translateY(6px);
+  transform: translateY(1px);
 }
 
 .footer-actions .theme-toggle {
