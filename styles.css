@@ -3110,8 +3110,8 @@ h1 {
   top: 50%;
   left: 50%;
   z-index: 200;
-  width: min(76%, 58rem);
-  height: min(68%, 38rem);
+  width: min(calc(100% - 2rem), 74rem);
+  height: min(78%, 42rem);
   min-height: 0;
   overflow: auto;
   cursor: default;
