@@ -3873,6 +3873,10 @@ h1 {
   gap: 0.55rem;
 }
 
+body.about-site .footer-actions {
+  transform: translateY(6px);
+}
+
 .footer-actions .theme-toggle {
   justify-self: auto;
   width: 38px;
