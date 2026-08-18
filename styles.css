@@ -3000,52 +3000,35 @@ h1 {
 
 .horticulture-card-visual {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 2vw, 1.5rem);
   min-height: 21rem;
   overflow: hidden;
   padding: 1.5rem;
-  background:
-    radial-gradient(circle at 78% 18%, rgba(239, 245, 218, 0.9), transparent 28%),
-    linear-gradient(145deg, #345c3d, #183523);
-  color: #f0f4dc;
+  background: #dce8d5;
+  color: #31583a;
 }
 
-.plant-year {
-  position: relative;
-  z-index: 2;
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.botanical-leaf {
+  width: 44%;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.plant-name {
-  position: absolute;
-  z-index: 2;
-  left: 1.5rem;
-  bottom: 1.5rem;
-  font-family: var(--display);
-  font-size: clamp(2rem, 4vw, 3.4rem);
-  line-height: 0.92;
+.botanical-monstera {
+  transform: rotate(-7deg);
 }
 
-.plant-leaf {
-  position: absolute;
-  filter: saturate(0.75);
-}
-
-.plant-leaf-one {
-  top: 12%;
-  right: 4%;
-  font-size: clamp(7rem, 13vw, 11rem);
-  transform: rotate(-16deg);
-}
-
-.plant-leaf-two {
-  right: 38%;
-  bottom: 22%;
-  font-size: clamp(4rem, 8vw, 7rem);
-  opacity: 0.66;
-  transform: rotate(22deg);
+.botanical-fern {
+  color: #648866;
+  transform: rotate(7deg);
 }
 
 .gallery-controls {
