@@ -2828,6 +2828,7 @@ h1 {
   position: relative;
   display: grid;
   grid-template-columns: 8.5rem minmax(8rem, 1fr);
+  grid-template-rows: auto 6.25rem;
   gap: 1rem;
   align-items: center;
   min-height: 20rem;
@@ -2838,11 +2839,15 @@ h1 {
 }
 
 .league-rank-image {
+  grid-column: 1;
+  grid-row: 1;
   width: 100%;
   height: auto;
 }
 
 .league-card-visual p {
+  grid-column: 2;
+  grid-row: 1;
   margin: 0;
 }
 
@@ -2864,14 +2869,17 @@ h1 {
 }
 
 .league-stats-image {
-  position: absolute;
-  right: 4%;
-  bottom: -18%;
-  width: 44%;
-  height: auto;
+  position: static;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-self: end;
+  width: min(64%, 10rem);
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
   border: 1px solid color-mix(in srgb, white 55%, transparent);
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.24);
-  transform: rotate(2deg);
+  transform: rotate(1deg);
 }
 
 .beli-card-visual {
@@ -3302,9 +3310,7 @@ h1 {
   }
 
   .league-stats-image {
-    right: 3%;
-    bottom: -24%;
-    width: 42%;
+    width: min(68%, 9rem);
   }
 
   .beli-card-visual {
