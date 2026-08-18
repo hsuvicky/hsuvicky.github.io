@@ -2590,6 +2590,7 @@ h1 {
   overflow: clip;
   min-height: 0;
   padding: 0.5rem 0 0;
+  border-bottom: 0;
   background:
     radial-gradient(circle at 87% 9%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 25rem),
     linear-gradient(145deg, var(--bg), color-mix(in srgb, var(--surface) 72%, var(--bg)));
@@ -3851,7 +3852,7 @@ h1 {
 
 .site-footer {
   padding: 0.35rem 0;
-  border-top: 1px solid var(--border-soft);
+  border-top: 0;
   background: var(--bg);
 }
 
