@@ -115,7 +115,6 @@ body.about-site .about-page {
 body.about-site .site-footer {
   flex: 0 0 auto;
   margin-top: auto;
-  border-top: 0;
 }
 
 :root[data-page-enter] main,
