@@ -2955,13 +2955,13 @@ h1 {
 
 .gallery-close {
   position: absolute;
-  top: 1.1rem;
-  right: 1.1rem;
+  top: 0.7rem;
+  right: 0.7rem;
   z-index: 5;
   display: grid;
   place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2rem;
+  height: 2rem;
   padding: 0;
   border: 0;
   background: transparent;
@@ -2983,13 +2983,13 @@ h1 {
 
 .gallery-close svg {
   display: block;
-  width: 2.35rem;
-  height: 2.35rem;
+  width: 1.45rem;
+  height: 1.45rem;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 1.7;
+  stroke-width: 1.8;
 }
 
 .gallery-close[hidden] {
@@ -3030,28 +3030,29 @@ h1 {
 }
 
 .perspective-gallery .gallery-card.is-expanded {
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
   z-index: 200;
-  width: 100%;
-  height: 100%;
+  width: min(76%, 58rem);
+  height: min(68%, 38rem);
   min-height: 0;
   overflow: auto;
   cursor: default;
   opacity: 1;
   pointer-events: auto;
-  transform: none;
+  transform: translate(-50%, -50%);
   translate: 0 0;
   will-change: auto;
 }
 
 .gallery-card.is-expanded .gallery-card-layout {
-  grid-template-columns: minmax(20rem, 0.9fr) minmax(22rem, 1.1fr);
-  padding: clamp(2rem, 5vw, 5rem);
+  grid-template-columns: minmax(16rem, 0.82fr) minmax(20rem, 1.18fr);
+  gap: clamp(0.9rem, 2vw, 1.5rem);
+  padding: clamp(1rem, 2vw, 1.75rem);
 }
 
 .gallery-card.is-expanded .gallery-card-visual {
-  max-height: 30rem;
+  max-height: 19rem;
 }
 
 .gallery-card.is-expanded .case-purpose {
@@ -3064,8 +3065,14 @@ h1 {
   overflow: visible;
 }
 
+.gallery-card.is-expanded .case-details > div {
+  padding: 0.65rem 0;
+}
+
 .gallery-card.is-expanded .gallery-expanded-details {
   display: block;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
 }
 
 :root:not(.gallery-ready) .perspective-gallery {
@@ -3112,8 +3119,8 @@ h1 {
   }
 
   .gallery-card.is-expanded .gallery-card-layout {
-    grid-template-columns: minmax(15rem, 0.8fr) minmax(18rem, 1.2fr);
-    padding: 3rem 2rem;
+    grid-template-columns: minmax(14rem, 0.8fr) minmax(17rem, 1.2fr);
+    padding: 1.5rem;
   }
 }
 
@@ -3230,12 +3237,15 @@ h1 {
   }
 
   .gallery-card.is-expanded {
-    width: 100%;
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    width: calc(100% - 1rem);
+    height: calc(100% - 1rem);
   }
 
   .gallery-card.is-expanded .gallery-card-layout {
-    padding-top: 4.5rem;
+    gap: 0.75rem;
+    padding: 2.75rem 1rem 1rem;
   }
 
   .league-card-visual {
