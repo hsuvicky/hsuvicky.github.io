@@ -1410,7 +1410,7 @@ h1 {
   position: absolute;
   top: 30%;
   left: 110%;
-  width: clamp(3.75rem, 6.25vw, 5.5rem);
+  width: clamp(2.75rem, 4.5vw, 4.25rem);
   height: auto;
   filter: grayscale(1) contrast(1.08);
   transform: translate3d(-50%, -55%, 0) rotate(16deg);
@@ -2561,7 +2561,7 @@ h1 {
 
 .perspective-gallery {
   position: relative;
-  min-height: clamp(46rem, calc(100svh - var(--header-height)), 54rem);
+  min-height: clamp(40rem, calc(100svh - var(--header-height)), 48rem);
   margin-bottom: -7.5rem;
 }
 
@@ -2927,7 +2927,7 @@ h1 {
 .gallery-controls {
   position: absolute;
   right: 2rem;
-  bottom: 15.5rem;
+  bottom: 7.5rem;
   z-index: 100;
   display: flex;
   gap: 0.55rem;
@@ -4224,7 +4224,7 @@ h1 {
 
   .about-rider {
     top: 30%;
-    width: clamp(2.75rem, 12.5vw, 4rem);
+    width: clamp(2.25rem, 9vw, 3rem);
   }
 
   h1 {
