@@ -11,3 +11,10 @@ cards.forEach((card,i)=>{if(i===0||i===2){const heading=document.createElement('
 function show(index){active=(index+cards.length)%cards.length;cards.forEach((card,i)=>{card.hidden=i!==active;card.inert=i!==active;card.setAttribute('aria-hidden',String(i!==active));card.dataset.position=i===active?'active':'future';buttons[i].setAttribute('aria-current',i===active?'true':'false')})}
 gallery.querySelector('[data-gallery-previous]').addEventListener('click',()=>show(active-1));gallery.querySelector('[data-gallery-next]').addEventListener('click',()=>show(active+1));show(0);
 })();
+(()=>{
+const root=document.querySelector('.career-browser');if(!root)return;
+const entries=[...root.querySelectorAll('[data-year]')],years=root.querySelector('.career-years');let active='2026',hobbies=false;
+const buttons=entries.map(entry=>{const button=document.createElement('button');button.type='button';button.textContent=entry.dataset.year;button.addEventListener('click',()=>{active=entry.dataset.year;render()});years.append(button);return button});
+function render(){entries.forEach((entry,i)=>{const personal=entry.dataset.personal==='true';buttons[i].hidden=personal&&!hobbies;entry.hidden=entry.dataset.year!==active;buttons[i].setAttribute('aria-current',entry.dataset.year===active?'true':'false');entry.querySelectorAll('[data-hobby-content]').forEach(e=>{e.hidden=!hobbies;e.setAttribute('aria-hidden',String(!hobbies))})});}
+root.querySelector('[data-career-hobbies]').addEventListener('click',event=>{hobbies=!hobbies;event.currentTarget.textContent=hobbies?'Hide hobbies':'Show hobbies';event.currentTarget.setAttribute('aria-pressed',String(hobbies));if(!hobbies&&entries.find(e=>e.dataset.year===active)?.dataset.personal==='true')active='2026';render()});render();
+})();
