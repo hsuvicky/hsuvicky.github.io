@@ -93,3 +93,19 @@ body>header,body>main,body>footer,.achievements>.section-shell,.career-timeline,
 .career-years button:after{content:"";position:absolute;left:22%;right:22%;bottom:1px;height:1px;background:var(--accent);transform:scaleX(0);transition:transform .25s}
 .career-years button[aria-current="true"]{background:transparent;color:var(--text-strong);font-weight:700;border:0}
 .career-years button[aria-current="true"]:after,.career-years button:hover:after{transform:scaleX(1)}
+.work-controls{border-top:0;padding-top:0;bottom:15px;gap:20px}
+.work-controls>button{border:0;border-radius:0;background:transparent;width:38px;height:44px;transition:transform .25s,color .25s}
+.work-controls>button:hover{background:none;color:var(--accent-deep);transform:translateX(3px)}.work-controls>button:first-child:hover{transform:translateX(-3px)}
+.folio-selector{display:flex;align-items:flex-end;gap:10px;height:46px;padding:0 6px}
+.work-controls .folio-tab{position:relative;width:18px;height:31px;min-width:18px;padding:0;border:0;border-radius:0;background:transparent;cursor:pointer;transition:height .3s}
+.folio-tab:after{content:"";position:absolute;inset:3px 4px 0;border:1px solid var(--muted);background:transparent;transform:skewY(-16deg);transition:background .3s,border-color .3s}
+.work-controls .folio-tab[aria-pressed="true"]{height:44px}.folio-tab[aria-pressed="true"]:after{background:#a56c4f;border-color:#a56c4f}
+.work-controls .folio-tab:hover{background:transparent;height:40px}.folio-tab:hover:after{border-color:var(--text-strong)}
+[data-theme="dark"] .folio-tab[aria-pressed="true"]:after{background:#d5a585;border-color:#d5a585}
+@media(prefers-reduced-motion:reduce){.folio-tab{transition:none!important}}
+.work-panel .reasoning-diagram{display:block;width:100%;max-width:340px;height:auto;max-height:350px;margin:auto}
+.reasoning-diagram .diagram-connections,.reasoning-diagram .diagram-arrow{stroke:var(--muted);stroke-width:1;opacity:.65}
+.reasoning-diagram text{font:11px var(--sans);letter-spacing:.05em;fill:var(--text-strong)}
+.reasoning-diagram .diagram-detail{font-size:10px;letter-spacing:0;fill:var(--muted)}
+.reasoning-diagram .diagram-core{fill:none;stroke:var(--accent);stroke-width:1}.reasoning-diagram .diagram-center{fill:var(--accent)}
+.reasoning-diagram .diagram-caption{font-size:10px;fill:var(--muted);letter-spacing:.12em}.reasoning-diagram .diagram-output{font-size:12px;letter-spacing:.1em}

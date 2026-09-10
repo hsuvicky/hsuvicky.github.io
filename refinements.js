@@ -1,4 +1,11 @@
-(()=>{const panels=[...document.querySelectorAll('[data-work-panel]')];let current=0;function move(delta){panels[current].hidden=true;current=(current+delta+panels.length)%panels.length;panels[current].hidden=false;document.querySelector('[data-work-count]').textContent=`${current+1} / ${panels.length}`;}document.querySelector('[data-work-previous]')?.addEventListener('click',()=>move(-1));document.querySelector('[data-work-next]')?.addEventListener('click',()=>move(1));})();
+(()=>{
+const panels=[...document.querySelectorAll('[data-work-panel]')];if(!panels.length)return;
+const controls=document.querySelector('.work-controls');const selector=document.createElement('div');selector.className='folio-selector';selector.setAttribute('role','group');selector.setAttribute('aria-label','Select project');controls.insertBefore(selector,controls.querySelector('[data-work-next]'));
+let current=0;
+const tabs=panels.map((panel,index)=>{const button=document.createElement('button');button.type='button';button.className='folio-tab';button.setAttribute('aria-label',panel.querySelector('h3,h4').textContent.trim());button.addEventListener('click',()=>show(index));selector.append(button);return button});
+function show(index){current=(index+panels.length)%panels.length;panels.forEach((panel,i)=>{panel.hidden=i!==current;tabs[i].setAttribute('aria-pressed',String(i===current))});document.querySelector('[data-work-count]').textContent=`${current+1} / ${panels.length}`}
+document.querySelector('[data-work-previous]').addEventListener('click',()=>show(current-1));document.querySelector('[data-work-next]').addEventListener('click',()=>show(current+1));show(0);
+})();
 (()=>{
 const gallery=document.querySelector('[data-perspective-gallery]');if(!gallery)return;
 gallery.classList.add('refined-gallery');const cards=[...gallery.querySelectorAll('[data-expandable]')];
