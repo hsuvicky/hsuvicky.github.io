@@ -51,3 +51,8 @@
 .refined-gallery .beli-card-visual img{width:min(100%,220px);height:auto;margin:0}
 .refined-gallery .league-stats-image{border-radius:5px}
 @media(max-width:900px){.refined-gallery .gallery-card-layout{padding:20px 0;gap:22px}.refined-gallery .beli-card-visual{max-height:360px}}
+@media(min-width:901px) and (min-height:650px){
+body,body.about-site{grid-template-columns:minmax(0,1fr)}
+body>header,body>main,body>footer,.achievements>.section-shell,.career-timeline,.work-pages{min-width:0}
+.achievements>.section-shell{grid-template-columns:minmax(0,1fr)}
+}
