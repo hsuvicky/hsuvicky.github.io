@@ -506,7 +506,7 @@ function setupPerspectiveGallery() {
   render();
 }
 
-setupPerspectiveGallery();
+// Gallery presentation is initialized by refinements.js.
 
 function setupCareerTimeline() {
   const timeline = document.querySelector("[data-career-timeline]");

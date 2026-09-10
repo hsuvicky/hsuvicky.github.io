@@ -1,0 +1,53 @@
+:root{--bg:#f6f4ed;--surface:#f0efe6;--surface-strong:#faf9f4;--text:#354032;--text-strong:#283326;--text-soft:#626b5c;--muted:#697060;--accent:#71805e;--border:#d6d8c9;--border-soft:#e1e2d5;--header-bg:rgba(246,244,237,.96);--shadow:0 16px 45px #303c3110}
+:root[data-theme="dark"]{--bg:#232a23;--surface:#2a332a;--surface-strong:#303b30;--text:#e4e6da;--text-strong:#f5f5ec;--text-soft:#bdc4b4;--muted:#aab39f;--border:#475040;--border-soft:#394434;--header-bg:rgba(35,42,35,.96)}
+.wenchang-nav{opacity:1;visibility:visible;transform:none;width:44px;height:48px;margin-right:0}
+.wenchang-nav-trigger{position:relative;isolation:isolate;width:44px;height:48px}
+.wenchang-nav-trigger:before{content:"";position:absolute;z-index:-1;width:38px;height:38px;border-radius:50%;background:var(--accent-soft);bottom:2px;left:3px}
+.wenchang-nav-trigger img{width:32px;height:40px;transition:transform .6s ease;opacity:.85;animation:scholar-float 5s ease-in-out infinite}
+.wenchang-nav-trigger:hover img{transform:translateY(-4px) rotate(-5deg)}
+@keyframes scholar-float{0%,100%{translate:0 0}50%{translate:0 -3px}}
+.about-page>.about{display:none}
+.gallery-section{background:transparent}.gallery-card{box-shadow:0 15px 45px #303c3118;border-color:var(--border);border-radius:6px}
+.work-pages{position:relative;margin-top:16px;min-height:260px;padding:20px 24px 52px;border:1px solid var(--border);border-radius:6px;background:var(--surface)}
+.work-panel[hidden]{display:none!important}.work-panel{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;min-height:220px;animation:panel-in .3s ease}
+.work-panel h3,.work-panel h4{margin:0 0 12px;font:400 clamp(22px,2.2vw,30px)/1.15 var(--display)}.work-panel p{margin:0;font-size:16px;line-height:1.6}.work-panel:not(:first-child){grid-template-columns:42px 1fr}.work-panel:not(:first-child) p{grid-column:2;max-width:800px}.folio-number{font:16px var(--mono);color:var(--muted)}.work-panel .system-map{margin:0;max-height:100%;border:0;background:none;box-shadow:none}.work-panel .system-map svg{display:block;width:100%;height:220px}.work-panel .system-map figcaption{display:none}
+.work-controls{position:absolute;bottom:12px;right:22px;display:flex;align-items:center;gap:16px;font:12px var(--mono);color:var(--muted)}.work-controls button{border:1px solid var(--border);background:none;color:var(--text);border-radius:50%;width:34px;height:34px;font-size:18px;cursor:pointer}.work-controls button:hover{background:var(--accent-soft)}
+@keyframes panel-in{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+@media(min-width:901px) and (min-height:650px){
+ body,body.about-site{height:100svh;min-height:0;display:grid;grid-template-rows:72px minmax(0,1fr) 58px}
+ .site-header{position:relative;height:72px;min-height:0}.site-nav{height:100%;padding-block:0}.site-footer,body.about-site .site-footer{margin:0;padding:8px 0;height:58px;min-height:0}
+ main,body.about-site .about-page{min-height:0;height:100%;padding:0;overflow:clip}
+ .achievements{padding:14px 0 8px;height:100%;min-height:0}.achievements>.section-shell{height:100%;display:grid;grid-template-rows:minmax(195px,.85fr) minmax(245px,1fr);gap:10px}.career-timeline{min-height:0;margin:0}.timeline-viewport{height:100%}.progression-rail{height:100%;padding-bottom:0}.progression-rail li{min-height:0}.work-pages{margin:0;min-height:0;height:100%}.work-panel{height:100%;min-height:0;overflow:auto}.work-panel .system-map svg{height:min(24svh,220px)}
+ .about-page .gallery-section{height:100%;padding:0;border:0}.about-page .gallery-section .section-shell{height:100%}.perspective-gallery{height:100%;min-height:0;margin:0}.gallery-stage{inset:0 0 55px}.gallery-controls{bottom:8px}.gallery-card{top:52%;min-height:0;height:clamp(280px,47svh,390px)}.perspective-gallery .gallery-card.is-expanded{height:94%;max-height:100%;top:50%}.gallery-card.is-expanded .gallery-card-layout{min-height:100%;height:auto}.gallery-card-visual{max-height:29svh}.beli-card-visual{height:29svh}.gallery-card.is-expanded .beli-card-visual{height:38svh;max-height:38svh}.gallery-card.is-expanded .beli-card-visual img{width:80%}
+}
+@media(max-width:900px),(max-height:649px){.work-panel{grid-template-columns:1fr}.work-panel .system-map svg{height:200px}.work-pages{margin:20px 0}.work-panel:not(:first-child){grid-template-columns:25px 1fr}.work-panel .case-copy{min-width:0}.perspective-gallery{margin-bottom:0}.site-footer{position:relative}}
+@media(prefers-reduced-motion:reduce){.wenchang-nav-trigger img,.work-panel{animation:none!important}}
+@media(min-width:901px) and (min-height:650px){
+.achievements>.section-shell:has([data-hobbies-visible="true"]){grid-template-rows:minmax(0,1fr)}
+.achievements>.section-shell:has([data-hobbies-visible="true"]) .work-pages{display:none}
+}
+/* New presentation; original content and image assets. */
+:root{--page-edge:clamp(24px,3.6vw,56px)}
+.site-nav{padding-inline:var(--page-edge)}.site-footer .section-shell{width:calc(100% - var(--page-edge)*2)}
+.refined-gallery{display:grid;grid-template-columns:200px minmax(0,1fr);gap:36px;padding:32px 0 62px;max-width:1220px;margin-inline:auto}
+.gallery-menu{padding-top:12px;display:flex;flex-direction:column;align-items:stretch;gap:5px;z-index:1}.gallery-menu p{font:12px var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:16px 0 10px}.gallery-menu p:not(:first-child){margin-top:32px}.gallery-menu button{font:14px/1.5 var(--sans);padding:9px 12px;border:0;border-left:2px solid transparent;background:none;text-align:left;color:var(--muted);cursor:pointer}.gallery-menu button[aria-current="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--text-strong)}
+.refined-gallery .gallery-stage{position:relative;inset:auto;perspective:none;min-width:0;min-height:0;height:100%;transform-style:flat;pointer-events:auto}
+.refined-gallery .gallery-title-card,.refined-gallery .gallery-card[hidden]{display:none!important}
+.refined-gallery .gallery-card{position:relative;top:auto;left:auto;width:100%;height:100%;min-height:0;max-height:none;transform:none!important;translate:none;opacity:1;pointer-events:auto;box-shadow:none;background:var(--surface);border:1px solid var(--border-soft);border-radius:8px;overflow:auto;animation:panel-in .35s ease}
+.refined-gallery .gallery-card-layout{grid-template-columns:minmax(220px,.95fr) minmax(250px,1.05fr);gap:32px;padding:32px;min-height:100%;height:auto;align-content:center}
+.refined-gallery .gallery-card-copy h3{font:400 clamp(28px,3vw,42px)/1.1 var(--display);margin:0 0 18px;letter-spacing:-.03em}
+.refined-gallery .case-purpose{display:block;overflow:visible;font-size:16px;line-height:1.65;-webkit-line-clamp:unset}
+.refined-gallery .note-label{font-size:12px;color:var(--muted);margin-bottom:12px}.refined-gallery .case-disclosure summary{font-size:14px}.refined-gallery .case-details{max-height:none;font-size:14px}
+.refined-gallery .gallery-card-visual{height:310px;max-height:38svh;min-height:0;box-shadow:none}
+.refined-gallery .beli-card-visual{background:#fff;border:1px solid var(--border);height:340px;max-height:42svh;border-radius:5px}.refined-gallery .beli-card-visual img{width:100%;height:auto;transform:none}
+.refined-gallery .gallery-league .gallery-card-layout{grid-template-columns:160px minmax(200px,1fr) 160px;gap:22px}.refined-gallery .league-stats-image{grid-column:3;grid-row:1;max-height:340px;height:auto;width:100%;box-shadow:none;align-self:center}.refined-gallery .league-card-visual{grid-column:1;grid-row:1}.refined-gallery .gallery-league .gallery-card-copy{grid-column:2;grid-row:1}.refined-gallery .league-card-visual strong{font-size:18px}.refined-gallery .league-card-visual span{font-size:12px}.refined-gallery .league-rank-image{width:140px;height:140px}
+.refined-gallery .gallery-controls{position:absolute;right:0;bottom:12px;left:auto;transform:none;gap:12px}.refined-gallery .gallery-controls button{width:36px;height:36px;box-shadow:none;border:1px solid var(--border);background:none;color:var(--text);font-size:20px}.refined-gallery .gallery-controls button:hover{background:var(--accent-soft)}
+@media(max-width:1100px){.refined-gallery{grid-template-columns:165px minmax(0,1fr);gap:22px}.refined-gallery .gallery-card-layout{padding:22px;gap:22px;grid-template-columns:minmax(150px,.8fr) minmax(220px,1fr)}.refined-gallery .gallery-league .gallery-card-layout{grid-template-columns:120px 1fr}.refined-gallery .league-stats-image{grid-column:1;grid-row:2;max-height:160px;width:auto;justify-self:center}.refined-gallery .gallery-league .gallery-card-copy{grid-row:1/3}.refined-gallery .league-rank-image{width:95px;height:95px}.refined-gallery .league-card-visual{height:150px}}
+@media(max-width:900px){.refined-gallery{display:block;padding-top:10px;min-height:0;height:auto}.gallery-menu{display:flex;flex-direction:row;overflow-x:auto;gap:6px;padding:0 0 18px}.gallery-menu p{display:none}.gallery-menu button{flex-shrink:0;font-size:13px;border-left:0;border-bottom:2px solid transparent;padding:8px}.gallery-menu button[aria-current="true"]{border-color:var(--accent)}.refined-gallery .gallery-stage{height:auto}.refined-gallery .gallery-card-layout{grid-template-columns:1fr}.refined-gallery .gallery-card-visual{max-height:300px;height:300px}.refined-gallery .beli-card-visual{max-width:280px;width:100%;justify-self:center}.refined-gallery .gallery-league .gallery-card-layout{grid-template-columns:1fr 1fr}.refined-gallery .gallery-league .gallery-card-copy{grid-column:1/-1;grid-row:2}.refined-gallery .league-stats-image{grid-column:2;grid-row:1}.refined-gallery .gallery-card{min-height:420px}.refined-gallery .gallery-controls{bottom:6px}}
+.refined-gallery .gallery-card{background:transparent;border:0;border-radius:0}
+.refined-gallery .gallery-card-layout{padding:24px 0 24px 16px;gap:40px}
+.refined-gallery .gallery-card-visual{border-radius:6px;background:var(--surface);border:0}
+.refined-gallery .beli-card-visual{height:360px;max-height:46svh;display:flex;justify-content:center;align-items:flex-start;padding-top:14px;background:var(--surface);border:0;overflow:hidden}
+.refined-gallery .beli-card-visual img{width:min(100%,220px);height:auto;margin:0}
+.refined-gallery .league-stats-image{border-radius:5px}
+@media(max-width:900px){.refined-gallery .gallery-card-layout{padding:20px 0;gap:22px}.refined-gallery .beli-card-visual{max-height:360px}}
