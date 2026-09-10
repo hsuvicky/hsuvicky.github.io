@@ -109,3 +109,13 @@ body>header,body>main,body>footer,.achievements>.section-shell,.career-timeline,
 .reasoning-diagram .diagram-detail{font-size:10px;letter-spacing:0;fill:var(--muted)}
 .reasoning-diagram .diagram-core{fill:none;stroke:var(--accent);stroke-width:1}.reasoning-diagram .diagram-center{fill:var(--accent)}
 .reasoning-diagram .diagram-caption{font-size:10px;fill:var(--muted);letter-spacing:.12em}.reasoning-diagram .diagram-output{font-size:12px;letter-spacing:.1em}
+.work-panel:has(.case-disclosure[open]){grid-template-columns:minmax(0,1fr);align-content:center;overflow:visible}
+.work-panel:has(.case-disclosure[open]) .system-map{display:none}
+.work-panel:has(.case-disclosure[open]) h3{font-size:clamp(28px,2.7vw,38px);margin-bottom:12px}
+.work-panel:has(.case-disclosure[open]) .case-purpose{max-width:100%;margin:0}
+.work-panel:has(.case-disclosure[open]) .case-disclosure{margin-top:16px}
+.work-panel .case-disclosure[open] .case-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 30px;max-height:none;overflow:visible;margin:0}
+.work-panel .case-disclosure[open] .case-details>div{display:block;padding:12px 0;min-width:0}
+.work-panel .case-disclosure[open] .case-details dt{font-size:12px;line-height:1.4;margin-bottom:6px;color:var(--muted)}
+.work-panel .case-disclosure[open] .case-details dd{font-size:14px;line-height:1.5;margin:0;color:var(--text)}
+@media(max-width:900px),(max-height:649px){.work-panel .case-disclosure[open] .case-details{grid-template-columns:1fr}}
