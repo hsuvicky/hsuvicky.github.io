@@ -1,0 +1,6 @@
+const themeButton = document.querySelector('#theme');
+function applyTheme(dark){document.documentElement.dataset.theme=dark?'dark':'light';themeButton.setAttribute('aria-pressed',String(dark));themeButton.setAttribute('aria-label',dark?'Switch to light theme':'Switch to dark theme');themeButton.textContent=dark?'Let in the light ◑':'Dim the lights ◐';document.querySelector('meta[name="theme-color"]').content=dark?'#242a23':'#f6f4ed';}
+try{applyTheme(localStorage.getItem('vicky-theme')==='dark')}catch{}
+themeButton.addEventListener('click',()=>{const dark=document.documentElement.dataset.theme!=='dark';applyTheme(dark);try{localStorage.setItem('vicky-theme',dark?'dark':'light')}catch{}});
+const sections=[...document.querySelectorAll('main>section[id]')];const navLinks=[...document.querySelectorAll('nav a[href^="#"]')];
+if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){navLinks.forEach(link=>{if(link.hash==='#'+entry.target.id)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current')})}})},{rootMargin:'-10% 0px -55% 0px'});sections.forEach(section=>observer.observe(section));}
