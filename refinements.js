@@ -11,8 +11,13 @@ const gallery=document.querySelector('[data-perspective-gallery]');if(!gallery)r
 gallery.classList.add('refined-gallery');const cards=[...gallery.querySelectorAll('[data-gallery-item]')];
 const menu=document.createElement('nav');menu.className='gallery-menu';menu.setAttribute('aria-label','Projects and hobbies');gallery.prepend(menu);
 let active=0;const buttons=[];
-cards.forEach((card,i)=>{if(i===0||i===2){const heading=document.createElement('p');heading.textContent=i===0?'Projects':'Hobbies';menu.append(heading)}
- const button=document.createElement('button');button.type='button';button.textContent=card.querySelector('h3').textContent;button.addEventListener('click',()=>show(i));buttons.push(button);menu.append(button);
+let group;
+cards.forEach((card,i)=>{if(i===0||i===2){group=document.createElement('div');group.className='gallery-index-group';const heading=document.createElement('p');heading.textContent=i===0?'Projects':'Hobbies';group.append(heading);menu.append(group)}
+ const button=document.createElement('button');button.type='button';button.className='gallery-index-item';
+ const preview=document.createElement('span');preview.className='gallery-index-preview';preview.setAttribute('aria-hidden','true');
+ const visual=card.querySelector('.gallery-card-visual').cloneNode(true);visual.removeAttribute('id');visual.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));visual.querySelectorAll('img').forEach(e=>{e.alt='';e.loading='eager'});preview.append(visual);
+ const label=document.createElement('span');label.className='gallery-index-label';label.textContent=card.querySelector('h3').textContent;button.append(preview,label);
+ button.setAttribute('aria-controls',card.id||(card.id='about-item-'+i));button.addEventListener('click',()=>show(i));buttons.push(button);group.append(button);
  card.querySelector('.gallery-card-select')?.remove();card.querySelector('.gallery-close')?.remove();
 });
 function show(index){active=(index+cards.length)%cards.length;cards.forEach((card,i)=>{card.hidden=i!==active;card.inert=i!==active;card.setAttribute('aria-hidden',String(i!==active));card.dataset.position=i===active?'active':'future';buttons[i].setAttribute('aria-current',i===active?'true':'false')})}
