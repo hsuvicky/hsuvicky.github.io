@@ -8,7 +8,7 @@ document.querySelector('[data-work-previous]').addEventListener('click',()=>show
 })();
 (()=>{
 const gallery=document.querySelector('[data-perspective-gallery]');if(!gallery)return;
-gallery.classList.add('refined-gallery');const cards=[...gallery.querySelectorAll('[data-expandable]')];
+gallery.classList.add('refined-gallery');const cards=[...gallery.querySelectorAll('[data-gallery-item]')];
 const menu=document.createElement('nav');menu.className='gallery-menu';menu.setAttribute('aria-label','Projects and hobbies');gallery.prepend(menu);
 let active=0;const buttons=[];
 cards.forEach((card,i)=>{if(i===0||i===2){const heading=document.createElement('p');heading.textContent=i===0?'Projects':'Hobbies';menu.append(heading)}
