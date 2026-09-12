@@ -23,10 +23,66 @@ cards.forEach((card,i)=>{if(i===0||i===2){group=document.createElement('div');gr
 function show(index){active=(index+cards.length)%cards.length;cards.forEach((card,i)=>{card.hidden=i!==active;card.inert=i!==active;card.setAttribute('aria-hidden',String(i!==active));card.dataset.position=i===active?'active':'future';buttons[i].setAttribute('aria-current',i===active?'true':'false')})}
 gallery.querySelector('[data-gallery-previous]').addEventListener('click',()=>show(active-1));gallery.querySelector('[data-gallery-next]').addEventListener('click',()=>show(active+1));show(0);
 })();
-(()=>{
-const root=document.querySelector('.career-browser');if(!root)return;
-const entries=[...root.querySelectorAll('[data-year]')],years=root.querySelector('.career-years');let active='2026',hobbies=false;
-const buttons=entries.map(entry=>{const button=document.createElement('button');button.type='button';button.textContent=entry.dataset.year;button.addEventListener('click',()=>{active=entry.dataset.year;render();root.querySelector('.career-content').scrollTop=0});years.append(button);return button});
-function render(){entries.forEach((entry,i)=>{const personal=entry.dataset.personal==='true';buttons[i].hidden=personal&&!hobbies;entry.hidden=entry.dataset.year!==active;buttons[i].setAttribute('aria-current',entry.dataset.year===active?'true':'false');entry.querySelectorAll('[data-hobby-content]').forEach(e=>{e.hidden=!hobbies;e.setAttribute('aria-hidden',String(!hobbies))})});}
-root.querySelector('[data-career-hobbies]').addEventListener('click',event=>{hobbies=!hobbies;event.currentTarget.textContent=hobbies?'Hide hobbies':'Show hobbies';event.currentTarget.setAttribute('aria-pressed',String(hobbies));if(!hobbies&&entries.find(e=>e.dataset.year===active)?.dataset.personal==='true')active='2026';render()});render();
+(() => {
+  const root = document.querySelector('.career-browser');
+  if (!root) return;
+
+  const entries = [...root.querySelectorAll('[data-year]')];
+  const years = root.querySelector('.career-years');
+  const content = root.querySelector('.career-content');
+  let active = '2026';
+  let hobbies = false;
+
+  const buttons = entries.map(entry => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = entry.dataset.year;
+    entry.id = 'career-' + entry.dataset.year;
+    button.setAttribute('aria-controls', entry.id);
+    button.addEventListener('click', () => select(entry.dataset.year));
+    years.append(button);
+    return button;
+  });
+
+  function select(year) {
+    active = year;
+    render();
+    content.scrollTop = 0;
+  }
+
+  function render() {
+    entries.forEach((entry, i) => {
+      buttons[i].hidden = entry.dataset.personal === 'true' && !hobbies;
+      entry.hidden = entry.dataset.year !== active;
+      buttons[i].setAttribute('aria-current', String(!entry.hidden));
+      entry.querySelectorAll('[data-hobby-content]').forEach(event => {
+        event.hidden = !hobbies;
+        event.setAttribute('aria-hidden', String(!hobbies));
+      });
+    });
+  }
+
+  years.addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    const visible = buttons.filter(button => !button.hidden);
+    const index = visible.indexOf(event.target);
+    if (index < 0) return;
+    event.preventDefault();
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? visible.length - 1
+      : (index + (event.key === 'ArrowRight' ? 1 : -1) + visible.length) % visible.length;
+    visible[next].focus();
+    select(visible[next].textContent);
+  });
+
+  root.querySelector('[data-career-hobbies]').addEventListener('click', event => {
+    hobbies = !hobbies;
+    event.currentTarget.textContent = hobbies ? 'Hide hobbies' : 'Show hobbies';
+    event.currentTarget.setAttribute('aria-pressed', String(hobbies));
+    if (!hobbies && entries.find(entry => entry.dataset.year === active)?.dataset.personal === 'true') {
+      active = '2026';
+    }
+    render();
+    content.scrollTop = 0;
+  });
+  render();
 })();
