@@ -229,3 +229,109 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 .career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years button:after{top:auto;bottom:1px}
 @media(min-width:901px) and (min-height:650px){.achievements>.section-shell{grid-template-columns:280px minmax(0,1fr);gap:60px}}
 @media(max-width:900px),(max-height:649px){.career-browser{grid-template-rows:auto auto auto;gap:18px}.career-years{grid-row:2}.career-content{grid-row:3;overflow:visible}.career-entry>.progression-period{font-size:48px;margin-bottom:20px}}
+/* Home: a continuous date rail and a shared baseline for the project spread. */
+.home-layout .career-browser {
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 24px;
+}
+.home-layout .career-years,
+.home-layout .career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years {
+  grid-row: 2;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0;
+  border: 0;
+  padding: 0;
+}
+.home-layout .career-years button {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 0 18px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  position: relative;
+}
+.home-layout .career-years button::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 7px;
+  height: 1px;
+  background: var(--border);
+}
+.home-layout .career-years button::after,
+.home-layout .career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years button::after {
+  inset: auto auto 4px calc(50% - 3.5px);
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--muted);
+  border-radius: 50%;
+  background: var(--bg);
+  transform: none;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+.home-layout .career-years button[aria-current="true"]::after {
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--border);
+}
+.home-layout .career-years button:hover { color: var(--text-strong); }
+.home-layout .career-years button:hover::after { border-color: var(--accent-deep); }
+.home-layout .career-content {
+  grid-row: 3;
+  min-width: 0;
+  overflow-x: hidden;
+  padding: 8px 8px 0 0;
+  scrollbar-gutter: stable;
+}
+.home-layout .career-entry { animation: career-arrive 200ms ease; }
+.home-layout .career-entry > .progression-period {
+  height: auto;
+  font-size: 58px;
+  margin-bottom: 28px;
+}
+.home-layout .career-entry .progression-role { text-wrap: pretty; }
+.home-layout .career-entry .progression-grade { text-transform: none; letter-spacing: .01em; }
+.home-layout .work-panel {
+  align-content: center;
+  align-items: start;
+  column-gap: clamp(28px, 4vw, 64px);
+}
+.home-layout .work-panel .system-map {
+  position: static;
+  align-self: start;
+  padding: 0;
+  margin-top: -14px;
+}
+.home-layout .work-panel .reasoning-diagram {
+  height: auto;
+  max-height: 300px;
+}
+@keyframes career-arrive {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+@media (min-width: 901px) and (min-height: 650px) {
+  .achievements > .home-layout { grid-template-columns: 300px minmax(0, 1fr); gap: 56px; }
+}
+@media (min-width: 901px) and (max-width: 1100px) and (min-height: 650px) {
+  .achievements > .home-layout { grid-template-columns: 280px minmax(0, 1fr); gap: 36px; }
+  .home-layout .work-panel { grid-template-columns: 1fr; row-gap: 24px; overflow: auto; align-content: safe center; }
+  .home-layout .work-panel .system-map { display: block; width: 270px; justify-self: start; margin: 0; }
+  .home-layout .work-panel:has(.case-disclosure[open]) .system-map { display: none; }
+  .home-layout .work-panel h3 { font-size: 34px; }
+  .home-layout .work-panel .reasoning-diagram { max-height: 270px; }
+}
+@media (max-width: 900px), (max-height: 649px) {
+  .home-layout .career-browser { grid-template-rows: auto auto auto; gap: 18px; }
+  .home-layout .career-content { overflow: visible; scrollbar-gutter: auto; padding: 8px 0 0; }
+  .home-layout .career-entry > .progression-period { font-size: 48px; margin-bottom: 24px; }
+  .home-layout .career-years button { font-size: 12px; }
+  .home-layout .work-panel { row-gap: 32px; }
+  .home-layout .work-panel .system-map { margin: 0; justify-self: start; max-width: 300px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-layout .career-entry { animation: none; }
+  .home-layout .career-years button::after { transition: none; }
+}
