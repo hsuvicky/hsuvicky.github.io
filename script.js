@@ -1142,7 +1142,7 @@ function setupBlobColony() {
         rightX = VB_W / 2 + minGap / 2;
       }
 
-      // Hard silhouette containment — eyes must stay fully inside the blob.
+      // Hard silhouette containment: eyes must stay fully inside the blob.
       const left = containEye(leftX, eyeY, halfW, halfH);
       const right = containEye(rightX, eyeY, halfW, halfH);
       leftX = left.x;
