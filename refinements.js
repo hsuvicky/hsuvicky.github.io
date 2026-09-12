@@ -1,10 +1,41 @@
 (()=>{
 const panels=[...document.querySelectorAll('[data-work-panel]')];if(!panels.length)return;
-const controls=document.querySelector('.work-controls');const selector=document.createElement('div');selector.className='folio-selector';selector.setAttribute('role','group');selector.setAttribute('aria-label','Select project');controls.insertBefore(selector,controls.querySelector('[data-work-next]'));
+const controls=document.querySelector('.work-controls');
+const now=document.createElement('span');now.className='folio-now';now.setAttribute('aria-live','polite');
+const selector=document.createElement('div');selector.className='folio-selector';selector.setAttribute('role','group');selector.setAttribute('aria-label','Select project');
+controls.insertBefore(now,controls.querySelector('[data-work-next]'));
+controls.insertBefore(selector,controls.querySelector('[data-work-next]'));
 let current=0;
-const tabs=panels.map((panel,index)=>{const button=document.createElement('button');button.type='button';button.className='folio-tab';button.setAttribute('aria-label',panel.querySelector('h3,h4').textContent.trim());button.addEventListener('click',()=>show(index));selector.append(button);return button});
-function show(index){current=(index+panels.length)%panels.length;panels.forEach((panel,i)=>{panel.hidden=i!==current;tabs[i].setAttribute('aria-pressed',String(i===current))})}
-document.querySelector('[data-work-previous]').addEventListener('click',()=>show(current-1));document.querySelector('[data-work-next]').addEventListener('click',()=>show(current+1));show(0);
+const shortName=title=>{
+  if(/neurosymbolic/i.test(title))return'Enterprise AI';
+  if(/Knowledge/i.test(title))return'Knowledge graph';
+  if(/Digital/i.test(title))return'Digital experience';
+  if(/Syndicated/i.test(title))return'Syndicated loans';
+  return title.replace(/\s+/g,' ').trim().split(' ').slice(0,2).join(' ');
+};
+const tabs=panels.map((panel,index)=>{
+  const title=panel.querySelector('h3,h4').textContent.trim();
+  const button=document.createElement('button');
+  button.type='button';
+  button.className='folio-tab';
+  button.dataset.short=shortName(title);
+  button.setAttribute('aria-label',title);
+  const name=document.createElement('span');
+  name.className='folio-tab-name';
+  name.textContent=button.dataset.short;
+  button.append(name);
+  button.addEventListener('click',()=>show(index));
+  selector.append(button);
+  return button;
+});
+function show(index){
+  current=(index+panels.length)%panels.length;
+  panels.forEach((panel,i)=>{panel.hidden=i!==current;tabs[i].setAttribute('aria-pressed',String(i===current))});
+  now.textContent=tabs[current].dataset.short;
+}
+document.querySelector('[data-work-previous]').addEventListener('click',()=>show(current-1));
+document.querySelector('[data-work-next]').addEventListener('click',()=>show(current+1));
+show(0);
 })();
 (()=>{
 const gallery=document.querySelector('[data-perspective-gallery]');if(!gallery)return;
@@ -76,8 +107,8 @@ gallery.querySelector('[data-gallery-previous]').addEventListener('click',()=>sh
 
   root.querySelector('[data-career-hobbies]').addEventListener('click', event => {
     hobbies = !hobbies;
-    event.currentTarget.textContent = hobbies ? 'Hide hobbies' : 'Show hobbies';
     event.currentTarget.setAttribute('aria-pressed', String(hobbies));
+    event.currentTarget.setAttribute('aria-label', hobbies ? 'Hide hobbies' : 'Show hobbies');
     if (!hobbies && entries.find(entry => entry.dataset.year === active)?.dataset.personal === 'true') {
       active = '2026';
     }
