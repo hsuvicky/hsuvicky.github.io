@@ -620,7 +620,9 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   white-space: nowrap;
   text-shadow: none;
 }
-.refined-gallery .gallery-movement .gallery-card-copy { align-self: start; }
+@media (min-width: 901px) and (min-height: 650px) {
+  .refined-gallery .gallery-movement .movement-card-visual { transform: translateY(30.3%); }
+}
 .gallery-index-preview .movement-photo {
   width: 62px !important;
   height: 52px !important;
