@@ -377,6 +377,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 }
 @media (min-width: 901px) and (min-height: 650px) {
   .achievements > .home-layout { grid-template-columns: 300px minmax(0, 1fr); gap: 56px; }
+  .home-layout .work-controls { top: 0; bottom: auto; }
 }
 @media (min-width: 901px) and (max-width: 1100px) and (min-height: 650px) {
   .achievements > .home-layout { grid-template-columns: 280px minmax(0, 1fr); gap: 36px; }
@@ -542,6 +543,9 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 }
 .home-layout .work-panel:not(:has(.reasoning-diagram)) .case-copy {
   max-width: 36rem;
+}
+@media (min-width: 901px) and (min-height: 650px) {
+  .home-layout .work-panel:not(:has(.reasoning-diagram)) { justify-content: flex-start; }
 }
 .home-layout .work-panel:has(.case-disclosure[open]) h3,
 .home-layout .work-panel:has(.case-disclosure[open]) h4 {
