@@ -104,13 +104,13 @@ body>header,body>main,body>footer,.achievements>.section-shell,.career-timeline,
 .work-controls .folio-tab:hover{background:transparent;height:28px}.folio-tab:hover:after{background:var(--text-strong)}
 [data-theme="dark"] .folio-tab[aria-pressed="true"]:after{background:#d5a585}
 @media(prefers-reduced-motion:reduce){.folio-tab{transition:none!important}}
-.work-panel .reasoning-diagram{display:block;width:100%;max-width:280px;height:auto;max-height:108px;margin:0 0 0 auto}
-.reasoning-diagram .diagram-lenses{stroke:var(--accent);stroke-width:1;opacity:.85}
-.reasoning-diagram text{font:10px var(--sans);letter-spacing:.08em;fill:var(--text-strong)}
-.reasoning-diagram .diagram-detail{font-size:9px;letter-spacing:.02em;fill:var(--muted)}
-.reasoning-diagram .diagram-center{fill:#a56c4f}
-.reasoning-diagram .diagram-caption{font-size:9px;fill:var(--muted);letter-spacing:.16em}
-:root[data-theme="dark"] .reasoning-diagram .diagram-center{fill:#d5a585}
+.work-panel .reasoning-diagram{display:block;width:100%;max-width:300px;height:auto;max-height:236px;margin:0 0 0 auto}
+.reasoning-diagram .diagram-connections,.reasoning-diagram .diagram-arrow{stroke:var(--muted);stroke-width:1;opacity:.65}
+.reasoning-diagram text{font:11px var(--sans);letter-spacing:.05em;fill:var(--text-strong)}
+.reasoning-diagram .diagram-detail{font-size:10px;letter-spacing:0;fill:var(--muted)}
+.reasoning-diagram .diagram-nodes circle{fill:var(--muted)}
+.reasoning-diagram .diagram-core{fill:none;stroke:var(--accent);stroke-width:1}.reasoning-diagram .diagram-center{fill:var(--accent)}
+.reasoning-diagram .diagram-caption{font-size:10px;fill:var(--muted);letter-spacing:.12em}.reasoning-diagram .diagram-output{font-size:12px;letter-spacing:.1em}
 .work-panel:has(.case-disclosure[open]){grid-template-columns:minmax(0,1fr);align-content:center;overflow:visible}
 .work-panel:has(.case-disclosure[open]) .system-map{display:none}
 .work-panel:has(.case-disclosure[open]) h3{font-size:clamp(28px,2.7vw,38px);margin-bottom:12px}
@@ -337,12 +337,12 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 }
 .home-layout .work-panel .reasoning-diagram {
   height: auto;
-  max-height: 108px;
+  max-height: 236px;
   margin: 0;
 }
 .home-layout .work-panel .system-map svg {
   height: auto;
-  max-height: 108px;
+  max-height: 236px;
 }
 .home-layout .work-panel:has(.reasoning-diagram):has(.case-disclosure[open]) {
   grid-template-columns: minmax(0, 1fr) minmax(140px, 176px);
@@ -384,7 +384,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   .home-layout .work-panel .system-map { display: block; width: 220px; }
   .home-layout .work-panel:has(.reasoning-diagram):has(.case-disclosure[open]) .system-map { display: block; width: 150px; }
   .home-layout .work-panel h3 { font-size: 34px; }
-  .home-layout .work-panel .reasoning-diagram { max-height: 108px; }
+  .home-layout .work-panel .reasoning-diagram { max-height: 236px; }
 }
 @media (max-width: 900px), (max-height: 649px) {
   .home-layout .career-browser { grid-template-rows: auto auto auto; gap: 18px; }
