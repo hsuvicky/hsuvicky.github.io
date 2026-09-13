@@ -571,3 +571,12 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   .home-layout .career-entry > .progression-period { font-size: 56px; }
   .home-layout .folio-tab-name { display: none; }
 }
+@media (min-width: 901px) and (min-height: 650px) {
+  .home-layout .work-controls { bottom: 44px; }
+  .achievements { border-bottom: 0; }
+  .about-page .refined-gallery .gallery-card-layout {
+    align-content: start;
+    padding-top: 18px;
+  }
+  .about-page .gallery-menu { transform: translateY(-12px); }
+}
