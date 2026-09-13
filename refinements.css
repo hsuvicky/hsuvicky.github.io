@@ -295,7 +295,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 }
 .home-layout .career-entry .progression-role { text-wrap: pretty; }
 .home-layout .career-entry .progression-grade { text-transform: none; letter-spacing: .01em; }
-.home-layout .work-panel:has(.case-lead) {
+.home-layout .work-panel:has(.reasoning-diagram) {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(200px, 260px);
   grid-template-rows: auto auto;
@@ -308,14 +308,14 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 .home-layout .case-lead {
   display: contents;
 }
-.home-layout .case-lead h3,
-.home-layout .case-lead h4 {
+.home-layout .work-panel:has(.reasoning-diagram) .case-lead h3,
+.home-layout .work-panel:has(.reasoning-diagram) .case-lead h4 {
   grid-column: 1;
   grid-row: 1;
   margin: 0;
   align-self: center;
 }
-.home-layout .work-panel .case-copy {
+.home-layout .work-panel:has(.reasoning-diagram) .case-copy {
   grid-column: 1;
   grid-row: 2;
   max-width: 36rem;
@@ -344,19 +344,19 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   height: auto;
   max-height: 108px;
 }
-.home-layout .work-panel:has(.case-disclosure[open]) {
+.home-layout .work-panel:has(.reasoning-diagram):has(.case-disclosure[open]) {
   grid-template-columns: minmax(0, 1fr) minmax(140px, 176px);
   align-items: start;
   overflow: auto;
 }
-.home-layout .work-panel:has(.case-disclosure[open]) .case-lead h3,
-.home-layout .work-panel:has(.case-disclosure[open]) .case-copy {
+.home-layout .work-panel:has(.reasoning-diagram):has(.case-disclosure[open]) .case-lead h3,
+.home-layout .work-panel:has(.reasoning-diagram):has(.case-disclosure[open]) .case-copy {
   grid-column: 1;
 }
 .home-layout .work-panel:has(.case-disclosure[open]) .case-copy {
   max-width: none;
 }
-.home-layout .work-panel:has(.case-disclosure[open]) .system-map {
+.home-layout .work-panel:has(.reasoning-diagram):has(.case-disclosure[open]) .system-map {
   display: block;
   grid-column: 2;
   grid-row: 1 / -1;
@@ -380,9 +380,9 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 @media (min-width: 901px) and (max-width: 1100px) and (min-height: 650px) {
   .achievements > .home-layout { grid-template-columns: 280px minmax(0, 1fr); gap: 36px; }
   .home-layout .work-panel { overflow: auto; }
-  .home-layout .work-panel:has(.case-lead) { grid-template-columns: minmax(0, 1fr) minmax(170px, 220px); column-gap: 16px; }
+  .home-layout .work-panel:has(.reasoning-diagram) { grid-template-columns: minmax(0, 1fr) minmax(170px, 220px); column-gap: 16px; }
   .home-layout .work-panel .system-map { display: block; width: 220px; }
-  .home-layout .work-panel:has(.case-disclosure[open]) .system-map { display: block; width: 150px; }
+  .home-layout .work-panel:has(.reasoning-diagram):has(.case-disclosure[open]) .system-map { display: block; width: 150px; }
   .home-layout .work-panel h3 { font-size: 34px; }
   .home-layout .work-panel .reasoning-diagram { max-height: 108px; }
 }
@@ -392,7 +392,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   .home-layout .career-entry > .progression-period { font-size: 48px; margin-bottom: 24px; }
   .home-layout .career-years button { font-size: 12px; }
   .home-layout .work-panel { row-gap: 24px; }
-  .home-layout .work-panel:has(.case-lead) { grid-template-columns: minmax(0, 1fr) minmax(150px, 200px); align-items: center; }
+  .home-layout .work-panel:has(.reasoning-diagram) { grid-template-columns: minmax(0, 1fr) minmax(150px, 200px); align-items: center; }
   .home-layout .work-panel .system-map { margin: 0; justify-self: end; max-width: 200px; display: block; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -509,23 +509,16 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 .home-layout .folio-tab:focus-visible .folio-tab-name {
   opacity: 1;
 }
-.home-layout .project-mark {
-  display: block;
-  width: 100%;
-  max-width: 168px;
-  height: auto;
-  margin-left: auto;
+.home-layout .work-panel:not(:has(.reasoning-diagram)) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
 }
-.home-layout .project-mark .diagram-lenses {
-  stroke: var(--accent);
-  stroke-width: 1;
-  opacity: .85;
+.home-layout .work-panel:not(:has(.reasoning-diagram)) .case-copy {
+  max-width: 36rem;
 }
-.home-layout .project-mark .diagram-center { fill: #a56c4f; }
-.home-layout .project-mark circle:not(.diagram-center) {
-  fill: var(--muted);
-}
-html[data-theme="dark"] .home-layout .project-mark .diagram-center { fill: #d5a585; }
 .home-layout .work-panel:has(.case-disclosure[open]) h3,
 .home-layout .work-panel:has(.case-disclosure[open]) h4 {
   font-size: clamp(26px, 2.7vw, 38px);
