@@ -2924,9 +2924,13 @@ h1 {
 
 .poker-card-visual {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 21rem;
-  background:
-    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--accent) 80%, black), color-mix(in srgb, var(--accent-deep) 80%, black));
+  overflow: hidden;
+  padding: 0;
+  background: #111;
 }
 
 .playing-card {
