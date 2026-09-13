@@ -492,17 +492,20 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   color: var(--text);
 }
 .home-layout .case-disclosure summary span:last-child {
-  width: 22px;
-  height: 1px;
-  background: currentColor;
-  font-size: 0;
-  overflow: hidden;
+  width: auto;
+  height: auto;
+  background: none;
+  font-size: 18px;
+  line-height: 1;
+  overflow: visible;
 }
+.home-layout .case-disclosure summary span:last-child::before { content: "+"; }
 .home-layout .case-disclosure[open] summary span:last-child {
   transform: none;
-  width: 34px;
-  background: #a56c4f;
+  width: auto;
+  background: none;
 }
+.home-layout .case-disclosure[open] summary span:last-child::before { content: "−"; }
 .home-layout .work-controls > button {
   width: 48px;
   height: 54px;
