@@ -768,20 +768,29 @@ function setupBlobColony() {
             <span class="blob-squint-l">&gt;</span>
             <span class="blob-squint-r">&lt;</span>
           </span>
-          <svg class="blob-arm" viewBox="0 0 40 36" aria-hidden="true">
-            <g class="blob-arm-wave">
-              <!-- Upper arm: out and slightly down; elbow is the clear hinge. -->
-              <line class="blob-arm-upper" x1="2" y1="14" x2="17" y2="20"></line>
-              <circle class="blob-arm-elbow" cx="17" cy="20" r="1.35"></circle>
-              <g transform="translate(17 20)">
-                <g class="blob-arm-fore">
-                  <!-- Forearm bent up from the elbow (~L wave). -->
-                  <line x1="0" y1="0" x2="5" y2="-12"></line>
-                  <g transform="translate(5 -12)">
-                    <g class="blob-arm-hand">
-                      <line x1="0" y1="0" x2="-5" y2="-4"></line>
-                      <line x1="0" y1="0" x2="0" y2="-7"></line>
-                      <line x1="0" y1="0" x2="5" y2="-3"></line>
+          <svg class="blob-arm" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <mask id="blob-arm-mask-${sizeIndex}" maskUnits="userSpaceOnUse" x="-100" y="-100" width="300" height="200" style="mask-type: luminance">
+                <rect x="-100" y="-100" width="300" height="200" fill="white"></rect>
+                <path data-arm-mask d="M0 50A50 50 0 0 1 100 50Z" fill="black" stroke="black" stroke-width="1"></path>
+              </mask>
+            </defs>
+            <g mask="url(#blob-arm-mask-${sizeIndex})">
+              <g transform="translate(78 15)">
+                <g class="blob-arm-wave">
+                  <!-- The shoulder/upper arm are concealed; draw from the elbow. -->
+                  <circle class="blob-arm-elbow" cx="17" cy="20" r="1.35"></circle>
+                  <g transform="translate(17 20)">
+                    <g class="blob-arm-fore">
+                      <!-- Forearm bent up from the elbow (~L wave). -->
+                      <line x1="0" y1="0" x2="5" y2="-12"></line>
+                      <g transform="translate(5 -12)">
+                        <g class="blob-arm-hand">
+                          <line x1="0" y1="0" x2="-5" y2="-4"></line>
+                          <line x1="0" y1="0" x2="0" y2="-7"></line>
+                          <line x1="0" y1="0" x2="5" y2="-3"></line>
+                        </g>
+                      </g>
                     </g>
                   </g>
                 </g>
@@ -801,6 +810,7 @@ function setupBlobColony() {
     const blob = createBlobElement(sizeIndex);
     const body = blob.querySelector("[data-blob-body]");
     const path = blob.querySelector("[data-blob-path]");
+    const armMask = blob.querySelector("[data-arm-mask]");
     colony.appendChild(blob);
 
     let regenerateTimer = 0;
@@ -1210,7 +1220,9 @@ function setupBlobColony() {
     }
 
     function renderMorph() {
-      path.setAttribute("d", buildPath());
+      const silhouette = buildPath();
+      path.setAttribute("d", silhouette);
+      armMask.setAttribute("d", silhouette);
     }
 
     function setArmState(state) {
@@ -1237,6 +1249,11 @@ function setupBlobColony() {
     function tuckArm() {
       if (armState === "hidden" || armState === "tucking") return;
       clearArmPhase();
+      // Capture interrupted waves so hover/scare reactions tuck without a jump.
+      for (const part of ["wave", "fore", "hand"]) {
+        blob.style.setProperty(`--arm-${part}-from`,
+          getComputedStyle(blob.querySelector(`.blob-arm-${part}`)).transform);
+      }
       setArmState("tucking");
       armPhaseTimer = window.setTimeout(finishArmHide, ARM_TUCK_MS);
     }

@@ -378,8 +378,6 @@ button {
   --blob-eye-h: 7px;
   --blob-eye-w-wide: 9px;
   --blob-eye-h-wide: 11px;
-  --blob-arm-w: 40px;
-  --blob-arm-h: 36px;
   --blob-squint-size: 0.9rem;
   --blob-fill: var(--blob-color-0);
   --blob-body-opacity: 0.78;
@@ -413,8 +411,6 @@ button {
   --blob-eye-h: 7px;
   --blob-eye-w-wide: 9px;
   --blob-eye-h-wide: 11px;
-  --blob-arm-w: 40px;
-  --blob-arm-h: 36px;
   --blob-squint-size: 0.9rem;
   --blob-fill: var(--blob-color-0);
   --blob-body-opacity: 0.78;
@@ -428,8 +424,6 @@ button {
   --blob-eye-h: 5.5px;
   --blob-eye-w-wide: 7.5px;
   --blob-eye-h-wide: 9px;
-  --blob-arm-w: 31px;
-  --blob-arm-h: 28px;
   --blob-squint-size: 0.75rem;
   --blob-fill: var(--blob-color-1);
   --blob-body-opacity: 0.86;
@@ -443,8 +437,6 @@ button {
   --blob-eye-h: 4.5px;
   --blob-eye-w-wide: 6px;
   --blob-eye-h-wide: 7.5px;
-  --blob-arm-w: 24px;
-  --blob-arm-h: 22px;
   --blob-squint-size: 0.6rem;
   --blob-fill: var(--blob-color-2);
   --blob-body-opacity: 0.92;
@@ -458,8 +450,6 @@ button {
   --blob-eye-h: 3.75px;
   --blob-eye-w-wide: 4.75px;
   --blob-eye-h-wide: 6px;
-  --blob-arm-w: 19px;
-  --blob-arm-h: 17px;
   --blob-squint-size: 0.48rem;
   --blob-fill: var(--blob-color-3);
   --blob-body-opacity: 0.96;
@@ -473,8 +463,6 @@ button {
   --blob-eye-h: 2.75px;
   --blob-eye-w-wide: 3.5px;
   --blob-eye-h-wide: 4.25px;
-  --blob-arm-w: 13px;
-  --blob-arm-h: 12px;
   --blob-squint-size: 0.38rem;
   --blob-fill: var(--blob-color-4);
   --blob-body-opacity: 1;
@@ -534,22 +522,13 @@ button {
 
 .blob-arm {
   position: absolute;
-  top: 28%;
-  /* Start beneath the body so the visible arm meets the curved silhouette. */
-  left: 90%;
+  inset: 0;
   z-index: 0;
-  width: var(--blob-arm-w);
-  height: var(--blob-arm-h);
-  margin-left: 0;
+  width: 100%;
+  height: 100%;
   overflow: visible;
-  /* Keep the attachment at the curved edge while hiding any arm geometry that
-     swings back underneath the translucent body. */
-  clip-path: inset(-40px -48px -40px 3px);
   opacity: 0;
   pointer-events: none;
-  /* Tucked down behind the body when hidden. */
-  transform: translate(-8px, 5px) rotate(74deg);
-  transform-origin: 5% 39%;
 }
 
 .blob-arm line {
@@ -558,7 +537,6 @@ button {
   stroke-width: 1.85;
   stroke-linecap: round;
   stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
 }
 
 .blob-arm-elbow {
@@ -566,30 +544,31 @@ button {
   stroke: none;
 }
 
+/* Transform only the geometry; the silhouette mask stays fixed to the body. */
 .blob-arm-wave {
-  transform-origin: 5% 39%;
+  transform: translateX(-32px);
 }
 
-.blob-arm-fore {
-  transform-origin: 0 0;
-  /* Slightly open L at the elbow in the rest pose. */
-  transform: rotate(10deg);
-}
-
+.blob-arm-fore,
 .blob-arm-hand {
   transform-origin: 0 0;
 }
 
-.blob[data-arm="waving"] .blob-arm {
-  z-index: 0;
+.blob-arm-fore {
+  transform: rotate(10deg);
+}
+
+.blob-arm-hand {
+  transform: rotate(-4deg);
+}
+
+.blob[data-arm="waving"] .blob-arm,
+.blob[data-arm="tucking"] .blob-arm {
   opacity: 1;
-  /* Lower side-wave: upper arm out/down, forearm hinged up. */
-  transform: translate(0, 1px) rotate(22deg);
-  transition: opacity 120ms ease;
 }
 
 .blob[data-arm="waving"] .blob-arm-wave {
-  animation: blob-arm-wave 0.7s ease-in-out 2;
+  animation: blob-arm-emerge 1.4s ease-out forwards;
 }
 
 .blob[data-arm="waving"] .blob-arm-fore {
@@ -600,15 +579,20 @@ button {
   animation: blob-fingers-wave 0.7s ease-in-out 2;
 }
 
-.blob[data-arm="tucking"] .blob-arm {
-  z-index: 0;
-  animation: blob-arm-tuck 0.48s ease-in forwards;
+.blob[data-arm="tucking"] .blob-arm-wave {
+  animation: blob-arm-tuck 0.48s ease-in-out forwards;
+}
+
+.blob[data-arm="tucking"] .blob-arm-fore {
+  animation: blob-fore-tuck 0.48s ease-in-out forwards;
+}
+
+.blob[data-arm="tucking"] .blob-arm-hand {
+  animation: blob-hand-tuck 0.48s ease-in-out forwards;
 }
 
 .blob[data-arm="hidden"] .blob-arm {
-  z-index: 0;
   opacity: 0;
-  transform: translate(-8px, 5px) rotate(74deg);
 }
 
 .blob[data-state="startled"] .blob-arm,
@@ -965,88 +949,38 @@ button {
   }
 }
 
-@keyframes blob-arm-wave {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  25% {
-    transform: rotate(-6deg);
-  }
-
-  50% {
-    transform: rotate(8deg);
-  }
-
-  75% {
-    transform: rotate(-5deg);
-  }
-
-  100% {
-    transform: rotate(0deg);
-  }
+@keyframes blob-arm-emerge {
+  0% { transform: translateX(-32px); }
+  14%, 100% { transform: translateX(0); }
 }
 
 @keyframes blob-arm-fore-wave {
-  /* Elbow hinge does most of the wave. */
-  0% {
-    transform: rotate(10deg);
-  }
-
-  25% {
-    transform: rotate(-20deg);
-  }
-
-  50% {
-    transform: rotate(26deg);
-  }
-
-  75% {
-    transform: rotate(-16deg);
-  }
-
-  100% {
-    transform: rotate(10deg);
-  }
+  0%, 100% { transform: rotate(10deg); }
+  25%, 75% { transform: rotate(2deg); }
+  50% { transform: rotate(18deg); }
 }
 
 @keyframes blob-fingers-wave {
-  0% {
-    transform: rotate(-6deg);
-  }
+  0%, 100% { transform: rotate(-4deg); }
+  25%, 75% { transform: rotate(8deg); }
+  50% { transform: rotate(-10deg); }
+}
 
-  25% {
-    transform: rotate(12deg);
-  }
+/* Hand returns first, then the elbow folds; only then slide into the opening.
+   Opacity remains one throughout: the mask conceals everything before hidden. */
+@keyframes blob-hand-tuck {
+  0% { transform: var(--arm-hand-from, rotate(-4deg)); }
+  25%, 100% { transform: rotate(0deg); }
+}
 
-  50% {
-    transform: rotate(-10deg);
-  }
-
-  75% {
-    transform: rotate(10deg);
-  }
-
-  100% {
-    transform: rotate(-4deg);
-  }
+@keyframes blob-fore-tuck {
+  0%, 25% { transform: var(--arm-fore-from, rotate(10deg)); }
+  60%, 100% { transform: rotate(80deg); }
 }
 
 @keyframes blob-arm-tuck {
-  0% {
-    opacity: 1;
-    transform: translate(0, 1px) rotate(22deg);
-  }
-
-  55% {
-    opacity: 1;
-    transform: translate(-6px, 3px) rotate(48deg);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-8px, 5px) rotate(74deg);
-  }
+  0%, 60% { transform: var(--arm-wave-from, translateX(0)); }
+  95%, 100% { transform: translateX(-32px); }
 }
 
 @keyframes blob-rise-shake {
@@ -4697,11 +4631,14 @@ h1 {
   .blob[data-state="popping"] .blob-pop-burst,
   .blob[data-state="rising"] .blob-body,
   .blob[data-state="idle"]:not([data-squint="true"]) .blob-eye,
-  .blob-arm-wave,
-  .blob-arm-fore,
-  .blob-arm-hand,
-  .blob[data-arm="tucking"] .blob-arm {
+  .blob[data-arm] .blob-arm-wave,
+  .blob[data-arm] .blob-arm-fore,
+  .blob[data-arm] .blob-arm-hand {
     animation: none;
+  }
+
+  .blob .blob-arm {
+    opacity: 0 !important;
   }
 
   .blob[data-state="popping"] .blob-body,
