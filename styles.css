@@ -4313,7 +4313,7 @@ h1 {
   }
 
   .nav-links > a[href="/about/"] {
-    grid-column: 1 / -1;
+    grid-column: 2;
     grid-row: 2;
   }
 
@@ -4341,18 +4341,7 @@ h1 {
   }
 
   .nav-links > a::after {
-    right: auto;
-    bottom: 50%;
-    left: 0;
-    width: 2px;
-    height: 1.2rem;
-    transform: translateY(50%) scaleY(0);
-  }
-
-  .nav-links > a:hover::after,
-  .nav-links > a[aria-current="location"]::after,
-  .nav-links > a[aria-current="page"]::after {
-    transform: translateY(50%) scaleY(1);
+    display: none;
   }
 
   .theme-toggle {
