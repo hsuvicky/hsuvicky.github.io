@@ -783,8 +783,8 @@ function setupBlobColony() {
                   <g transform="translate(17 20)">
                     <g class="blob-arm-fore">
                       <!-- Forearm bent up from the elbow (~L wave). -->
-                      <line x1="0" y1="0" x2="5" y2="-12"></line>
-                      <g transform="translate(5 -12)">
+                      <line x1="0" y1="0" x2="6" y2="-15"></line>
+                      <g transform="translate(6 -15)">
                         <g class="blob-arm-hand">
                           <line x1="0" y1="0" x2="-5" y2="-4"></line>
                           <line x1="0" y1="0" x2="0" y2="-7"></line>
