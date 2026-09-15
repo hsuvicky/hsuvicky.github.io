@@ -895,3 +895,74 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
     grid-row: 1;
   }
 }
+
+/* Mobile scale: preserve the composition while keeping type and imagery
+   subordinate to the amount of content visible on a phone screen. */
+@media (max-width: 760px) {
+  .home-layout .career-heading h2 {
+    font-size: clamp(22px, 6vw, 24px);
+  }
+
+  .home-layout .career-entry > .progression-period {
+    font-size: clamp(44px, 12vw, 48px);
+    margin-bottom: 16px;
+  }
+
+  .home-layout .career-entry .progression-role {
+    font-size: clamp(23px, 6.4vw, 25px);
+  }
+
+  .home-layout .career-entry .progression-grade,
+  .home-layout .career-entry .progression-domain {
+    font-size: 15px;
+  }
+
+  .home-layout .work-panel h3,
+  .home-layout .work-panel h4,
+  .home-layout .work-panel:has(.case-disclosure[open]) h3,
+  .home-layout .work-panel:has(.case-disclosure[open]) h4 {
+    font-size: clamp(27px, 7.4vw, 30px);
+    line-height: 1.1;
+  }
+
+  .home-layout .work-panel .case-purpose {
+    font-size: clamp(17px, 4.6vw, 18px);
+    line-height: 1.5;
+  }
+
+  .home-layout .case-glance dt,
+  .home-layout .work-panel .case-disclosure summary,
+  .home-layout .work-panel .case-disclosure[open] .case-details dt {
+    font-size: 14px;
+  }
+
+  .home-layout .case-glance dd,
+  .home-layout .work-panel .case-disclosure[open] .case-details dd,
+  .home-layout .work-panel .project-note-copy p {
+    font-size: 15px;
+  }
+
+  .about-page .refined-gallery .gallery-card-visual {
+    height: clamp(180px, 52vw, 210px);
+    max-height: 210px;
+  }
+
+  .about-page .refined-gallery .gallery-mooscles .mooscles-icon {
+    width: min(46vw, 180px);
+  }
+
+  .about-page .refined-gallery .gallery-card-copy h3,
+  .about-page .refined-gallery .gallery-card:has(.project-notes) .gallery-card-copy h3 {
+    margin-bottom: 12px;
+    font-size: clamp(26px, 7.4vw, 29px);
+  }
+
+  .about-page .refined-gallery .case-purpose {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .about-page .refined-gallery .project-notes {
+    margin-top: 20px;
+  }
+}
