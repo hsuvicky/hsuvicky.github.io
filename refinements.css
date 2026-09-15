@@ -629,3 +629,92 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   object-fit: cover !important;
 }
 .gallery-index-preview .movement-reference { display: none; }
+
+/* Home reading layout: larger copy and controls grouped with their content. */
+.home-layout .career-heading h2 { font-size: 26px; }
+.home-layout .career-browser { gap: 16px; padding-top: 12px; }
+.home-layout .career-content { padding-top: 0; }
+.home-layout .career-entry > .progression-period { margin-bottom: 18px; }
+.home-layout .career-entry .progression-role { font-size: 32px; }
+.home-layout .career-entry .progression-grade,
+.home-layout .career-entry .progression-domain {
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: none;
+}
+.home-layout .career-years button,
+.home-layout .career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years button {
+  font-size: 14px;
+}
+.home-layout .work-pages {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0 0;
+  min-width: 0;
+}
+.home-layout .work-panel:not(:has(.reasoning-diagram)) {
+  height: auto;
+  min-height: 0;
+  flex: 0 1 auto;
+  gap: 16px;
+  justify-content: flex-start;
+}
+.home-layout .work-panel > * { flex-shrink: 0; }
+.home-layout .work-panel h3,
+.home-layout .work-panel h4,
+.home-layout .work-panel:has(.case-disclosure[open]) h3,
+.home-layout .work-panel:has(.case-disclosure[open]) h4 {
+  font-size: clamp(32px, 3.5vw, 50px);
+  line-height: 1.12;
+  max-width: none;
+  margin: 0;
+}
+.home-layout .work-panel:not(:has(.reasoning-diagram)) .case-copy {
+  width: 100%;
+  max-width: none;
+}
+.home-layout .work-panel .case-purpose {
+  font-size: 22px;
+  line-height: 1.5;
+  max-width: 62ch;
+}
+.home-layout .case-glance { max-width: none; gap: 20px 32px; margin-top: 24px; }
+.home-layout .case-glance dt,
+.home-layout .work-panel .case-disclosure[open] .case-details dt { font-size: 16px; }
+.home-layout .case-glance dd,
+.home-layout .work-panel .case-disclosure[open] .case-details dd,
+.home-layout .work-panel .project-note-copy p { font-size: 18px; line-height: 1.55; }
+.home-layout .work-panel .case-disclosure { margin-top: 16px; }
+.home-layout .work-panel .case-disclosure summary { font-size: 16px; min-height: 44px; }
+.home-layout .work-controls {
+  position: static;
+  flex: 0 0 auto;
+  width: 100%;
+  margin-top: 20px;
+}
+@media (min-width: 901px) and (min-height: 650px) {
+  .achievements > .home-layout { grid-template-columns: 300px minmax(0, 1fr); gap: 40px; }
+  .home-layout .work-panel,
+  .home-layout .work-panel:has(.case-disclosure[open]) { overflow: auto; scrollbar-width: thin; }
+}
+@media (min-width: 901px) and (max-width: 1100px) and (min-height: 650px) {
+  .achievements > .home-layout { grid-template-columns: 250px minmax(0, 1fr); gap: 28px; }
+  .home-layout .case-glance { grid-template-columns: 1fr; gap: 16px; }
+}
+@media (max-width: 900px), (max-height: 649px) {
+  .achievements:has(> .home-layout) { padding-block: 24px; }
+  .achievements > .home-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .home-layout .career-browser { padding: 0; gap: 12px; }
+  .home-layout .career-entry .progression-description,
+  .home-layout .career-entry .progression-career-event,
+  .home-layout .career-entry .progression-personal-event { margin-bottom: 0; }
+  .home-layout .career-entry .progression-role { font-size: 28px; }
+  .home-layout .work-pages { height: auto; margin: 0; padding: 0; }
+  .home-layout .work-panel .case-purpose { font-size: 20px; }
+  .home-layout .case-glance { margin-top: 20px; gap: 16px; }
+  .home-layout .case-glance dd,
+  .home-layout .work-panel .case-disclosure[open] .case-details dd,
+  .home-layout .work-panel .project-note-copy p { font-size: 17px; }
+  .home-layout .work-controls { margin-top: 12px; gap: 12px; }
+  .home-layout .work-controls .folio-now { font-size: 14px; margin-right: 0; }
+}
