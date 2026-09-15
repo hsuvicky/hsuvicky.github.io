@@ -630,6 +630,81 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
 }
 .gallery-index-preview .movement-reference { display: none; }
 
+/* Responsive polish: keep every page surface on one fluid alignment grid. */
+:root { --page-edge: clamp(16px, 3.6vw, 56px); }
+
+.section-shell,
+.site-nav,
+.site-footer .section-shell {
+  width: min(calc(100% - (var(--page-edge) * 2)), var(--max-width));
+  max-width: var(--max-width);
+}
+
+.site-nav { padding-inline: 0; }
+
+.footer-actions .theme-toggle,
+.footer-linkedin {
+  width: 44px;
+  height: 44px;
+}
+
+@media (max-width: 760px) {
+  .brand { margin-left: 0; }
+
+  .nav-toggle {
+    padding-inline: 0;
+  }
+
+  .home-layout .career-heading [data-career-hobbies] {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+  }
+
+  .home-layout .career-heading [data-career-hobbies]::before {
+    bottom: calc(100% + 2px);
+  }
+
+  .home-layout .career-years,
+  .home-layout .career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+  }
+
+  .home-layout .career-years::-webkit-scrollbar { display: none; }
+
+  .home-layout .career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years button {
+    flex: 0 0 44px;
+  }
+
+  .gallery-menu {
+    grid-template-columns: max-content max-content;
+    gap: clamp(12px, 4vw, 22px);
+    scroll-padding-inline: var(--page-edge);
+    scroll-snap-type: inline proximity;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+  }
+
+  .gallery-menu::-webkit-scrollbar { display: none; }
+
+  .gallery-index-group {
+    grid-template-columns: repeat(2, 6.75rem);
+  }
+
+  .gallery-index-group:last-child {
+    grid-template-columns: repeat(5, 6.75rem);
+  }
+
+  .gallery-menu .gallery-index-item {
+    min-width: 6.75rem;
+    min-height: 7.5rem;
+    scroll-snap-align: start;
+  }
+}
+
 /* Home reading layout: larger copy and controls grouped with their content. */
 .home-layout .career-heading h2 { font-size: 26px; }
 .home-layout .career-browser { gap: 16px; padding-top: 12px; }
@@ -696,6 +771,12 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   .achievements > .home-layout { grid-template-columns: 300px minmax(0, 1fr); gap: 40px; }
   .home-layout .work-panel,
   .home-layout .work-panel:has(.case-disclosure[open]) { overflow: auto; scrollbar-width: thin; }
+  .home-layout .work-pages > .work-panel:not([hidden]) {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
+  }
+  .home-layout .work-controls { margin-top: 12px; }
 }
 @media (min-width: 901px) and (max-width: 1100px) and (min-height: 650px) {
   .achievements > .home-layout { grid-template-columns: 250px minmax(0, 1fr); gap: 28px; }
