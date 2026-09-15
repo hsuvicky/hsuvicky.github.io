@@ -632,8 +632,18 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
 
 /* Keep the Mooscles mark proportional on wide, short laptop viewports. */
 @media (min-width: 761px) and (max-height: 649px) {
+  .refined-gallery .gallery-mooscles {
+    --mooscles-compact-size: clamp(120px, 26svh, 180px);
+  }
+
+  .refined-gallery .gallery-mooscles .mooscles-visual {
+    width: 100%;
+    height: var(--mooscles-compact-size);
+    max-height: var(--mooscles-compact-size);
+  }
+
   .refined-gallery .gallery-mooscles .mooscles-icon {
-    width: clamp(120px, 26svh, 180px);
+    width: var(--mooscles-compact-size);
   }
 }
 
