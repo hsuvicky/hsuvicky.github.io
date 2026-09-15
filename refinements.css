@@ -948,7 +948,12 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   }
 
   .about-page .refined-gallery .gallery-mooscles .mooscles-icon {
-    width: min(46vw, 180px);
+    width: min(36vw, 140px);
+  }
+
+  .about-page .refined-gallery .gallery-mooscles .mooscles-visual {
+    height: clamp(150px, 42vw, 180px);
+    max-height: 180px;
   }
 
   .about-page .refined-gallery .gallery-card-copy h3,
