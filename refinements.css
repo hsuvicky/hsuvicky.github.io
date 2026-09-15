@@ -816,3 +816,82 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   .home-layout .work-controls { margin-top: 12px; gap: 12px; }
   .home-layout .work-controls .folio-now { font-size: 14px; margin-right: 0; }
 }
+
+/* A short screen is not necessarily a narrow screen: preserve the original
+   timeline-and-project spread on compact laptops, and let the page scroll. */
+@media (min-width: 901px) and (max-height: 649px) {
+  .achievements > .home-layout {
+    grid-template-columns: minmax(250px, 300px) minmax(0, 1fr);
+    gap: clamp(28px, 3vw, 40px);
+  }
+
+  .home-layout .career-browser {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    align-content: start;
+    gap: 16px;
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  .home-layout .career-content {
+    overflow: visible;
+  }
+
+  .home-layout .work-pages {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .about-page .refined-gallery {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 132px;
+    gap: 12px;
+    height: auto;
+    padding: 12px 0 24px;
+  }
+
+  .about-page .refined-gallery .gallery-stage {
+    grid-row: 1;
+    overflow: visible;
+  }
+
+  .about-page .gallery-menu {
+    order: initial;
+    grid-row: 2;
+    grid-template-columns: 2fr 5fr;
+    gap: 32px;
+    width: auto;
+    overflow: visible;
+    padding: 0;
+  }
+
+  .about-page .refined-gallery .gallery-card,
+  .about-page .refined-gallery .gallery-card-layout {
+    height: auto;
+    min-height: 0;
+  }
+
+  .about-page .refined-gallery .gallery-card-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 70px);
+    padding: 16px 0;
+  }
+
+  .about-page .refined-gallery .gallery-card:has(.project-notes) .gallery-card-layout {
+    grid-template-columns: minmax(220px, 0.65fr) minmax(0, 1.35fr);
+    gap: 38px;
+  }
+
+  .about-page .refined-gallery .gallery-league .gallery-card-layout {
+    grid-template-columns: 1.1fr 1fr;
+    gap: 60px;
+  }
+
+  .about-page .refined-gallery .gallery-league .gallery-card-copy {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
