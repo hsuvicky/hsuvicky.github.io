@@ -1120,3 +1120,24 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
 @media (max-width: 360px) {
   .about-page .gallery-index-label { max-width: 130px; }
 }
+
+/* Home portrait: sits on its own line above the Career heading and toggle,
+   ringed like the active timeline dot. */
+.home-layout .career-heading { flex-wrap: wrap; row-gap: 24px; }
+.home-portrait { flex: 0 0 100%; display: block; line-height: 0; }
+.home-portrait img {
+  display: block;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--border);
+}
+@media (max-height: 760px), (max-width: 760px) {
+  .home-layout .career-heading { row-gap: 20px; }
+  .home-portrait img { width: 108px; height: 108px; }
+}
+
+/* Hobbies toggle: keep its label visible above the switch, not hover-only. */
+.home-layout .career-heading [data-career-hobbies]::before { opacity: 1; }
+.home-layout .career-heading [data-career-hobbies][aria-pressed="true"]::before { color: var(--text-strong); }
