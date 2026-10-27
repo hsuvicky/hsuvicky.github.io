@@ -755,20 +755,6 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   line-height: 1.55;
 }
 
-.home-layout .home-introduction-link {
-  display: inline-block;
-  margin-top: 12px;
-  color: var(--text);
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 1px;
-}
-
-.home-layout .home-introduction-link:hover {
-  color: var(--accent-deep);
-}
-
 @media (min-width: 901px) and (min-height: 650px) {
   body:has(.home-layout .home-introduction) {
     display: block;
