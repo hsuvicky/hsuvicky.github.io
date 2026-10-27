@@ -722,6 +722,111 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   }
 }
 
+/* Homepage introduction: a compact full-width lead-in to the existing browser. */
+.home-layout .home-introduction {
+  grid-column: 1 / -1;
+  max-width: 920px;
+  padding: 0 0 8px;
+}
+
+.home-layout .home-introduction h1 {
+  margin: 0;
+  color: var(--text-strong);
+  font: 400 clamp(36px, 4.2vw, 58px) / 1.02 var(--display);
+  letter-spacing: -.045em;
+}
+
+.home-layout .home-introduction p {
+  margin: 0;
+}
+
+.home-layout .home-introduction-role {
+  margin-top: 12px !important;
+  color: var(--text-strong);
+  font-size: clamp(17px, 1.55vw, 21px);
+  line-height: 1.35;
+}
+
+.home-layout .home-introduction-focus {
+  max-width: 70ch;
+  margin-top: 8px !important;
+  color: var(--text-soft);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.home-layout .home-introduction-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+}
+
+.home-layout .home-introduction-link:hover {
+  color: var(--accent-deep);
+}
+
+@media (min-width: 901px) and (min-height: 650px) {
+  body:has(.home-layout .home-introduction) {
+    display: block;
+    height: auto;
+    min-height: 100svh;
+  }
+
+  body:has(.home-layout .home-introduction) main {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  body:has(.home-layout .home-introduction) .achievements {
+    height: auto;
+    min-height: 0;
+    padding: 32px 0 48px;
+  }
+
+  body:has(.home-layout .home-introduction) .achievements > .home-layout {
+    height: auto;
+    grid-template-rows: auto auto;
+    row-gap: 32px;
+  }
+
+  body:has(.home-layout .home-introduction) .career-browser,
+  body:has(.home-layout .home-introduction) .work-pages,
+  body:has(.home-layout .home-introduction) .work-panel {
+    height: auto;
+    min-height: 0;
+  }
+
+  body:has(.home-layout .home-introduction) .career-content,
+  body:has(.home-layout .home-introduction) .work-panel,
+  body:has(.home-layout .home-introduction) .home-layout .work-panel:has(.case-disclosure[open]) {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 900px), (max-height: 649px) {
+  .home-layout .home-introduction {
+    padding-bottom: 0;
+  }
+
+  .home-layout .home-introduction h1 {
+    font-size: clamp(34px, 10vw, 42px);
+  }
+
+  .home-layout .home-introduction-role {
+    margin-top: 10px !important;
+    font-size: 18px;
+  }
+
+  .home-layout .home-introduction-focus {
+    font-size: 16px;
+  }
+}
+
 /* Home reading layout: larger copy and controls grouped with their content. */
 .home-layout .career-heading h2 { font-size: 26px; }
 .home-layout .career-browser { gap: 16px; padding-top: 12px; }
