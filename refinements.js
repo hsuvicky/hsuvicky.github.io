@@ -43,11 +43,12 @@ gallery.classList.add('refined-gallery');const cards=[...gallery.querySelectorAl
 const menu=document.createElement('nav');menu.className='gallery-menu';menu.setAttribute('aria-label','Projects and hobbies');gallery.prepend(menu);
 let active=0;const buttons=[];
 let group;
-cards.forEach((card,i)=>{if(i===0||i===2){group=document.createElement('div');group.className='gallery-index-group';const heading=document.createElement('p');heading.textContent=i===0?'Projects':'Hobbies';group.append(heading);menu.append(group)}
+cards.forEach((card,i)=>{const name=card.dataset.galleryGroup;if(name!==undefined||!group){group=document.createElement('div');group.className='gallery-index-group';group.dataset.group=name||'intro';if(name!==undefined){const heading=document.createElement('p');heading.textContent=name||' ';if(!name)heading.setAttribute('aria-hidden','true');group.append(heading)}menu.append(group)}
  const button=document.createElement('button');button.type='button';button.className='gallery-index-item';
  const preview=document.createElement('span');preview.className='gallery-index-preview';preview.setAttribute('aria-hidden','true');
- const visual=card.querySelector('.gallery-card-visual').cloneNode(true);visual.removeAttribute('id');visual.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));visual.querySelectorAll('img').forEach(e=>{e.alt='';e.loading='eager'});preview.append(visual);
- const label=document.createElement('span');label.className='gallery-index-label';label.textContent=card.querySelector('h3').textContent;button.append(preview,label);
+ const customPreview=card.querySelector('[data-menu-preview] img');let visual;
+ if(customPreview){visual=document.createElement('span');visual.className='gallery-card-visual';visual.append(customPreview.cloneNode())}else{visual=card.querySelector('.gallery-card-visual').cloneNode(true)}visual.removeAttribute('id');visual.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));visual.querySelectorAll('img').forEach(e=>{e.alt='';e.loading='eager'});preview.append(visual);
+ const label=document.createElement('span');label.className='gallery-index-label';label.textContent=card.dataset.menuLabel||card.querySelector('h3').textContent;button.append(preview,label);
  button.setAttribute('aria-controls',card.id||(card.id='about-item-'+i));button.addEventListener('click',()=>show(i));buttons.push(button);group.append(button);
  card.querySelector('.gallery-card-select')?.remove();card.querySelector('.gallery-close')?.remove();
 });
