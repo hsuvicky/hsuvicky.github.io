@@ -296,8 +296,8 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 .home-layout .career-entry { animation: career-arrive 200ms ease; }
 .home-layout .career-entry > .progression-period {
   height: auto;
-  font-size: 58px;
-  margin-bottom: 28px;
+  font-size: 40px;
+  margin-bottom: 20px;
 }
 .home-layout .career-entry .progression-role { text-wrap: pretty; }
 .home-layout .career-entry .progression-grade { text-transform: none; letter-spacing: .01em; }
@@ -389,13 +389,13 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   .home-layout .work-panel:has(.reasoning-diagram) { grid-template-columns: minmax(0, 1fr) minmax(170px, 220px); column-gap: 16px; }
   .home-layout .work-panel .system-map { display: block; width: 220px; }
   .home-layout .work-panel:has(.reasoning-diagram):has(.case-disclosure[open]) .system-map { display: block; width: 150px; }
-  .home-layout .work-panel h3 { font-size: 34px; }
+  .home-layout .work-panel h3 { font-size: 30px; }
   .home-layout .work-panel .reasoning-diagram { max-height: 236px; }
 }
 @media (max-width: 900px), (max-height: 649px) {
   .home-layout .career-browser { grid-template-rows: auto auto auto; gap: 18px; }
   .home-layout .career-content { overflow: visible; scrollbar-gutter: auto; padding: 8px 0 0; }
-  .home-layout .career-entry > .progression-period { font-size: 48px; margin-bottom: 24px; }
+  .home-layout .career-entry > .progression-period { font-size: 36px; margin-bottom: 16px; }
   .home-layout .career-years button { font-size: 13px; }
   .home-layout .work-panel { row-gap: 24px; }
   .home-layout .work-panel:has(.reasoning-diagram) { grid-template-columns: minmax(0, 1fr) minmax(150px, 200px); align-items: center; }
@@ -469,12 +469,12 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   font-size: 13px;
 }
 .home-layout .career-entry > .progression-period {
-  font-size: 72px;
-  letter-spacing: -.06em;
+  font-size: 40px;
+  letter-spacing: -.04em;
 }
 .home-layout .work-panel h3,
 .home-layout .work-panel h4 {
-  font-size: clamp(26px, 2.7vw, 38px);
+  font-size: clamp(26px, 2.2vw, 34px);
   letter-spacing: -.03em;
   line-height: 1.12;
 }
@@ -576,7 +576,7 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
 }
 @media (max-width: 900px), (max-height: 649px) {
   .home-layout .case-glance { grid-template-columns: 1fr; }
-  .home-layout .career-entry > .progression-period { font-size: 56px; }
+  .home-layout .career-entry > .progression-period { font-size: 36px; }
   .home-layout .folio-tab-name { display: none; }
 }
 @media (min-width: 901px) and (min-height: 650px) {
@@ -737,8 +737,8 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
 .home-layout .home-introduction h1 {
   margin: 0;
   color: var(--text-strong);
-  font: 400 clamp(36px, 4.2vw, 58px) / 1.02 var(--display);
-  letter-spacing: -.045em;
+  font: 400 clamp(32px, 3.2vw, 42px) / 1.08 var(--display);
+  letter-spacing: -.035em;
 }
 
 .home-layout .home-introduction p {
@@ -805,12 +805,12 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   }
 
   .home-layout .home-introduction h1 {
-    font-size: clamp(34px, 10vw, 42px);
+    font-size: clamp(30px, 8vw, 36px);
   }
 
   .home-layout .home-introduction-role {
     margin-top: 10px !important;
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .home-layout .home-introduction-focus {
@@ -818,15 +818,15 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   }
 }
 
-/* Home reading layout: larger copy and controls grouped with their content. */
-.home-layout .career-heading h2 { font-size: 26px; }
+/* Home reading layout: quieter display type so role/project copy leads. */
+.home-layout .career-heading h2 { font-size: 22px; }
 .home-layout .career-browser { gap: 16px; padding-top: 12px; }
 .home-layout .career-content { padding-top: 0; }
-.home-layout .career-entry > .progression-period { margin-bottom: 18px; }
-.home-layout .career-entry .progression-role { font-size: 32px; }
+.home-layout .career-entry > .progression-period { margin-bottom: 14px; }
+.home-layout .career-entry .progression-role { font-size: 24px; }
 .home-layout .career-entry .progression-grade,
 .home-layout .career-entry .progression-domain {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.5;
   max-width: none;
 }
@@ -852,8 +852,8 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
 .home-layout .work-panel h4,
 .home-layout .work-panel:has(.case-disclosure[open]) h3,
 .home-layout .work-panel:has(.case-disclosure[open]) h4 {
-  font-size: clamp(32px, 3.5vw, 50px);
-  line-height: 1.12;
+  font-size: clamp(26px, 2.4vw, 34px);
+  line-height: 1.15;
   max-width: none;
   margin: 0;
 }
@@ -862,8 +862,8 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   max-width: none;
 }
 .home-layout .work-panel .case-purpose {
-  font-size: 22px;
-  line-height: 1.5;
+  font-size: 17px;
+  line-height: 1.55;
   max-width: 62ch;
 }
 .home-layout .case-glance { max-width: none; gap: 20px 32px; margin-top: 24px; }
@@ -902,9 +902,9 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   .home-layout .career-entry .progression-description,
   .home-layout .career-entry .progression-career-event,
   .home-layout .career-entry .progression-personal-event { margin-bottom: 0; }
-  .home-layout .career-entry .progression-role { font-size: 28px; }
+  .home-layout .career-entry .progression-role { font-size: 22px; }
   .home-layout .work-pages { height: auto; margin: 0; padding: 0; }
-  .home-layout .work-panel .case-purpose { font-size: 20px; }
+  .home-layout .work-panel .case-purpose { font-size: 16px; }
   .home-layout .case-glance { margin-top: 20px; gap: 16px; }
   .home-layout .case-glance dd,
   .home-layout .work-panel .case-disclosure[open] .case-details dd,
@@ -1000,25 +1000,25 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   }
 
   .home-layout .career-entry > .progression-period {
-    font-size: clamp(44px, 12vw, 48px);
-    margin-bottom: 16px;
+    font-size: clamp(32px, 9vw, 36px);
+    margin-bottom: 12px;
   }
 
   .home-layout .career-entry .progression-role {
-    font-size: clamp(23px, 6.4vw, 25px);
+    font-size: clamp(20px, 5.5vw, 22px);
   }
 
   .home-layout .career-entry .progression-grade,
   .home-layout .career-entry .progression-domain {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .home-layout .work-panel h3,
   .home-layout .work-panel h4,
   .home-layout .work-panel:has(.case-disclosure[open]) h3,
   .home-layout .work-panel:has(.case-disclosure[open]) h4 {
-    font-size: clamp(27px, 7.4vw, 30px);
-    line-height: 1.1;
+    font-size: clamp(24px, 6.2vw, 28px);
+    line-height: 1.15;
   }
 
   .home-layout .work-panel .case-purpose {
