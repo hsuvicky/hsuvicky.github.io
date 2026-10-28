@@ -40,7 +40,7 @@
 .refined-gallery .gallery-title-card,.refined-gallery .gallery-card[hidden]{display:none!important}
 .refined-gallery .gallery-card{position:relative;top:auto;left:auto;width:100%;height:100%;min-height:0;max-height:none;transform:none!important;translate:none;opacity:1;pointer-events:auto;box-shadow:none;background:var(--surface);border:1px solid var(--border-soft);border-radius:8px;overflow:auto;animation:panel-in .35s ease}
 .refined-gallery .gallery-card-layout{grid-template-columns:minmax(220px,.95fr) minmax(250px,1.05fr);gap:32px;padding:32px;min-height:100%;height:auto;align-content:center}
-.refined-gallery .gallery-card-copy h3{font:400 clamp(28px,3vw,42px)/1.1 var(--display);margin:0 0 18px;letter-spacing:-.03em}
+.refined-gallery .gallery-card-copy h3{font:400 clamp(26px,2.4vw,34px)/1.15 var(--display);margin:0 0 14px;letter-spacing:-.03em}
 .refined-gallery .case-purpose{display:block;overflow:visible;font-size:16px;line-height:1.65;-webkit-line-clamp:unset}
 .refined-gallery .note-label{font-size:13px;color:var(--muted);margin-bottom:12px}.refined-gallery .case-disclosure summary{font-size:14px}.refined-gallery .case-details{max-height:none;font-size:14px}
 .refined-gallery .gallery-card-visual{height:310px;max-height:38svh;min-height:0;box-shadow:none}
@@ -145,7 +145,7 @@ body>header,body>main,body>footer,.achievements>.section-shell,.career-timeline,
 .refined-gallery{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 132px;gap:12px;padding:12px 0 0}
 .refined-gallery .gallery-stage{grid-row:1}
 .refined-gallery .gallery-card-layout{max-width:1050px;margin:auto;padding:16px 0;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:70px}
-.refined-gallery .gallery-card-copy h3{font-size:clamp(32px,3.4vw,46px)}
+.refined-gallery .gallery-card-copy h3{font-size:clamp(26px,2.4vw,34px)}
 .refined-gallery .gallery-card-visual{background:transparent;border-radius:0;max-height:34svh;height:280px}
 .refined-gallery .gallery-card{overflow:auto;animation:collection-in .35s ease}
 .refined-gallery .gallery-controls{display:none}
@@ -179,8 +179,8 @@ body>header,body>main,body>footer,.achievements>.section-shell,.career-timeline,
 .refined-gallery .case-details dt{font:13px/1.5 var(--sans);text-transform:none;letter-spacing:0;color:var(--muted)}
 .refined-gallery .case-details dd{font:14px/1.55 var(--sans)}
 .refined-gallery .gallery-card:has(.project-notes) .gallery-card-layout{gap:38px;grid-template-columns:.65fr 1.35fr}
-.refined-gallery .gallery-card:has(.project-notes) .gallery-card-copy h3{font-size:32px;margin-bottom:12px}
-.refined-gallery .gallery-card:has(.project-notes) .case-purpose{font-size:14px;line-height:1.55}
+.refined-gallery .gallery-card:has(.project-notes) .gallery-card-copy h3{font-size:28px;margin-bottom:10px}
+.refined-gallery .gallery-card:has(.project-notes) .case-purpose{font-size:15px;line-height:1.55}
 .refined-gallery .gallery-card:has(.project-notes) .case-details{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px}
 .refined-gallery .gallery-card:has(.project-notes) .case-details>div{display:block;padding:0}
 .refined-gallery .gallery-card:has(.project-notes) .case-details dt{margin-bottom:5px}
@@ -1054,12 +1054,12 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
 
   .about-page .refined-gallery .gallery-card-copy h3,
   .about-page .refined-gallery .gallery-card:has(.project-notes) .gallery-card-copy h3 {
-    margin-bottom: 12px;
-    font-size: clamp(26px, 7.4vw, 29px);
+    margin-bottom: 10px;
+    font-size: clamp(24px, 6.2vw, 28px);
   }
 
   .about-page .refined-gallery .case-purpose {
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.55;
   }
 
