@@ -1570,3 +1570,124 @@ function setupBlobColony() {
 }
 
 setupBlobColony();
+
+function setupAboutPin() {
+  const root = document.querySelector("[data-about-pin]");
+  const tracks = root ? [...root.querySelectorAll("[data-about-pin-track]")] : [];
+  const progress = document.querySelector("[data-about-pin-progress]");
+  const footer = document.querySelector(".site-footer");
+  if (!root || !tracks.length) return;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let ticking = false;
+
+  const pinTracks = tracks
+    .map((track) => {
+      const strip = track.querySelector("[data-about-pin-strip]");
+      const sticky = track.querySelector(".about-pin-sticky");
+      const panels = strip ? [...strip.querySelectorAll("[data-about-pin-panel]")] : [];
+      if (!strip || !sticky || panels.length < 1) return null;
+      return { track, strip, sticky, panels };
+    })
+    .filter(Boolean);
+
+  if (!pinTracks.length) return;
+
+  function pageY(el) {
+    const rect = el.getBoundingClientRect();
+    return rect.top + window.scrollY;
+  }
+
+  function setTrackHeights() {
+    pinTracks.forEach(({ track, sticky, panels }) => {
+      track.style.setProperty("--about-pin-panels", String(Math.max(panels.length, 1)));
+      const panelWidth = Math.max(Math.round(sticky.clientWidth), 1);
+      track.style.setProperty("--about-pin-panel-width", `${panelWidth}px`);
+    });
+  }
+
+  function updateTrack(entry) {
+    const { track, strip, sticky, panels } = entry;
+    const rect = track.getBoundingClientRect();
+    const headerOffset = Number.parseFloat(getComputedStyle(sticky).top) || 0;
+    const stickyHeight = sticky.offsetHeight || window.innerHeight;
+    const panelWidth = Math.max(sticky.clientWidth, 1);
+    const total = Math.max(track.offsetHeight - stickyHeight, 1);
+    const scrolled = Math.min(Math.max(-(rect.top - headerOffset), 0), total);
+    const p = scrolled / total;
+    const maxShift = Math.max(panels.length - 1, 0);
+    strip.style.transform = maxShift
+      ? `translate3d(${-p * maxShift * panelWidth}px, 0, 0)`
+      : "none";
+  }
+
+  function updateJourneyProgress() {
+    if (!progress) return;
+
+    if (reduceMotion.matches) {
+      progress.classList.remove("is-active");
+      progress.style.setProperty("--about-pin-progress", "0%");
+      progress.style.removeProperty("bottom");
+      return;
+    }
+
+    const startY = pageY(root);
+    const endY = startY + root.offsetHeight - window.innerHeight;
+    const span = Math.max(endY - startY, 1);
+    const raw = (window.scrollY - startY) / span;
+    const p = Math.min(Math.max(raw, 0), 1);
+
+    const rootRect = root.getBoundingClientRect();
+    const inJourney =
+      rootRect.bottom > 80 && rootRect.top < window.innerHeight - 40;
+
+    progress.classList.toggle("is-active", inJourney);
+    progress.style.setProperty("--about-pin-progress", `${p * 100}%`);
+
+    // Keep the bar above the footer and clear of page text.
+    const baseClearance = 28;
+    let bottom = baseClearance;
+    if (footer) {
+      const footerTop = footer.getBoundingClientRect().top;
+      const overlap = window.innerHeight - footerTop;
+      if (overlap > 0) {
+        bottom = Math.max(baseClearance, overlap + 16);
+      }
+    }
+    progress.style.bottom = `${bottom}px`;
+  }
+
+  function update() {
+    ticking = false;
+    if (reduceMotion.matches) {
+      pinTracks.forEach(({ strip }) => {
+        strip.style.transform = "none";
+      });
+      updateJourneyProgress();
+      return;
+    }
+
+    pinTracks.forEach((entry) => {
+      updateTrack(entry);
+    });
+    updateJourneyProgress();
+  }
+
+  function requestUpdate() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }
+
+  setTrackHeights();
+  update();
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", () => {
+    setTrackHeights();
+    requestUpdate();
+  }, { passive: true });
+  reduceMotion.addEventListener("change", requestUpdate);
+}
+
+setupAboutPin();

@@ -1096,3 +1096,79 @@ body.about-site .site-footer {
 .about-page .gallery-index-group[data-group="intro"]{grid-template-columns:minmax(0,1fr)}
 
 @media (min-width:761px){.about-page .refined-gallery .gallery-menu:has(> [data-group="intro"]){grid-template-columns:1fr 2fr 5fr}}
+
+/* About pin gallery: neutralize old gallery image locks. */
+.about-pin-site .about-pin-frame,
+.about-pin-site .about-pin-media .beli-card-visual,
+.about-pin-site .about-pin-media .poker-card-visual,
+.about-pin-site .about-pin-media .movement-card-visual,
+.about-pin-site .about-pin-media .horticulture-card-visual {
+  height: auto !important;
+  max-height: none !important;
+  width: 100% !important;
+  max-width: min(22rem, 100%) !important;
+  transform: none !important;
+  box-shadow: none !important;
+  background: var(--surface) !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+}
+
+.about-pin-site .about-pin-frame--phone,
+.about-pin-site .about-pin-panel--beli .beli-card-visual {
+  max-width: min(16.5rem, 100%) !important;
+}
+
+.about-pin-site .about-pin-frame img,
+.about-pin-site .about-pin-media .poker-photo,
+.about-pin-site .about-pin-media .horticulture-photo,
+.about-pin-site .about-pin-media .movement-photo,
+.about-pin-site .about-pin-media .beli-card-visual img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: min(68vh, 32rem) !important;
+  object-fit: cover !important;
+  object-position: top center !important;
+  box-shadow: none !important;
+  transform: none !important;
+  position: static !important;
+  opacity: 1 !important;
+}
+
+.about-pin-site .about-pin-media .league-card-visual {
+  position: static !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  width: auto !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  color: var(--text) !important;
+  overflow: visible !important;
+}
+
+.about-pin-site .about-pin-media .league-rank-image {
+  width: 4.25rem !important;
+  height: auto !important;
+  max-width: none !important;
+}
+
+.about-pin-site .about-pin-media .league-stats-image {
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+  width: auto !important;
+  max-width: min(20rem, 100%) !important;
+  height: auto !important;
+  max-height: min(42vh, 20rem) !important;
+  border: 0 !important;
+}
