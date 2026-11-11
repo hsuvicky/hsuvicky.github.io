@@ -43,12 +43,11 @@ gallery.classList.add('refined-gallery');const cards=[...gallery.querySelectorAl
 const menu=document.createElement('nav');menu.className='gallery-menu';menu.setAttribute('aria-label','Projects and hobbies');gallery.prepend(menu);
 let active=0;const buttons=[];
 let group;
-cards.forEach((card,i)=>{const name=card.dataset.galleryGroup;if(name!==undefined||!group){group=document.createElement('div');group.className='gallery-index-group';group.dataset.group=name||'intro';if(name!==undefined){const heading=document.createElement('p');heading.textContent=name||' ';if(!name)heading.setAttribute('aria-hidden','true');group.append(heading)}menu.append(group)}
+cards.forEach((card,i)=>{if(i===0||i===2){group=document.createElement('div');group.className='gallery-index-group';const heading=document.createElement('p');heading.textContent=i===0?'Projects':'Hobbies';group.append(heading);menu.append(group)}
  const button=document.createElement('button');button.type='button';button.className='gallery-index-item';
  const preview=document.createElement('span');preview.className='gallery-index-preview';preview.setAttribute('aria-hidden','true');
- const customPreview=card.querySelector('[data-menu-preview] img');let visual;
- if(customPreview){visual=document.createElement('span');visual.className='gallery-card-visual';visual.append(customPreview.cloneNode())}else{visual=card.querySelector('.gallery-card-visual').cloneNode(true)}visual.removeAttribute('id');visual.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));visual.querySelectorAll('img').forEach(e=>{e.alt='';e.loading='eager'});preview.append(visual);
- const label=document.createElement('span');label.className='gallery-index-label';label.textContent=card.dataset.menuLabel||card.querySelector('h3').textContent;button.append(preview,label);
+ const visual=card.querySelector('.gallery-card-visual').cloneNode(true);visual.removeAttribute('id');visual.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));visual.querySelectorAll('img').forEach(e=>{e.alt='';e.loading='eager'});preview.append(visual);
+ const label=document.createElement('span');label.className='gallery-index-label';label.textContent=card.querySelector('h3').textContent;button.append(preview,label);
  button.setAttribute('aria-controls',card.id||(card.id='about-item-'+i));button.addEventListener('click',()=>show(i));buttons.push(button);group.append(button);
  card.querySelector('.gallery-card-select')?.remove();card.querySelector('.gallery-close')?.remove();
 });
@@ -59,8 +58,9 @@ gallery.querySelector('[data-gallery-previous]').addEventListener('click',()=>sh
   const root = document.querySelector('.career-browser');
   if (!root) return;
 
+  const board = root.closest('.home-layout') || root;
   const entries = [...root.querySelectorAll('[data-year]')];
-  const years = root.querySelector('.career-years');
+  const years = board.querySelector('.career-years');
   const content = root.querySelector('.career-content');
   let active = '2026';
   let hobbies = false;
@@ -85,13 +85,18 @@ gallery.querySelector('[data-gallery-previous]').addEventListener('click',()=>sh
   function render() {
     entries.forEach((entry, i) => {
       buttons[i].hidden = entry.dataset.personal === 'true' && !hobbies;
-      entry.hidden = entry.dataset.year !== active;
-      buttons[i].setAttribute('aria-current', String(!entry.hidden));
+      const selected = entry.dataset.year === active;
+      entry.hidden = !selected;
+      if (selected) buttons[i].setAttribute('aria-current', 'true');
+      else buttons[i].removeAttribute('aria-current');
+      buttons[i].classList.remove('is-rail-end');
       entry.querySelectorAll('[data-hobby-content]').forEach(event => {
         event.hidden = !hobbies;
         event.setAttribute('aria-hidden', String(!hobbies));
       });
     });
+    const visible = buttons.filter(button => !button.hidden);
+    visible.at(-1)?.classList.add('is-rail-end');
   }
 
   years.addEventListener('keydown', event => {
@@ -106,7 +111,7 @@ gallery.querySelector('[data-gallery-previous]').addEventListener('click',()=>sh
     select(visible[next].textContent);
   });
 
-  root.querySelector('[data-career-hobbies]').addEventListener('click', event => {
+  board.querySelector('[data-career-hobbies]').addEventListener('click', event => {
     hobbies = !hobbies;
     event.currentTarget.setAttribute('aria-pressed', String(hobbies));
     event.currentTarget.setAttribute('aria-label', hobbies ? 'Hide hobbies' : 'Show hobbies');
