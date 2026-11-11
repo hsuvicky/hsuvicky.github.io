@@ -30,7 +30,13 @@ const tabs=panels.map((panel,index)=>{
 });
 function show(index){
   current=(index+panels.length)%panels.length;
-  panels.forEach((panel,i)=>{panel.hidden=i!==current;tabs[i].setAttribute('aria-pressed',String(i===current))});
+  panels.forEach((panel,i)=>{
+    const on=i===current;
+    panel.hidden=!on;
+    panel.inert=!on;
+    panel.setAttribute('aria-hidden',String(!on));
+    tabs[i].setAttribute('aria-pressed',String(on));
+  });
   now.textContent=tabs[current].dataset.short;
 }
 document.querySelector('[data-work-previous]').addEventListener('click',()=>show(current-1));
@@ -63,8 +69,9 @@ gallery.querySelector('[data-gallery-previous]').addEventListener('click',()=>sh
   const entries = [...root.querySelectorAll('[data-year]')];
   const years = board.querySelector('.career-years');
   const content = root.querySelector('.career-content');
+  const modeButtons = [...board.querySelectorAll('[data-timeline-mode]')];
   let active = '2026';
-  let hobbies = false;
+  let mode = 'work';
 
   const buttons = entries.map(entry => {
     const button = document.createElement('button');
@@ -83,17 +90,33 @@ gallery.querySelector('[data-gallery-previous]').addEventListener('click',()=>sh
     content.scrollTop = 0;
   }
 
+  function setMode(nextMode) {
+    mode = nextMode === 'life' ? 'life' : 'work';
+    const life = mode === 'life';
+    board.dataset.timelineMode = mode;
+    modeButtons.forEach((button) => {
+      const on = button.getAttribute('data-timeline-mode') === mode;
+      button.setAttribute('aria-pressed', String(on));
+    });
+    if (!life && entries.find(entry => entry.dataset.year === active)?.dataset.personal === 'true') {
+      active = '2026';
+    }
+    render();
+    content.scrollTop = 0;
+  }
+
   function render() {
+    const life = mode === 'life';
     entries.forEach((entry, i) => {
-      buttons[i].hidden = entry.dataset.personal === 'true' && !hobbies;
+      buttons[i].hidden = entry.dataset.personal === 'true' && !life;
       const selected = entry.dataset.year === active;
       entry.hidden = !selected;
       if (selected) buttons[i].setAttribute('aria-current', 'true');
       else buttons[i].removeAttribute('aria-current');
       buttons[i].classList.remove('is-rail-end');
       entry.querySelectorAll('[data-hobby-content]').forEach(event => {
-        event.hidden = !hobbies;
-        event.setAttribute('aria-hidden', String(!hobbies));
+        event.hidden = !life;
+        event.setAttribute('aria-hidden', String(!life));
       });
     });
     const visible = buttons.filter(button => !button.hidden);
@@ -112,15 +135,11 @@ gallery.querySelector('[data-gallery-previous]').addEventListener('click',()=>sh
     select(visible[next].textContent);
   });
 
-  board.querySelector('[data-career-hobbies]').addEventListener('click', event => {
-    hobbies = !hobbies;
-    event.currentTarget.setAttribute('aria-pressed', String(hobbies));
-    event.currentTarget.setAttribute('aria-label', hobbies ? 'Hide hobbies' : 'Show hobbies');
-    if (!hobbies && entries.find(entry => entry.dataset.year === active)?.dataset.personal === 'true') {
-      active = '2026';
-    }
-    render();
-    content.scrollTop = 0;
+  modeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      setMode(button.getAttribute('data-timeline-mode'));
+    });
   });
-  render();
+
+  setMode('work');
 })();

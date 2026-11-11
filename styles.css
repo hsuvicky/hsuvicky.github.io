@@ -1266,35 +1266,18 @@ button {
   min-height: 44px;
   color: var(--muted);
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.055em;
   text-decoration: none;
   text-transform: uppercase;
-}
-
-.nav-links > a::after {
-  position: absolute;
-  right: 0;
-  bottom: 4px;
-  left: 0;
-  height: 2px;
-  background: var(--accent);
-  content: "";
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 160ms ease;
+  transition: color 140ms ease, font-weight 140ms ease;
 }
 
 .nav-links > a:hover,
 .nav-links > a[aria-current="location"],
 .nav-links > a[aria-current="page"] {
   color: var(--text);
-}
-
-.nav-links > a:hover::after,
-.nav-links > a[aria-current="location"]::after,
-.nav-links > a[aria-current="page"]::after {
-  transform: scaleX(1);
+  font-weight: 700;
 }
 
 .nav-toggle {
@@ -4395,21 +4378,6 @@ h1 {
     border-bottom: 0;
   }
 
-  .nav-links > a::after {
-    right: auto;
-    bottom: 50%;
-    left: 0;
-    width: 2px;
-    height: 1.2rem;
-    transform: translateY(50%) scaleY(0);
-  }
-
-  .nav-links > a:hover::after,
-  .nav-links > a[aria-current="location"]::after,
-  .nav-links > a[aria-current="page"]::after {
-    transform: translateY(50%) scaleY(1);
-  }
-
   .theme-toggle {
     width: 34px;
     height: 34px;
@@ -5016,15 +4984,24 @@ body.about-pin-site .site-footer {
   isolation: isolate;
 }
 
-.about-pin-break--soft {
-  /* Full interstitial; Contact arrives early via a shorter pin scrub below. */
-  min-height: 100svh;
+/* Chapter mark only — personality reel starts immediately after. */
+.about-pin-break--chapter {
+  min-height: min(36svh, 14rem);
   padding-block: clamp(1.25rem, 4vh, 2.25rem);
 }
 
-/* Contact arrives sooner: shorter scrub from lead-in → Contact. */
+.about-pin-break--soft {
+  /* Shorter lead-in so Contact arrives sooner after Horticulture. */
+  min-height: min(48svh, 22rem);
+  padding-block: clamp(0.75rem, 2.5vh, 1.5rem);
+}
+
+/* Single contact panel: hold just long enough for the jump beat. */
 #contact-gallery {
-  --about-pin-panel-scroll: min(42vh, 22rem);
+  --about-pin-panel-scroll: min(28vh, 14rem);
+  height: calc(
+    var(--about-pin-sticky-height) + var(--about-pin-panel-scroll)
+  );
 }
 
 .about-pin-break h2,
@@ -5053,6 +5030,12 @@ body.about-pin-site .site-footer {
   position: relative;
   isolation: isolate;
   background: var(--bg);
+}
+
+/* Hobbies: keep the pin motion, charge ~half a viewport per slide. */
+.about-pin-track--reel,
+#hobby-gallery {
+  --about-pin-panel-scroll: calc(var(--about-pin-sticky-height) * 0.48);
 }
 
 .about-pin-sticky {
@@ -5241,37 +5224,159 @@ body.about-pin-site .site-footer {
 
 .about-pin-panel--contact {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
   text-align: center;
 }
 
-.about-pin-contact {
-  width: auto;
-  max-width: min(34rem, 100%);
-  margin: 0 auto;
+.about-pin-jump {
+  /* Size container so the 16:9 media frame can cover every viewport the same way. */
+  container-type: size;
+  container-name: jump;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: clip;
+  background: #1b1c1a;
+  isolation: isolate;
 }
 
-.about-pin-contact p {
-  margin: 0;
+/*
+ * Cover-sized 16:9 frame matching the source clip. CTA % coords are relative to
+ * this frame (not the panel), so her hat alignment holds across devices.
+ * top/translate 42% mirrors the old object-position focal point.
+ */
+.about-pin-jump-frame {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  translate: -50% -42%;
+  aspect-ratio: 16 / 9;
+  width: max(100cqw, calc(100cqh * 16 / 9));
+  height: auto;
 }
 
-.about-pin-contact a {
+@supports not (width: 1cqw) {
+  .about-pin-jump-frame {
+    inset: 0;
+    translate: none;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+}
+
+.about-pin-jump-video,
+.about-pin-jump-still {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.about-pin-jump-still {
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1;
+}
+
+.about-pin-jump.is-frozen .about-pin-jump-still {
+  opacity: 1;
+  visibility: visible;
+}
+
+.about-pin-jump.is-frozen .about-pin-jump-video {
+  opacity: 0;
+}
+
+.about-pin-jump-cta {
+  position: absolute;
+  /*
+   * Image-space pin (not panel/stage %). Prior 56.7% was a stage coordinate
+   * mistaken for frame % — portrait cover crops magnify that miss to the right.
+   * 53.7% / 61.6% = hat center X, a smidge above the cap in the 16:9 source.
+   */
+  left: 53.7%;
+  top: 61.6%;
+  z-index: 2;
+  transform: translate(-50%, calc(-50% + 0.45rem));
+  /* Cap against the visible stage (cqw), not the oversized cover frame. */
+  max-width: min(22rem, 68cqw);
+  padding: 0.55rem 0.75rem;
   font-family: var(--display);
-  font-weight: 600;
-  font-size: clamp(1.15rem, 1.4vw, 1.4rem);
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-  color: var(--text-strong);
+  font-weight: 650;
+  font-size: clamp(1.05rem, 5.2cqw, 1.75rem);
+  text-wrap: balance;
+  text-align: center;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: #fff;
   text-decoration: none;
-  border-bottom: 1.5px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  transition: border-color 180ms ease, color 180ms ease;
+  text-shadow:
+    0 1px 2px rgba(20, 24, 18, 0.55),
+    0 8px 28px rgba(20, 24, 18, 0.35);
+  border-bottom: 1.5px solid color-mix(in srgb, #fff 55%, transparent);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 520ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 520ms cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 520ms,
+    border-color 180ms ease;
 }
 
-.about-pin-contact a:hover,
-.about-pin-contact a:focus-visible {
-  color: var(--accent-deep);
-  border-bottom-color: var(--accent);
+.about-pin-jump-cta.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  transition:
+    opacity 520ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 520ms cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0s,
+    border-color 180ms ease;
+}
+
+.about-pin-jump-cta:hover,
+.about-pin-jump-cta:focus-visible {
+  border-bottom-color: #fff;
+}
+
+.about-pin-jump-cta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 6px;
+}
+
+.about-pin-jump-cta [data-letter-bounce] {
+  display: inline;
+}
+
+.about-pin-jump-letter {
+  display: inline-block;
+  transform-origin: 50% 50%;
+}
+
+.about-pin-jump-letter--space {
+  white-space: pre;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-pin-jump-cta,
+  .about-pin-jump-cta.is-visible {
+    transition: none;
+    transform: translate(-50%, -50%);
+  }
+
+  .about-pin-jump-letter {
+    transform: none !important;
+  }
 }
 
 .about-pin-panel--text-left .about-pin-copy {
@@ -5363,7 +5468,7 @@ body.about-pin-site .site-footer {
 .about-pin-details dt,
 .about-pin-details.case-details dt {
   font-family: var(--sans);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -5540,8 +5645,7 @@ body.about-pin-site .site-footer {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 28px;
-  height: 3px;
+  bottom: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -5556,24 +5660,80 @@ body.about-pin-site .site-footer {
 .about-pin-progress.is-active {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
-/* Full muted track from About Me → Contact; fill grows to 100%. */
-.about-pin-progress::before {
-  content: "";
-  display: block;
-  height: 100%;
-  width: min(36rem, 72vw);
-  max-width: min(36rem, 72vw);
+.about-pin-progress-rail {
+  width: min(36rem, 86vw);
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.65rem 0.85rem 0.75rem;
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--bg) 94%, var(--surface-strong));
+  border: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--text) 10%, transparent);
+  overflow: visible;
+}
+
+.about-pin-chapters {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: visible;
+}
+
+.about-pin-chapters a {
+  display: inline-block;
+  min-height: 1.5rem;
+  padding: 0.15rem 0.1rem;
+  font-family: var(--display);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--text) 62%, transparent);
+  text-decoration: none;
+  overflow: visible;
+  transition: color 140ms ease, font-weight 140ms ease;
+}
+
+.about-pin-chapters a:hover,
+.about-pin-chapters a:focus-visible {
+  color: var(--text-strong);
+}
+
+.about-pin-chapters a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.about-pin-chapters a[aria-current="true"] {
+  color: var(--text-strong);
+  font-weight: 700;
+}
+
+.about-pin-chapters [data-letter-bounce] {
+  display: inline;
+}
+
+.about-pin-progress-track {
+  position: relative;
+  height: 3px;
+  width: 100%;
   border-radius: 999px;
-  background:
-    linear-gradient(
-      90deg,
-      var(--accent) 0,
-      var(--accent) var(--about-pin-progress),
-      color-mix(in srgb, var(--accent) 22%, transparent) var(--about-pin-progress),
-      color-mix(in srgb, var(--accent) 22%, transparent) 100%
-    );
+  overflow: hidden;
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.about-pin-progress-fill {
+  height: 100%;
+  width: var(--about-pin-progress);
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width 80ms linear;
 }
 
 @media (min-width: 901px) and (min-height: 650px) {
@@ -5642,12 +5802,17 @@ body.about-pin-site .site-footer {
   }
 
   .about-pin-progress {
-    bottom: 24px;
+    bottom: 16px;
   }
 
-  .about-pin-progress::before {
-    width: min(20rem, 78vw);
-    max-width: min(20rem, 78vw);
+  .about-pin-progress-rail {
+    width: min(22.5rem, 92vw);
+    gap: 0.45rem;
+    padding: 0.55rem 0.7rem 0.65rem;
+  }
+
+  .about-pin-chapters a {
+    font-size: 0.75rem;
   }
 }
 
@@ -5678,7 +5843,29 @@ body.about-pin-site .site-footer {
     min-height: 100svh;
   }
 
+  .about-pin-break--chapter {
+    min-height: min(36svh, 14rem);
+  }
+
   .about-pin-progress {
+    position: sticky;
+    bottom: 0;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    margin-top: 1rem;
+  }
+
+  .about-pin-progress-rail {
+    box-shadow: none;
+    background: var(--bg);
+    border: 0;
+    border-top: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+    border-radius: 0;
+    width: 100%;
+  }
+
+  .about-pin-progress-track {
     display: none;
   }
 }

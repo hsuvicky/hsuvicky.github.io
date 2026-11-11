@@ -22,7 +22,7 @@
     <link rel="icon" href="../assets/favicon-32.png?v=20261111-face" type="image/png" sizes="32x32">
     <link rel="icon" href="../assets/favicon-16.png?v=20261111-face" type="image/png" sizes="16x16">
     <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png?v=20261111-face" sizes="180x180">
-    <link rel="stylesheet" href="../styles.css?v=20261111-pinfix2">
+    <link rel="stylesheet" href="../styles.css?v=20261111-chapter-jump4">
     <script>
       (() => {
         try {
@@ -42,8 +42,8 @@
         }
       })();
     </script>
-    <script src="../script.js?v=20261111-pinfix" defer></script>
-    <link rel="stylesheet" href="/refinements.css?v=46">
+    <script src="../script.js?v=20261111-jump-15x" defer></script>
+    <link rel="stylesheet" href="/refinements.css?v=48">
     <script src="/refinements.js?v=17" defer></script>
     <noscript>
       <style>
@@ -72,7 +72,20 @@
           padding: 40px var(--page-edge) !important;
         }
         .about-pin-progress {
+          position: static !important;
+          opacity: 1 !important;
+          visibility: visible !important;
+          pointer-events: auto !important;
+          margin: 1.5rem var(--page-edge) 2rem;
+        }
+        .about-pin-progress-track {
           display: none !important;
+        }
+        .about-pin-jump-cta {
+          opacity: 1 !important;
+          visibility: visible !important;
+          pointer-events: auto !important;
+          transform: translate(-50%, -50%) !important;
         }
       </style>
     </noscript>
@@ -131,6 +144,7 @@
           </div>
           <a href="/">Home</a>
           <a href="/about/" aria-current="page">About</a>
+          <a href="#contact-gallery">Contact</a>
         </div>
       </nav>
     </header>
@@ -296,12 +310,12 @@
           </div>
         </section>
 
-        <section class="about-pin-break" id="hobbies" aria-label="Hobbies">
+        <section class="about-pin-break about-pin-break--chapter" id="hobbies" aria-label="Hobbies">
           <h2>HOBBIES</h2>
         </section>
 
         <section
-          class="about-pin-track"
+          class="about-pin-track about-pin-track--reel"
           id="hobby-gallery"
           aria-label="Hobbies gallery"
           data-about-pin-track
@@ -443,8 +457,6 @@
           </div>
         </section>
 
-        <section class="about-pin-break about-pin-break--soft" aria-hidden="true"></section>
-
         <section
           class="about-pin-track"
           id="contact-gallery"
@@ -453,17 +465,42 @@
         >
           <div class="about-pin-sticky">
             <ul class="about-pin-strip" data-about-pin-strip>
-              <li class="about-pin-panel about-pin-panel--spacer" data-about-pin-panel aria-hidden="true"></li>
               <li class="about-pin-panel about-pin-panel--contact" data-about-pin-panel>
-                <div class="about-pin-contact">
-                  <p>
+                <div class="about-pin-jump" data-jump-contact>
+                  <div class="about-pin-jump-frame">
+                    <video
+                      class="about-pin-jump-video"
+                      data-jump-video
+                      src="../assets/vicky-jump.mp4"
+                      poster="../assets/vicky-jump-freeze.jpg"
+                      muted
+                      playsinline
+                      preload="auto"
+                      disablepictureinpicture
+                      controlslist="nodownload noplaybackrate noremoteplayback"
+                      tabindex="-1"
+                      aria-label="Vicky jumping in a mountain meadow"
+                    ></video>
+                    <img
+                      class="about-pin-jump-still"
+                      data-jump-still
+                      src="../assets/vicky-jump-freeze.jpg"
+                      alt=""
+                      width="1280"
+                      height="720"
+                      decoding="async"
+                      aria-hidden="true"
+                    >
                     <a
+                      class="about-pin-jump-cta"
+                      data-jump-cta
                       href="https://www.linkedin.com/in/hsuvicky/"
                       target="_blank"
                       rel="noreferrer"
-                    >Contact Me via LinkedIn</a>
-                    <span class="visually-hidden">(opens in a new tab)</span>
-                  </p>
+                      aria-hidden="true"
+                      tabindex="-1"
+                    ><span data-letter-bounce>Contact Me via LinkedIn</span><span class="visually-hidden"> (opens in a new tab)</span></a>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -471,7 +508,27 @@
         </section>
       </article>
 
-      <div class="about-pin-progress" data-about-pin-progress aria-hidden="true"></div>
+      <nav class="about-pin-progress" data-about-pin-progress aria-label="Jump to section">
+        <div class="about-pin-progress-rail">
+          <ol class="about-pin-chapters">
+            <li>
+              <a href="#about" data-about-chapter="about"><span data-letter-bounce>About</span></a>
+            </li>
+            <li>
+              <a href="#projects" data-about-chapter="projects"><span data-letter-bounce>Projects</span></a>
+            </li>
+            <li>
+              <a href="#hobbies" data-about-chapter="hobbies"><span data-letter-bounce>Hobbies</span></a>
+            </li>
+            <li>
+              <a href="#contact-gallery" data-about-chapter="contact"><span data-letter-bounce>Contact</span></a>
+            </li>
+          </ol>
+          <div class="about-pin-progress-track" aria-hidden="true">
+            <div class="about-pin-progress-fill" data-about-pin-progress-fill></div>
+          </div>
+        </div>
+      </nav>
     </main>
 
     <footer class="site-footer">

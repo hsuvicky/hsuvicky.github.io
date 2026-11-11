@@ -22,7 +22,7 @@
     <link rel="icon" href="assets/favicon-32.png?v=20261111-face" type="image/png" sizes="32x32">
     <link rel="icon" href="assets/favicon-16.png?v=20261111-face" type="image/png" sizes="16x16">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20261111-face" sizes="180x180">
-    <link rel="stylesheet" href="styles.css?v=20261111-pinfix2">
+    <link rel="stylesheet" href="styles.css?v=20261111-nav-bold1">
     <script>
       (() => {
         try {
@@ -42,9 +42,11 @@
         }
       })();
     </script>
-    <script src="script.js?v=20260802-blobpersist2" defer></script>
-  <link rel="stylesheet" href="/refinements.css?v=42">
-<script src="/refinements.js?v=22" defer></script>
+    <script src="script.js?v=20261111-curtain" defer></script>
+  <link rel="stylesheet" href="/refinements.css?v=48">
+<script src="/refinements.js?v=24" defer></script>
+<link rel="stylesheet" href="/curtain.css?v=4">
+<script src="/curtain.js?v=4" defer></script>
 <noscript><style>body,body.about-site{display:block;height:auto}main,body.about-site .about-page{height:auto;overflow:visible}.achievements>.section-shell{display:block;height:auto}.career-browser,.home-layout .career-browser{display:block}.career-content,.home-layout .career-content{overflow:visible}.career-entry[hidden],.career-entry [hidden],html .work-pages .work-panel[hidden]{display:block!important}.career-entry{margin-block:30px}.career-entry>.progression-period{display:block}.career-heading button,.career-years,.home-layout .career-years,.work-controls,.gallery-controls,.gallery-title-card,.gallery-card-select,.gallery-close{display:none!important}.work-panel,.work-panel:not(:first-child){display:block;height:auto;margin-block:40px}.about-page .gallery-section,.about-page .gallery-section .section-shell,.perspective-gallery{height:auto}.gallery-stage{position:static;perspective:none}.gallery-card{position:static;transform:none!important;opacity:1!important;width:100%;height:auto;margin:30px 0;pointer-events:auto}.gallery-card-layout{height:auto}.gallery-card-copy{opacity:1}</style></noscript>
 </head>
   <body>
@@ -106,10 +108,37 @@
       </nav>
     </header>
 
+    <button class="curtain-pull" type="button" data-curtain-pull aria-label="Cat paw">
+      <svg class="curtain-paw" viewBox="0 0 120 60" aria-hidden="true" focusable="false">
+        <defs>
+          <g id="curtain-paw-shape">
+            <rect x="-300" y="17" width="382" height="26" rx="13"/>
+            <ellipse cx="86" cy="30" rx="19" ry="18.5"/>
+            <circle class="paw-toe paw-toe-a" cx="102" cy="17.5" r="8"/>
+            <circle class="paw-toe paw-toe-b" cx="108.5" cy="30" r="8.5"/>
+            <circle class="paw-toe paw-toe-c" cx="102" cy="42.5" r="8"/>
+          </g>
+        </defs>
+        <use class="paw-outline" href="#curtain-paw-shape"/>
+        <use class="paw-fill" href="#curtain-paw-shape"/>
+        <path class="paw-pad" d="M76 30c0-6 4-10 8.500-10s7.500 4 7.500 10-3 10-7.500 10S76 36 76 30Z"/>
+        <ellipse class="paw-pad paw-toe paw-toe-a" cx="100.500" cy="19" rx="4" ry="3.400" transform="rotate(-30 100.500 19)"/>
+        <ellipse class="paw-pad paw-toe paw-toe-b" cx="106.500" cy="30" rx="3.600" ry="4"/>
+        <ellipse class="paw-pad paw-toe paw-toe-c" cx="100.500" cy="41" rx="4" ry="3.400" transform="rotate(30 100.500 41)"/>
+      </svg>
+    </button>
+
     <main id="main-content">
-      <section class="achievements section ruled-section" id="achievements" aria-label="Career timeline">
+      <section class="achievements section ruled-section" id="achievements" aria-label="Timeline">
         <div class="section-shell home-layout">
-<div class="career-heading"><h2>Career</h2><button type="button" data-career-hobbies aria-pressed="false" aria-label="Show hobbies"><span class="mode-track" aria-hidden="true"><span class="mode-knob"></span></span></button></div><nav class="career-years" aria-label="Career year"></nav><aside class="career-browser"><img class="career-portrait" src="assets/vicky-hsu-portrait.png" alt="Portrait of Vicky Hsu" width="480" height="480"><div class="career-content"><article class="career-entry" data-year="2011" data-personal="true" hidden>
+<div class="career-rail">
+            <nav class="career-years" aria-label="Timeline year"></nav>
+            <div class="mode-pair" role="group" aria-label="Timeline mode">
+              <button type="button" data-timeline-mode="work" aria-pressed="true">Work</button>
+              <span class="mode-pair-sep" aria-hidden="true">\</span>
+              <button type="button" data-timeline-mode="life" aria-pressed="false">Life</button>
+            </div>
+          </div><aside class="career-browser"><img class="career-portrait" src="assets/vicky-hsu-portrait.png" alt="Portrait of Vicky Hsu" width="480" height="480"><div class="career-content"><article class="career-entry" data-year="2011" data-personal="true" hidden>
                   <span class="progression-period">2011</span>
                   
                   <div class="progression-description" data-hobby-content aria-hidden="true">

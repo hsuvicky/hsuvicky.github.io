@@ -15,7 +15,7 @@ const sections = sectionLinks
   .filter(Boolean);
 const colorScheme = window.matchMedia("(prefers-color-scheme: dark)");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const pageLinks = [...document.querySelectorAll('a[href="/"], a[href="/about/"]')];
+const pageLinks = [...document.querySelectorAll('a[href="/"], a[href="/about/"]:not([data-curtain-pull])')];
 const pageTransitionSurface = document.querySelector("main");
 
 function pagePosition(pathname) {
@@ -1575,11 +1575,25 @@ function setupAboutPin() {
   const root = document.querySelector("[data-about-pin]");
   const tracks = root ? [...root.querySelectorAll("[data-about-pin-track]")] : [];
   const progress = document.querySelector("[data-about-pin-progress]");
+  const progressFill = progress?.querySelector("[data-about-pin-progress-fill]");
+  const chapterLinks = progress
+    ? [...progress.querySelectorAll("[data-about-chapter]")]
+    : [];
   const footer = document.querySelector(".site-footer");
   if (!root || !tracks.length) return;
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let ticking = false;
+  let activeChapterId = null;
+  let programmaticTarget = null;
+  const chapterBounceById = new Map();
+
+  const chapters = [
+    { id: "about", el: document.getElementById("about") },
+    { id: "projects", el: document.getElementById("projects") },
+    { id: "hobbies", el: document.getElementById("hobbies") },
+    { id: "contact", el: document.getElementById("contact-gallery") },
+  ].filter((chapter) => chapter.el);
 
   const pinTracks = tracks
     .map((track) => {
@@ -1598,6 +1612,12 @@ function setupAboutPin() {
     return rect.top + window.scrollY;
   }
 
+  function headerOffset() {
+    const sticky = pinTracks[0]?.sticky;
+    if (!sticky) return 0;
+    return Number.parseFloat(getComputedStyle(sticky).top) || 0;
+  }
+
   function setTrackHeights() {
     pinTracks.forEach(({ track, sticky, panels }) => {
       track.style.setProperty("--about-pin-panels", String(Math.max(panels.length, 1)));
@@ -1609,11 +1629,11 @@ function setupAboutPin() {
   function updateTrack(entry) {
     const { track, strip, sticky, panels } = entry;
     const rect = track.getBoundingClientRect();
-    const headerOffset = Number.parseFloat(getComputedStyle(sticky).top) || 0;
+    const offset = Number.parseFloat(getComputedStyle(sticky).top) || 0;
     const stickyHeight = sticky.offsetHeight || window.innerHeight;
     const panelWidth = Math.max(sticky.clientWidth, 1);
     const total = Math.max(track.offsetHeight - stickyHeight, 1);
-    const scrolled = Math.min(Math.max(-(rect.top - headerOffset), 0), total);
+    const scrolled = Math.min(Math.max(-(rect.top - offset), 0), total);
     const p = scrolled / total;
     const maxShift = Math.max(panels.length - 1, 0);
     strip.style.transform = maxShift
@@ -1621,15 +1641,72 @@ function setupAboutPin() {
       : "none";
   }
 
-  function updateJourneyProgress() {
-    if (!progress) return;
+  function playChapterBounce(link) {
+    if (!link || reduceMotion.matches) return;
+    const target = link.querySelector("[data-letter-bounce]") || link;
+    const id = link.getAttribute("data-about-chapter");
+    const prev = id ? chapterBounceById.get(id) : null;
+    if (prev) prev.cancel();
+    const label =
+      target.getAttribute("aria-label") ||
+      target.textContent?.replace(/\s+/g, " ").trim() ||
+      link.textContent?.replace(/\s+/g, " ").trim() ||
+      "";
+    if (!label) return;
+    const controller = animateLetterBounce(target, {
+      text: label,
+      riseMs: 500,
+      holdMs: 80,
+      bounceMs: 650,
+      peakY: "-1.1rem",
+      staggerMs: 40,
+      loopDelayMs: 0,
+      iterations: 1,
+    });
+    if (id && controller) chapterBounceById.set(id, controller);
+  }
 
-    if (reduceMotion.matches) {
-      progress.classList.remove("is-active");
-      progress.style.setProperty("--about-pin-progress", "0%");
-      progress.style.removeProperty("bottom");
+  function setActiveChapter(activeId, { bounce = true } = {}) {
+    if (!activeId) return;
+    const changed = activeChapterId !== activeId;
+    activeChapterId = activeId;
+    chapterLinks.forEach((link) => {
+      const isCurrent = link.getAttribute("data-about-chapter") === activeId;
+      if (isCurrent) link.setAttribute("aria-current", "true");
+      else link.removeAttribute("aria-current");
+    });
+    if (!changed || !bounce) return;
+    const activeLink = chapterLinks.find(
+      (link) => link.getAttribute("data-about-chapter") === activeId
+    );
+    playChapterBounce(activeLink);
+  }
+
+  function updateActiveChapter() {
+    if (!chapters.length) return;
+    const marker = window.scrollY + headerOffset() + window.innerHeight * 0.28;
+    let activeId = chapters[0].id;
+    for (const chapter of chapters) {
+      if (pageY(chapter.el) <= marker) activeId = chapter.id;
+    }
+
+    // While a chapter link is animating the scroll, skip intermediates
+    // and fire the jump only when the destination becomes current.
+    if (programmaticTarget) {
+      if (activeId === programmaticTarget) {
+        programmaticTarget = null;
+        setActiveChapter(activeId, { bounce: true });
+      } else {
+        setActiveChapter(activeId, { bounce: false });
+      }
       return;
     }
+
+    setActiveChapter(activeId, { bounce: true });
+  }
+
+  function updateJourneyProgress() {
+    if (!progress) return;
 
     const startY = pageY(root);
     const endY = startY + root.offsetHeight - window.innerHeight;
@@ -1641,21 +1718,66 @@ function setupAboutPin() {
     const inJourney =
       rootRect.bottom > 80 && rootRect.top < window.innerHeight - 40;
 
-    progress.classList.toggle("is-active", inJourney);
+    progress.classList.toggle("is-active", inJourney || reduceMotion.matches);
     progress.style.setProperty("--about-pin-progress", `${p * 100}%`);
+    if (progressFill) progressFill.style.width = `${p * 100}%`;
 
-    // Keep the bar above the footer and clear of page text.
-    const baseClearance = 28;
+    // Keep the rail above the footer and clear of page text.
+    const baseClearance = reduceMotion.matches ? 0 : 20;
     let bottom = baseClearance;
-    if (footer) {
+    if (footer && !reduceMotion.matches) {
       const footerTop = footer.getBoundingClientRect().top;
       const overlap = window.innerHeight - footerTop;
       if (overlap > 0) {
-        bottom = Math.max(baseClearance, overlap + 16);
+        bottom = Math.max(baseClearance, overlap + 12);
       }
     }
-    progress.style.bottom = `${bottom}px`;
+    if (reduceMotion.matches) progress.style.removeProperty("bottom");
+    else progress.style.bottom = `${bottom}px`;
+
+    updateActiveChapter();
   }
+
+  function scrollToChapter(el, chapterId) {
+    if (chapterId) programmaticTarget = chapterId;
+    const top = Math.max(pageY(el) - headerOffset() - 8, 0);
+    window.scrollTo({
+      top,
+      behavior: reduceMotion.matches ? "auto" : "smooth",
+    });
+    if (reduceMotion.matches) {
+      programmaticTarget = null;
+      setActiveChapter(chapterId, { bounce: false });
+    }
+  }
+
+  chapterLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const id = link.getAttribute("data-about-chapter");
+      const chapter = chapters.find((entry) => entry.id === id);
+      if (!chapter) return;
+      event.preventDefault();
+      scrollToChapter(chapter.el, id);
+      if (typeof history !== "undefined" && history.replaceState) {
+        const hash =
+          id === "contact" ? "#contact-gallery" : `#${chapter.el.id}`;
+        history.replaceState(null, "", hash);
+      }
+    });
+  });
+
+  document.querySelectorAll('a[href="#contact-gallery"]').forEach((link) => {
+    if (link.hasAttribute("data-about-chapter")) return;
+    link.addEventListener("click", (event) => {
+      const contact = document.getElementById("contact-gallery");
+      if (!contact) return;
+      event.preventDefault();
+      scrollToChapter(contact, "contact");
+      if (typeof history !== "undefined" && history.replaceState) {
+        history.replaceState(null, "", "#contact-gallery");
+      }
+    });
+  });
 
   function update() {
     ticking = false;
@@ -1682,7 +1804,26 @@ function setupAboutPin() {
   setTrackHeights();
   update();
 
+  function releaseProgrammaticScroll() {
+    programmaticTarget = null;
+  }
+
   window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("wheel", releaseProgrammaticScroll, { passive: true });
+  window.addEventListener("touchstart", releaseProgrammaticScroll, { passive: true });
+  window.addEventListener("keydown", (event) => {
+    if (
+      event.key === "ArrowUp" ||
+      event.key === "ArrowDown" ||
+      event.key === "PageUp" ||
+      event.key === "PageDown" ||
+      event.key === "Home" ||
+      event.key === "End" ||
+      event.key === " "
+    ) {
+      releaseProgrammaticScroll();
+    }
+  });
   window.addEventListener("resize", () => {
     setTrackHeights();
     requestUpdate();
@@ -1691,3 +1832,306 @@ function setupAboutPin() {
 }
 
 setupAboutPin();
+
+/**
+ * Anime.js docs letter bounce (HELLO WORLD), native WAAPI.
+ * Ref: y → -2.75rem outExpo then outBounce; rotate from -1turn; stagger 50.
+ * Tuned slower on the bounce; plays `iterations` times then stops.
+ */
+function animateLetterBounce(root, options = {}) {
+  if (!root || typeof root.animate !== "function") return null;
+
+  const {
+    text,
+    riseMs = 500,
+    holdMs = 80,
+    bounceMs = 650,
+    peakY = "-2.75rem",
+    staggerMs = 40,
+    loopDelayMs = 0,
+    iterations = 1,
+  } = options;
+
+  if (typeof text === "string") {
+    root.textContent = text;
+  }
+
+  const source = root.textContent ?? "";
+  root.textContent = "";
+  root.setAttribute("aria-label", source);
+
+  const letters = [];
+  for (const char of source) {
+    const span = document.createElement("span");
+    span.className = "about-pin-jump-letter";
+    if (char === " ") {
+      span.classList.add("about-pin-jump-letter--space");
+      span.textContent = "\u00A0";
+    } else {
+      span.textContent = char;
+    }
+    span.setAttribute("aria-hidden", "true");
+    root.appendChild(span);
+    letters.push(span);
+  }
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (reduceMotion.matches || !letters.length) return null;
+
+  const easeOutExpo = (t) => (t === 1 ? 1 : 1 - 2 ** (-10 * t));
+  const easeOutBounce = (t) => {
+    const n1 = 7.5625;
+    const d1 = 2.75;
+    if (t < 1 / d1) return n1 * t * t;
+    if (t < 2 / d1) return n1 * (t -= 1.5 / d1) * t + 0.75;
+    if (t < 2.5 / d1) return n1 * (t -= 2.25 / d1) * t + 0.9375;
+    return n1 * (t -= 2.625 / d1) * t + 0.984375;
+  };
+  const easeInOutCirc = (t) =>
+    t < 0.5
+      ? (1 - Math.sqrt(1 - (2 * t) ** 2)) / 2
+      : (Math.sqrt(1 - (-2 * t + 2) ** 2) + 1) / 2;
+
+  const activeMs = riseMs + holdMs + bounceMs;
+  const cycleMs = activeMs + loopDelayMs;
+  const sampleN = 24;
+  const rootFontPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+  const peakMatch = String(peakY).trim().match(/^(-?[\d.]+)(rem|px|em)$/i);
+  const peakPx = peakMatch
+    ? parseFloat(peakMatch[1]) *
+      (peakMatch[2].toLowerCase() === "px" ? 1 : rootFontPx)
+    : -2.75 * rootFontPx;
+
+  function yAt(localMs) {
+    if (localMs <= riseMs) {
+      const t = localMs / riseMs;
+      return `${peakPx * easeOutExpo(t)}px`;
+    }
+    if (localMs <= riseMs + holdMs) return `${peakPx}px`;
+    if (localMs <= activeMs) {
+      const t = (localMs - riseMs - holdMs) / bounceMs;
+      const progress = easeOutBounce(t);
+      return `${peakPx * (1 - progress)}px`;
+    }
+    return "0px";
+  }
+
+  function rotateAt(localMs) {
+    const t = Math.min(localMs, activeMs) / activeMs;
+    const turned = easeInOutCirc(t);
+    return `${-360 + 360 * turned}deg`;
+  }
+
+  const keyframes = [];
+  for (let i = 0; i <= sampleN; i++) {
+    const localMs = (activeMs * i) / sampleN;
+    keyframes.push({
+      offset: localMs / cycleMs,
+      transform: `translateY(${yAt(localMs)}) rotate(${rotateAt(localMs)})`,
+    });
+  }
+  keyframes.push({
+    offset: 1,
+    transform: "translateY(0px) rotate(0deg)",
+  });
+
+  const animations = letters.map((letter, index) => {
+    letter.style.willChange = "transform";
+    return letter.animate(keyframes, {
+      duration: cycleMs,
+      delay: index * staggerMs,
+      iterations,
+      fill: "forwards",
+      easing: "linear",
+    });
+  });
+
+  const last = animations[animations.length - 1];
+  if (last) {
+    last.finished.finally(() => {
+      letters.forEach((letter) => {
+        letter.style.willChange = "";
+        letter.style.transform = "";
+      });
+    }).catch(() => {});
+  }
+
+  return {
+    animations,
+    cancel() {
+      animations.forEach((anim) => anim.cancel());
+      letters.forEach((letter) => {
+        letter.style.willChange = "";
+        letter.style.transform = "";
+      });
+    },
+  };
+}
+
+function setupJumpContact() {
+  const stage = document.querySelector("[data-jump-contact]");
+  const video = stage?.querySelector("[data-jump-video]");
+  const cta = stage?.querySelector("[data-jump-cta]");
+  if (!stage || !video || !cta) return;
+
+  const FREEZE_AT = 8.05;
+  const STORAGE_KEY = "about-jump-complete";
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let completed = false;
+  let freezing = false;
+  let started = false;
+  let rafId = 0;
+  let lettersPlayed = false;
+
+  try {
+    completed = sessionStorage.getItem(STORAGE_KEY) === "1";
+  } catch {
+    completed = false;
+  }
+
+  function freezeAt() {
+    const duration =
+      Number.isFinite(video.duration) && video.duration > 0.5
+        ? video.duration
+        : FREEZE_AT;
+    return Math.min(FREEZE_AT, Math.max(duration - 0.04, 0));
+  }
+
+  function showCta({ playLetters = true } = {}) {
+    cta.classList.add("is-visible");
+    cta.removeAttribute("aria-hidden");
+    cta.removeAttribute("tabindex");
+    if (!playLetters || lettersPlayed || reduceMotion.matches) return;
+    const target = cta.querySelector("[data-letter-bounce]");
+    if (!target) return;
+    lettersPlayed = true;
+    // One faster bounce (Anime.js-like), then stop.
+    animateLetterBounce(target, {
+      riseMs: 500,
+      holdMs: 80,
+      bounceMs: 650,
+      peakY: "-2.75rem",
+      staggerMs: 40,
+      loopDelayMs: 0,
+      iterations: 1,
+    });
+  }
+
+  function markComplete() {
+    completed = true;
+    stage.classList.add("is-frozen");
+    try {
+      sessionStorage.setItem(STORAGE_KEY, "1");
+    } catch {
+      /* ignore quota / private mode */
+    }
+  }
+
+  function holdFrozenFrame() {
+    freezing = true;
+    stopWatching();
+    // Pause in place — seeking after pause can reset some browsers to t=0.
+    video.pause();
+    markComplete();
+    showCta();
+    freezing = false;
+  }
+
+  function stopWatching() {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+  }
+
+  function watchFreeze() {
+    stopWatching();
+    const tick = () => {
+      if (completed) return;
+      if (video.currentTime >= freezeAt()) {
+        holdFrozenFrame();
+        return;
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function playOnce() {
+    if (completed || started || reduceMotion.matches) return;
+    started = true;
+    video.muted = true;
+    video.playbackRate = 1.5;
+
+    const begin = () => {
+      if (completed) return;
+      video.playbackRate = 1.5;
+      const playAttempt = video.play();
+      watchFreeze();
+      if (playAttempt && typeof playAttempt.catch === "function") {
+        playAttempt.catch(() => {
+          started = false;
+          stopWatching();
+        });
+      }
+    };
+
+    if (video.readyState >= 1 && Number.isFinite(video.duration) && video.duration > 0.5) {
+      begin();
+    } else {
+      video.addEventListener("loadedmetadata", begin, { once: true });
+      video.load();
+    }
+  }
+
+  function applyCompletedState() {
+    stopWatching();
+    started = true;
+    video.pause();
+    markComplete();
+    // Return visits: skip the video, still bounce the CTA once.
+    showCta({ playLetters: !reduceMotion.matches });
+  }
+
+  video.controls = false;
+  video.removeAttribute("controls");
+  video.addEventListener("contextmenu", (event) => event.preventDefault());
+  video.addEventListener("pause", () => {
+    if (completed || freezing || reduceMotion.matches) return;
+    if (!started) return;
+    if (video.currentTime >= freezeAt()) {
+      holdFrozenFrame();
+      return;
+    }
+    video.playbackRate = 1.5;
+    video.play().catch(() => {});
+  });
+  video.addEventListener("ended", () => {
+    if (!completed) holdFrozenFrame();
+  });
+
+  if (completed || reduceMotion.matches) {
+    applyCompletedState();
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        if (completed || reduceMotion.matches) {
+          applyCompletedState();
+          return;
+        }
+        playOnce();
+      });
+    },
+    { threshold: 0.45, rootMargin: "0px 0px -8% 0px" }
+  );
+  observer.observe(stage);
+
+  reduceMotion.addEventListener("change", () => {
+    if (reduceMotion.matches) applyCompletedState();
+  });
+}
+
+setupJumpContact();

@@ -56,7 +56,7 @@ body,body.about-site{grid-template-columns:minmax(0,1fr)}
 body>header,body>main,body>footer,.achievements>.section-shell,.career-timeline,.work-pages{min-width:0}
 .achievements>.section-shell{grid-template-columns:minmax(0,1fr)}
 }
-:root{--bg:#f7f5ee;--surface:#eeeee3;--surface-strong:#fffdf7;--text:#354036;--text-strong:#25372f;--text-soft:#586157;--muted:#616b60;--accent:#6e806a;--accent-soft:#e6eadf;--accent-deep:#3d5744;--header-bg:#f7f5ee}
+:root{--bg:#f7f5ee;--surface:#eeeee3;--surface-strong:#fffdf7;--text:#354036;--text-strong:#25372f;--text-soft:#4f574f;--muted:#515a50;--accent:#6e806a;--accent-soft:#e6eadf;--accent-deep:#3d5744;--header-bg:#f7f5ee}
 :root[data-theme="dark"]{--bg:#1b2229;--surface:#252f38;--surface-strong:#303c47;--text:#e5e9e7;--text-strong:#faf7ed;--text-soft:#ccd5d7;--muted:#b4c1c5;--accent:#b4c9b5;--accent-deep:#d0dfce;--accent-soft:#34443f;--border:#53616b;--border-soft:#3e4b55;--header-bg:#1b2229;--ink-inverse:#17231e;--moss:#b5c5a3;--warm:#d6bf96;--warm-soft:#403b32;--pointillism-base:#d5ddd2;--shadow:none}
 .personal-wordmark{display:inline-flex;align-items:baseline;color:var(--text-strong);font-family:'Century Gothic','Avenir Next',Arial,sans-serif;font-size:31px;font-weight:400;line-height:1;letter-spacing:-1.8px;text-transform:lowercase;gap:6px}
 .personal-wordmark>span{font-weight:700}.personal-wordmark i{font-style:normal;color:#ad7656;margin-left:-5px;font-size:38px}.wordmark:hover .personal-wordmark{color:var(--text-strong)}
@@ -75,7 +75,7 @@ body>header,body>main,body>footer,.achievements>.section-shell,.career-timeline,
 .refined-gallery .gallery-mooscles .mooscles-visual{display:grid;place-items:center;min-height:0;background:none;overflow:visible;border:0}
 .mooscles-icon{width:min(70%,240px);height:auto;filter:none;transition:transform .4s}
 .career-browser{padding:24px 28px 22px 0;min-width:0;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:24px}
-.career-heading{display:flex;justify-content:space-between;align-items:center;gap:14px}.career-heading h2{font:400 25px/1.2 var(--display);margin:0;color:var(--text-strong)}.career-heading button{font:13px var(--sans);color:var(--muted);background:none;border:0;padding:8px 0;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.career-heading{display:flex;align-items:center;gap:14px}
 .career-years{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.career-years button{font:14px var(--mono);border:1px solid var(--border-soft);border-radius:22px;padding:9px 4px;background:none;color:var(--muted);cursor:pointer;transition:background .25s,color .25s}.career-years button[aria-current="true"]{background:var(--text-strong);color:var(--bg);border-color:var(--text-strong)}.career-years button[hidden]{display:none}
 .career-content{min-height:0;overflow:auto;flex:1;padding-top:12px}.career-entry[hidden],.career-entry [hidden]{display:none!important}.career-entry{animation:panel-in .3s ease}.career-entry>.progression-period{display:none}.career-entry .progression-description,.career-entry .progression-career-event,.career-entry .progression-personal-event{display:flex;align-items:flex-start;flex-direction:column;gap:8px;margin:0 0 20px;padding:0;text-align:left;opacity:1;transform:none}.career-entry .progression-role{font:400 25px/1.15 var(--display);color:var(--text-strong);max-width:100%}.career-entry .progression-grade{font:13px/1.5 var(--sans);color:var(--muted);letter-spacing:.04em}.career-entry .progression-domain{font:14px/1.5 var(--sans);color:var(--text-soft)}.career-entry .progression-logo{width:auto;height:30px;max-width:135px;object-fit:contain;margin:0 0 6px}.career-entry .progression-personal-event{border-top:1px solid var(--border-soft);padding-top:16px}.career-entry .progression-personal-event .progression-role{font-size:18px}
 [data-theme="dark"] .career-entry .progression-logo{background:#f7f5ee;padding:5px;border-radius:4px;box-sizing:content-box}
@@ -181,7 +181,7 @@ body>header,body>main,body>footer,.achievements>.section-shell,.career-timeline,
 .refined-gallery .gallery-card:has(.project-notes) .case-details dt{margin-bottom:5px}
 .refined-gallery .app-store-badge{width:110px;height:auto}.refined-gallery .app-store-link{margin-top:12px}
 .career-browser{border:0;display:grid;grid-template-columns:48px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:36px 20px;padding-right:0}
-.career-heading{grid-column:1/-1}
+.career-rail{grid-column:1/-1}
 .career-years{display:flex;flex-direction:column;gap:18px;align-items:stretch;justify-content:flex-start;border:0;padding:0;position:relative}
 .career-years button{text-align:left;padding:6px 0;font-size:13px;min-height:32px}
 .career-years button:after{left:auto;right:-8px;top:50%;bottom:auto;width:12px;height:1px;background:#a56c4f;transform-origin:right}
@@ -218,7 +218,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 .poker-photo{display:block;height:100%;width:auto;max-width:100%;object-fit:contain;box-shadow:8px 10px 0 var(--surface);border-radius:0}
 .gallery-index-preview .poker-photo{box-shadow:none;object-fit:cover!important;width:62px!important;height:52px!important}
 .career-browser{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;gap:22px;padding:24px 0 15px}
-.career-heading{grid-column:1;grid-row:1}
+.career-rail{grid-column:1;grid-row:1}
 .career-content{grid-column:1;grid-row:2;padding:0 8px 0 0;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .career-entry>.progression-period{display:block;font:400 64px/1 var(--display);letter-spacing:-.055em;color:var(--text-strong);margin:0 0 26px}
 .career-entry .progression-role{font-size:27px;line-height:1.15}
@@ -228,8 +228,8 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 .career-years button{min-width:0;min-height:44px;padding:12px 0 8px;text-align:center;font-size:13px;font-weight:400}
 .career-years button:after{left:calc(50% - 8px);right:auto;top:-9px;bottom:auto;width:16px;height:2px;transform-origin:center}
 .career-years button[aria-current="true"]{font-weight:700}
-.career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:4px}
-.career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years button:after{top:auto;bottom:1px}
+.home-layout[data-timeline-mode="life"] .career-years{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:4px}
+.home-layout[data-timeline-mode="life"] .career-years button:after{top:auto;bottom:1px}
 @media(min-width:901px) and (min-height:650px){.achievements>.section-shell{grid-template-columns:280px minmax(0,1fr);gap:60px}}
 @media(max-width:900px),(max-height:649px){.career-browser{grid-template-rows:auto auto auto;gap:18px}.career-years{grid-row:2}.career-content{grid-row:3;overflow:visible}.career-entry>.progression-period{font-size:48px;margin-bottom:20px}}
 /* Home: a continuous date rail and a shared baseline for the project spread. */
@@ -238,8 +238,8 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   gap: 24px;
 }
 .home-layout .career-years,
-.home-layout .career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years {
-  grid-row: 2;
+.home-layout[data-timeline-mode="life"] .career-years {
+  grid-row: auto;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -264,7 +264,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   background: var(--border);
 }
 .home-layout .career-years button::after,
-.home-layout .career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years button::after {
+.home-layout[data-timeline-mode="life"] .career-years button::after {
   inset: auto auto 4px calc(50% - 3.5px);
   width: 7px;
   height: 7px;
@@ -399,68 +399,67 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 @media (prefers-reduced-motion: reduce) {
   .home-layout .career-entry { animation: none; }
   .home-layout .career-years button::after { transition: none; }
-  .mode-knob { transition: none; }
 }
 
-.home-layout .career-heading {
+.home-layout .career-rail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  column-gap: clamp(0.75rem, 2vw, 1.5rem);
+  width: 100%;
+  min-width: 0;
+}
+.home-layout .career-rail .career-years {
+  grid-column: 1;
+  min-width: 0;
+}
+.home-layout .mode-pair {
+  grid-column: 2;
+  display: inline-flex;
   align-items: center;
-  gap: 16px;
-}
-.home-layout .career-heading h2 { font-size: 22px; }
-.home-layout .career-heading [data-career-hobbies] {
-  position: relative;
-  width: 38px;
-  height: 22px;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  text-decoration: none;
-  color: inherit;
-}
-.home-layout .career-heading [data-career-hobbies]::before {
-  content: "Hobbies";
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 6px);
-  transform: translateX(-50%);
-  color: var(--muted);
-  font: 13px var(--sans);
-  letter-spacing: .04em;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  padding-bottom: 18px;
   white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
 }
-.home-layout .career-heading [data-career-hobbies]:hover::before,
-.home-layout .career-heading [data-career-hobbies]:focus-visible::before {
-  opacity: 1;
+.home-layout .mode-pair [data-timeline-mode] {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 140ms ease, font-weight 140ms ease;
 }
-.home-layout .mode-track {
-  display: block;
-  width: 38px;
-  height: 16px;
-  border: 1px solid var(--border);
-  border-radius: 99px;
-  position: relative;
+.home-layout .mode-pair [data-timeline-mode]:hover,
+.home-layout .mode-pair [data-timeline-mode]:focus-visible {
+  color: var(--text);
 }
-.home-layout .mode-knob {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--muted);
-  transition: transform 180ms ease, background 180ms ease;
+.home-layout .mode-pair [data-timeline-mode]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
-.home-layout [data-career-hobbies][aria-pressed="true"] .mode-knob {
-  transform: translateX(20px);
-  background: #a56c4f;
+.home-layout .mode-pair [data-timeline-mode][aria-pressed="true"] {
+  color: var(--text);
+  font-weight: 700;
 }
-.home-layout .career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years {
+.home-layout .mode-pair-sep {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1;
+  user-select: none;
+}
+.home-layout[data-timeline-mode="life"] .career-years {
   display: flex;
   flex-wrap: nowrap;
 }
-.home-layout .career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years button {
+.home-layout[data-timeline-mode="life"] .career-years button {
   font-size: 13px;
 }
 .home-layout .career-entry > .progression-period {
@@ -560,9 +559,6 @@ html[data-theme="dark"] .home-layout .progression-logo-lol,
 html[data-theme="dark"] .home-layout .progression-logo-form-flow {
   filter: grayscale(1) brightness(0) invert(.88);
 }
-html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] .mode-knob {
-  background: #d5a585;
-}
 @media (max-width: 900px), (max-height: 649px) {
   .home-layout .case-glance { grid-template-columns: 1fr; }
   .home-layout .career-entry > .progression-period { font-size: 56px; }
@@ -595,34 +591,11 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   padding: 0;
   border: 0;
 }
-.home-layout > .career-heading {
+.home-layout > .career-rail {
   align-self: end;
 }
-.home-layout .career-heading [data-career-hobbies] {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  width: auto;
-  height: auto;
-  min-height: 44px;
-  padding: 0 2px;
-}
-.home-layout .career-heading [data-career-hobbies]::before {
-  content: "Hobbies";
-  position: static;
-  transform: none;
-  opacity: 1;
-  color: var(--muted);
-  font: 14px var(--sans);
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-  pointer-events: none;
-}
-.home-layout .career-heading [data-career-hobbies][aria-pressed="true"]::before {
-  color: var(--text-strong);
-}
 .home-layout .career-years,
-.home-layout:has([data-career-hobbies][aria-pressed="true"]) .career-years {
+.home-layout[data-timeline-mode="life"] .career-years {
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-end;
@@ -656,7 +629,7 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   display: none;
 }
 .home-layout .career-years button::after,
-.home-layout:has([data-career-hobbies][aria-pressed="true"]) .career-years button::after {
+.home-layout[data-timeline-mode="life"] .career-years button::after {
   inset: auto;
   left: calc(50% - 4.5px);
   right: auto;
@@ -726,25 +699,23 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
 @media (min-width: 901px) and (min-height: 650px) {
   .achievements > .home-layout {
     grid-template-columns: minmax(340px, 0.92fr) minmax(0, 1.08fr);
-    grid-template-rows: auto auto minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
     column-gap: clamp(40px, 5vw, 80px);
     row-gap: 0;
     align-items: stretch;
   }
-  .home-layout > .career-heading,
-  .home-layout > .career-years {
+  .home-layout > .career-rail {
     grid-column: 1 / -1;
+    grid-row: 1;
   }
-  .home-layout > .career-heading { grid-row: 1; }
-  .home-layout > .career-years { grid-row: 2; }
   .home-layout > .career-browser {
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 2;
     min-height: 0;
   }
   .home-layout > .work-pages {
     grid-column: 2;
-    grid-row: 3;
+    grid-row: 2;
     height: 100%;
     min-height: 0;
     margin: 0;
@@ -759,12 +730,26 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   }
 }
 @media (max-width: 900px), (max-height: 649px) {
+  .home-layout .career-rail {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.25rem;
+  }
+  .home-layout .mode-pair {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    padding-bottom: 0;
+  }
+  .home-layout .career-rail .career-years {
+    grid-column: 1;
+    grid-row: 2;
+  }
   .home-layout .career-years,
-  .home-layout:has([data-career-hobbies][aria-pressed="true"]) .career-years {
+  .home-layout[data-timeline-mode="life"] .career-years {
     flex-wrap: wrap;
     --rail-gap: 12px;
     gap: 6px 12px;
-    padding: 14px 0 8px;
+    padding: 10px 0 8px;
   }
   .home-layout .career-years button {
     flex: 1 1 calc(33.33% - 12px);
@@ -801,19 +786,21 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
 /* Portrait sits with the current year. Type uses one scale, so a wide screen does not inflate the year. */
 .home-layout > .career-browser {
   display: grid;
-  grid-template-columns: 92px minmax(0, 1fr);
-  column-gap: 22px;
+  grid-template-columns: clamp(7.5rem, 11vw, 9.5rem) minmax(0, 1fr);
+  column-gap: clamp(1.1rem, 1.8vw, 1.75rem);
   align-items: start;
 }
 .home-layout .career-portrait {
   grid-column: 1;
   grid-row: 1;
-  width: 92px;
-  height: 92px;
+  width: clamp(7.5rem, 11vw, 9.5rem);
+  height: clamp(7.5rem, 11vw, 9.5rem);
   object-fit: cover;
-  object-position: center 46%;
+  object-position: center 28%;
   border-radius: 50%;
   background: #1a1814;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--text) 8%, transparent);
 }
 .home-layout .career-content {
   grid-column: 2;
@@ -857,17 +844,14 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
 .home-layout .career-years button {
   font-size: 15px;
 }
-.home-layout .career-heading h2 {
-  font-size: 18px;
-}
 @media (max-width: 900px), (max-height: 649px) {
   .home-layout > .career-browser {
-    grid-template-columns: 72px minmax(0, 1fr);
-    column-gap: 16px;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    column-gap: 1rem;
   }
   .home-layout .career-portrait {
-    width: 72px;
-    height: 72px;
+    width: 6.5rem;
+    height: 6.5rem;
   }
   .home-layout .career-entry > .progression-period {
     font-size: 32px;
@@ -919,7 +903,7 @@ html[data-theme="dark"] .home-layout [data-career-hobbies][aria-pressed="true"] 
   }
   body:not(.about-site) .achievements > .home-layout {
     height: auto;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto;
     align-items: start;
   }
   .home-layout > .career-browser,
@@ -987,9 +971,9 @@ body.about-site .site-footer {
 .site-nav .nav-links > a {
   font-size: 15px;
 }
-.home-layout .career-heading h2,
+.home-layout .mode-pair [data-timeline-mode],
 .home-layout .career-years button,
-.home-layout .career-browser:has([data-career-hobbies][aria-pressed="true"]) .career-years button,
+.home-layout[data-timeline-mode="life"] .career-years button,
 .home-layout .case-glance dt,
 .home-layout .case-disclosure summary,
 .home-layout .case-details dt,
@@ -1171,4 +1155,42 @@ body.about-site .site-footer {
   height: auto !important;
   max-height: min(42vh, 20rem) !important;
   border: 0 !important;
+}
+
+/* Keep project folio height stable while flipping — controls stay put. */
+.home-layout > .work-pages {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-content: start;
+}
+
+.home-layout .work-panel {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  width: 100%;
+}
+
+.home-layout .work-controls {
+  grid-column: 1;
+  grid-row: 2;
+  position: static;
+  margin-top: 32px;
+}
+
+.home-layout .work-panel[hidden] {
+  display: grid !important;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.home-layout .work-panel:not(:has(.reasoning-diagram))[hidden] {
+  display: flex !important;
+}
+
+.home-layout .work-panel:not([hidden]) {
+  visibility: visible;
+  z-index: 1;
 }
